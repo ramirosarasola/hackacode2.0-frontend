@@ -34,22 +34,14 @@ body {
   My styles
 */
 
-
-input, select {
-  color: #000;
-  padding: .2rem;
-  border-radius: 4px;
-}
-
-#auth-form span{
-  color: red;
-  font-size: 12px;
-  height: 1.2rem;
-  position: relative;
-}
-
-#auth-form p{
-  position: absolute;
-  left: 0;
-  top: 0;
+.auth-input {
+  border: 2px solid #5A81FA7A;
+  box-shadow: 0px 1px 3.5999999046325684px 0px #5A81FA4A;
+  height: 51px;
+  color: #A8B1CF;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
 }

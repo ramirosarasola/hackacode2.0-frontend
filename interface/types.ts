@@ -18,6 +18,7 @@ export interface CustomError {
   message: string;
   status?: number;
   error?: string;
+  success?: boolean
 }
 
 export interface AuthState {
