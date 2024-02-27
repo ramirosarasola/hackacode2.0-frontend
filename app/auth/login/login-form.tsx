@@ -1,55 +1,49 @@
 "use client";
-import InputField from "@/app/ui/label-input";
-import { loginSchema } from "@/app/validations/loginSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
 
-interface LoginInputs {
-  username: string;
+import { loginUser } from "@/lib/features/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { Path, SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+
+interface IFormValues {
+  email: string;
   password: string;
 }
 
-export default function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginInputs>({
-    resolver: zodResolver(loginSchema),
-  });
+type InputProps = {
+  label: Path<IFormValues>;
+  register: UseFormRegister<IFormValues>;
+  required: boolean;
+};
+const Input = ({ label, register, required }: InputProps) => (
+  <>
+    <label>{label}</label>
+    <input {...register(label, { required })} />
+  </>
+);
 
-  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    console.log(data);
+const LoginForm = () => {
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit } = useForm<IFormValues>();
+
+  const onSubmit: SubmitHandler<IFormValues> = ({email, password}) => {
+    console.log({email, password});
+    dispatch(loginUser({ email, password }))
+      .then((result) => {
+        console.log(result);
+        
+        if (result.payload) {
+        console.log(result.payload);
+      }
+    })
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-blue rounded-md shadow-md">
-      <h1 className="text-2xl font-semibold mb-4">Log In</h1>
-      <form id="auth-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-        <InputField
-          type="text"
-          id="username"
-          label="Username"
-          zodMethod={register}
-          errors={errors}
-          autoComplete="username"
-        />
-        <InputField
-          type="password"
-          id="password"
-          label="Password"
-          zodMethod={register}
-          errors={errors}
-          autoComplete="current-password"
-        />
-
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700"
-        >
-          Log In
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input label="email" register={register} required />
+      <Input label="password" register={register} required />
+      <input type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700" />
+    </form>
   );
-}
+};
+
+export default LoginForm;

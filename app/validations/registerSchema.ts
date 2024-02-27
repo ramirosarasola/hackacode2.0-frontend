@@ -19,10 +19,10 @@ export const registerSchema = z.object({
   position: z.enum(positions, { errorMap: () => ({ message: "Invalid Position" }) }),
   salary: z.string().refine((salary) => !isNaN(parseFloat(salary))),
 
-  birthdate: z.string().refine(
-    (birthdate) => new Date(birthdate).toString() !== "Invalid Date",
-    { message: "Please provide a valid date" }
-  ),
+  // birthdate: z.string().refine(
+  //   (birthdate) => new Date(birthdate).toString() !== "Invalid Date",
+  //   { message: "Please provide a valid date" }
+  // ),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Password must match",
   path: ["confirmPassword"],

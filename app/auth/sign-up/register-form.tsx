@@ -1,205 +1,74 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/app/validations/registerSchema";
-import InputField from "@/app/ui/label-input";
-import { useState } from "react";
-import { User } from "@/interface/types";
-import { useAppDispatch } from "@/lib/hooks";
 import { registerUser } from "@/lib/features/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { Path, SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 
-type InputsRegisterForm = {
+interface IFormValues {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
   lastname: string;
   dni: string;
   phone: string;
   address: string;
   country: string;
   position: string;
-  birthdate: string;
   salary: number;
+  birthdate: Date;
+}
+
+type InputProps = {
+  label: Path<IFormValues>;
+  register: UseFormRegister<IFormValues>;
+  required: boolean;
 };
 
-export default function RegisterForm() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<InputsRegisterForm>({
-    resolver: zodResolver(registerSchema),
-  });
+const Input = ({ label, register, required }: InputProps) => (
+  <div className="mb-4">
+    <label className="block text-gray-700 text-sm font-bold mb-2">
+      {label}
+    </label>
+    <input
+      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+      {...register(label, { required })}
+    />
+  </div>
+);
 
-  console.log(errors);
+const RegisterForm = () => {
   const dispatch = useAppDispatch();
+  const { register, handleSubmit } = useForm<IFormValues>();
 
-  const onSubmit: SubmitHandler<InputsRegisterForm> = (data) => {
-    console.log(data);
-    dispatch(registerUser(formData))
-    if (data) reset();
+  const onSubmit: SubmitHandler<IFormValues> = (formData) => {
+    console.log(formData);
+
+    dispatch(registerUser({ newUser: formData })).then((result) => {
+      console.log(result);
+
+      if (result.payload) {
+        console.log(result.payload);
+      }
+    });
   };
 
-  const [formData, setFormData] = useState<User>({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    lastname: "",
-    dni: "",
-    phone: "",
-    address: "",
-    country: "",
-    position: "",
-    birthdate: "",
-    salary: 0,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
   return (
-    <div className="p-4 bg-gray-800 text-white flex flex-col items-center justify-center rounded-md shadow-md">
-      <form
-        id="auth-form"
-        className="min-w-[400px] max-w-[800px] flex items-center gap-4 p-6 rounded-md shadow-md"
-      >
-        <div className="flex flex-col md:col-span-1 h-full gap-2">
-          <InputField
-            type="string"
-            id="name"
-            label="Name"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"John"}
-            onChange={handleChange}
-          />
-          <InputField
-            type="string"
-            id="lastname"
-            label="Lastname"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"Doe"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="email"
-            id="email"
-            label="Email"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"johndoe@gmail.com"}
-            onChange={handleChange}
-          />
-          <InputField
-            type="password"
-            id="password"
-            label="password"
-            zodMethod={register}
-            errors={errors}
-            autoComplete="new-password"
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="password"
-            id="confirmPassword"
-            label="Confirm Password"
-            zodMethod={register}
-            errors={errors}
-            autoComplete="confirmPassword"
-            onChange={handleChange}
-          />
-
-          <label htmlFor="position" className="flex">
-            Position
-          </label>
-          <select className="" id="position" {...register("position")}>
-            <option value="admin">Admin</option>
-            <option value="employee">Employee</option>
-            <option value="guest">Guest</option>
-          </select>
-
-          <span>
-            {errors.position?.message && (
-              <p>{String(errors.position?.message)}</p>
-            )}
-          </span>
-        </div>
-
-        <div className="flex flex-col md:col-span-1 gap-2">
-          <InputField
-            type="text"
-            id="country"
-            label="Country"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"usa"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="text"
-            id="address"
-            label="Address"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"Av. Street 47"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="text"
-            id="dni"
-            label="DNI"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"12312312"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="text"
-            id="phone"
-            label="Phone"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"+54 11 0000 2222"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="number"
-            id="salary"
-            label="salary"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"25000"}
-            onChange={handleChange}
-          />
-
-          <InputField
-            type="date"
-            id="dateOfBirth"
-            label="Date Of Birth"
-            zodMethod={register}
-            errors={errors}
-            autoComplete={"18/01/1900"}
-            onChange={handleChange}
-          />
-        </div>
-      </form>
-      <button
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input label="name" register={register} required />
+      <Input label="email" register={register} required />
+      <Input label="password" register={register} required />
+      <Input label="lastname" register={register} required />
+      <Input label="country" register={register} required />
+      <Input label="phone" register={register} required />
+      <Input label="salary" register={register} required />
+      <Input label="address" register={register} required />
+      <Input label="dni" register={register} required />
+      <Input label="position" register={register} required />
+      <input
         type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        onClick={handleSubmit(onSubmit)}
-      >
-        Register
-      </button>
-    </div>
+        className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700"
+      />
+    </form>
   );
-}
+};
+
+export default RegisterForm;

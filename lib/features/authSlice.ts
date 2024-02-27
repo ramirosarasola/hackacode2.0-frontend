@@ -8,12 +8,13 @@ import { AuthState, User, CustomError } from "@/interface/types";
 const apiUrl = configApi.apiUrl;
 
 const initialState: AuthState = {
-  token: localStorage.getItem("token"),
+  token: typeof window !== 'undefined' ? localStorage.getItem("token") : null,
   isAuthenticated: false,
   isLoading: false,
   user: null,
   error: null,
 };
+
 
 function isTokenExpired(token: string | null): boolean {
   try {
@@ -43,7 +44,7 @@ export const loadUser = createAsyncThunk<
       }
     }
 
-    const res = await axios.get<User>(`${apiUrl}:5000/auth/me`);
+    const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
     return res.data;
   } catch (error) {
     return rejectWithValue({
@@ -58,7 +59,7 @@ export const registerUser = createAsyncThunk<
   User,
   any,
   { rejectValue: CustomError }
->("api/v1/auth/register", async (newUser, { rejectWithValue }) => {
+>("api/v1/auth/register", async ({ newUser }, { rejectWithValue }) => {
   try {
     const config = {
       headers: {
@@ -68,7 +69,7 @@ export const registerUser = createAsyncThunk<
 
     const body = JSON.stringify(newUser);
     const response = await axios.post<User>(
-      `${apiUrl}:5000/auth/register`,
+      `${apiUrl}:5000/api/v1/auth/register`,
       body,
       config
     );
@@ -98,7 +99,7 @@ export const loginUser = createAsyncThunk<
 
   try {
     const response = await axios.post<User>(
-      `${apiUrl}:5000/auth/authenticate`,
+      `${apiUrl}:5000/api/v1/auth`,
       body,
       config
     );

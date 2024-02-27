@@ -11,6 +11,7 @@ export interface User {
   position: string;
   birthdate: string;
   salary: number;
+  token: string;
 }
 
 export interface CustomError {
