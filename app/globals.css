@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+ 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 248,249,253;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
@@ -27,7 +27,7 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
+  } 
 }
 
 /*
@@ -44,4 +44,7 @@ body {
   padding: 1rem;
   border-radius: 8px;
   width: 100%;
+}
+.auth-input:focus{
+  border: 2px solid #5A81FA;
 }

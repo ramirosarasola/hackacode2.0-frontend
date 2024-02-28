@@ -8,12 +8,13 @@ import { AuthState, User, CustomError } from "@/interface/types";
 const apiUrl = configApi.apiUrl;
 
 const initialState: AuthState = {
-  token: typeof window !== 'undefined' ? localStorage.getItem("token") : null,
+  token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   isAuthenticated: false,
   isLoading: false,
   user: null,
   error: null,
 };
+
 
 
 function isTokenExpired(token: string | null): boolean {
@@ -103,7 +104,11 @@ export const loginUser = createAsyncThunk<
       body,
       config
     );
-    localStorage.setItem("token", response.data.token);
+    // Save token to local storage and set
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("token", response.data.token);
+    }
+    
     dispatch(loadUser());
     return response.data;
   } catch (error) {

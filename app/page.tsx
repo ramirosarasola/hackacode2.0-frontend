@@ -6,16 +6,18 @@ import { useEffect } from "react";
 
 function Home() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const {user} = useAppSelector((state) => state.auth);
   const router = useRouter();
+
+  console.log(user);
+  
 
   useEffect(() => {
     // Redirecciona si no está autenticado
     if (!isAuthenticated) {
-      router.push("/auth");
+      router.push("/auth/login");
     }
   }, [isAuthenticated, router]);
-
-  console.log(isAuthenticated);
 
   return <>{isAuthenticated ? <div>Dashboard</div> : null}</>;
 }

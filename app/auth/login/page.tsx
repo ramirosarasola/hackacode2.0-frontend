@@ -1,7 +1,7 @@
 import AuthWelcome from "../../ui/auth-welcome";
-import RegisterForm from "./register-form";
+import LoginForm from "./login-form";
 
-export default function SingUp() {
+export default function Auth() {
   return (
     <>
       {/* Welcome Container */}
@@ -17,7 +17,7 @@ export default function SingUp() {
 
       {/* Form Container */}
       <div className="login bg-white w-[50vw] h-[100vh] rounded-l-3xl flex items-center justify-center">
-        <RegisterForm />
+        <LoginForm />
       </div>
     </>
   );
