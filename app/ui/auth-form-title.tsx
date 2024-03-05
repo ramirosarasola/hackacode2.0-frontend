@@ -1,12 +1,12 @@
-export default function AuthFormTitle() {
+export default function AuthFormTitle({size}: {size: string}) {
   return (
     <div className="title flex items-center">
-        <h1 className="text-black text-[5vw] md:text-[50px]">
+        <h1 className={`text-black ${size === "sm"? "text-2xl" : "text-4xl"}`}>
           <span className="text-tertiary font-semibold">Go</span>Travel
         </h1>
         <svg
-          width="50"
-          height="50"
+          width={`${size === "sm"? "25px" : "50"}`}
+          height={`${size === "sm"? "25" : "50"}`}
           viewBox="0 0 50 50"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

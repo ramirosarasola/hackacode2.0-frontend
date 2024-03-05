@@ -15,7 +15,8 @@ const config: Config = {
       },colors: {
         secondary: '#2B318A',
         tertiary: '#5A81FA',
-        cuartary:'#F3F5FF',
+        cuartary: '#F8F9FD',
+        lightGray: '#6A6E83',
       },
     },
   },

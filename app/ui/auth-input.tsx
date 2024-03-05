@@ -1,5 +1,4 @@
 "use client";
-
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type InputProps<T extends FieldValues> = {
@@ -8,7 +7,6 @@ type InputProps<T extends FieldValues> = {
   required: boolean;
   type: string;
   autoComplete: string;
-  id: string;
 };
 
 export const AuthInput = <T extends FieldValues>({
@@ -19,7 +17,6 @@ export const AuthInput = <T extends FieldValues>({
   autoComplete,
 }: InputProps<T>) => (
   <input
-    id={label}
     autoComplete={autoComplete}
     type={type}
     placeholder={label}

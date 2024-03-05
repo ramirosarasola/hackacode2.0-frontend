@@ -12,7 +12,7 @@ interface IFormValues {
   lastname: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
   dni: string;
   address: string;
   country: string;
@@ -45,12 +45,15 @@ const RegisterForm = () => {
     });
   };
 
+
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
   };
+
+
   return (
     <section className="register gap-8 flex flex-col items-center justify-between w-full md:w-2/4">
-      <AuthFormTitle />
+      <AuthFormTitle size="lg" />
 
       <ConfigProvider
         theme={{
@@ -75,16 +78,14 @@ const RegisterForm = () => {
                 register={register}
                 required
                 type={""}
-                autoComplete={""}
-                id={"name"}
+                autoComplete={"name"}
               />
               <AuthInput
                 label="lastname"
                 register={register}
                 required
                 type={""}
-                autoComplete={""}
-                id={"  lastname "}
+                autoComplete={"lastname"}
               />
             </div>
             <AuthInput
@@ -92,24 +93,26 @@ const RegisterForm = () => {
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"email"}
+              autoComplete={"email"}
+            />
+            <input
+              hidden
+              name="username"
+              autoComplete="username"
             />
             <AuthInput
               label="password"
               register={register}
               required
               type={"password"}
-              autoComplete={""}
-              id={"password  "}
+              autoComplete={"new-password"}
             />
             <AuthInput
-              label="password"
+              label="confirm_password"
               register={register}
               required
               type={"password"}
-              autoComplete={""}
-              id={"repeat-password  "}
+              autoComplete={"new-password"}
             />
           </>
         ) : currentStep === 1 ? (
@@ -119,32 +122,32 @@ const RegisterForm = () => {
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"dni"}
+              autoComplete={"dni"}
+              
             />
             <AuthInput
               label="address"
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"address"}
+              autoComplete={"address"}
+              
             />
             <AuthInput
               label="country"
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"country"}
+              autoComplete={"country"}
+              
             />
             <AuthInput
               label="birthdate"
               register={register}
               required
-              type={""}
-              autoComplete={""}
-              id={"birthdate"}
+              type={"date"}
+              autoComplete={"birthdate"}
+              
             />
           </>
         ) : (
@@ -154,16 +157,16 @@ const RegisterForm = () => {
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"phone"}
+              autoComplete={"phone"}
+              
             />
             <AuthInput
               label="salary"
               register={register}
               required
-              type={""}
-              autoComplete={""}
-              id={"salary"}
+              type={"number"}
+              autoComplete={"salary"}
+              
             />
 
             <AuthInput
@@ -171,8 +174,8 @@ const RegisterForm = () => {
               register={register}
               required
               type={""}
-              autoComplete={""}
-              id={"position"}
+              autoComplete={"position"}
+              
             />
           </>
         )}

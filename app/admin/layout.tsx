@@ -1,3 +1,4 @@
+import Sidebar from "../ui/admin-sidebar";
 
 export default function AdminLayout({
   children,
@@ -6,6 +7,7 @@ export default function AdminLayout({
 }>) {
   return (
     <div>
+      <Sidebar/>
       {children}
     </div>
   );

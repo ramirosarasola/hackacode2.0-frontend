@@ -15,8 +15,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-
-
 function isTokenExpired(token: string | null): boolean {
   try {
     if (token) {

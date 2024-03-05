@@ -18,6 +18,8 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<IFormValues> = ({ email, password }) => {
     dispatch(loginUser({ email, password })).then((result) => {
+      console.log(result.payload);
+      
       if (result.payload) {
         router.push("/");
       }
@@ -32,7 +34,7 @@ const LoginForm = () => {
 
   return (
     <section className="login flex flex-col items-center justify-end gap-14 h-3/5 w-full md:w-2/5">
-      <AuthFormTitle />
+      <AuthFormTitle size="lg" />
       <form className="flex flex-col items-center justify-center gap-8 w-full">
         <AuthInput
           autoComplete="email"
@@ -40,7 +42,6 @@ const LoginForm = () => {
           label="email"
           register={register}
           required
-          id={"email"}
         />
         <AuthInput
           autoComplete="current-password"
@@ -48,7 +49,6 @@ const LoginForm = () => {
           label="password"
           register={register}
           required
-          id={"password"}
         />
       </form>
 
