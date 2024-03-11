@@ -1,27 +1,15 @@
 "use client";
-import CustomerIcon from "@/app/ui/icons/customer-icon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AuthFormTitle from "./auth-form-title";
-import EmployeeIcon from "./icons/employee-icon";
-import HomeIcon from "./icons/home-icon";
-import ProfileIcon from "./icons/profile-icon";
-import ServiceIcon from "./icons/service-icon";
+import { menuItems } from "../auth/routes";
 
 export default function Sidebar() {
   const url = usePathname();
   const isActive = (pathname: string) => pathname === url;
 
-  const menuItems = [
-    { path: "/", text: "Home", icon: HomeIcon },
-    { path: "/employees", text: "Employees", icon: EmployeeIcon },
-    { path: "/customers", text: "Customers", icon: CustomerIcon },
-    { path: "/servicies", text: "Servicies", icon: ServiceIcon },
-    { path: "/profile", text: "Profile", icon: ProfileIcon },
-  ];
-
   return (
-    <div className="admin-sidebar fixed ml-4 min-h-[98vh] max-w-[350px] min-w-[250px] mt-[2vh] w-[20vw] pt-4 bg-white rounded-t-3xl flex flex-col items-center justify-start gap-10 box-border">
+    <div className="admin-sidebar min-h-[100vh] min-w-[250px] max-w-[350px] w-[20vw] pt-[3vh] bg-white flex flex-col items-center justify-start gap-10 box-border">
       <AuthFormTitle size={"sm"} />
       <div className="nav h-full w-full text-black">
         <ul className="flex flex-col gap-8 w-full">
@@ -45,7 +33,9 @@ export default function Sidebar() {
                   color: isActive(item.path) ? "#5A81FA" : "#6A6E83",
                 })}
                 <span
-                  className={`${isActive(item.path) ? "text-tertiary" : "lightGray"}`}
+                  className={`${
+                    isActive(item.path) ? "text-tertiary" : "lightGray"
+                  }`}
                 >
                   {item.text}
                 </span>

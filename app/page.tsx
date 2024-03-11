@@ -1,31 +1,24 @@
-"use client";
-import { useAppSelector } from "@/lib/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import Sidebar from "./ui/admin-sidebar";
+import AuthWelcome from "./ui/auth-welcome";
+import LoginForm from "./ui/login/login-form";
 
-function Home() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const {user} = useAppSelector((state) => state.auth);
-  const router = useRouter();
-  
-  console.log(user);
-  
-
-  useEffect(() => {
-    // Redirecciona si no está autenticado
-    if (!isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthenticated, router]);
-
+export default function Auth() {
   return (
-    <>
-      <div className="dashboard">
-        <h1 className="text-black">Dasboard</h1>
+    <section className="bg-secondary flex justify-end w-full h-[100vh]">
+      {/* Welcome Container */}
+      <div className="welcome w-[40%] h-[60%] m-auto flex items-end justify-start">
+        {/* Title Component */}
+        <AuthWelcome
+          title="Welcome Back!"
+          description="Welcome to our exclusive employee portal! Designed to streamline
+              the sale of our travel products. This intuitive tool will enhance
+              your ability to offer unique experiences."
+        />
       </div>
-    </>
+
+      {/* Form Container */}
+      <div className="login bg-white w-[50vw] h-[100vh] rounded-l-3xl flex items-center justify-center">
+        <LoginForm />
+      </div>
+    </section>
   );
 }
-
-export default Home;

@@ -21,14 +21,14 @@ const LoginForm = () => {
       console.log(result.payload);
       
       if (result.payload) {
-        router.push("/");
+        router.push("/admin");
       }
     });
     reset();
   };
 
   const handleSignIn = () => {
-    router.push("sign-up");
+    router.push("auth/sign-up");
     console.log("navigate to sign up");
   };
 

@@ -1,14 +1,20 @@
+import AdminDashboardHeader from "../ui/admin-dashboard-header";
 import Sidebar from "../ui/admin-sidebar";
 
 export default function AdminLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+  }) {
   return (
-    <div>
-      <Sidebar/>
-      {children}
+    <div className="admin-layout min-h-screen flex">
+      <Sidebar />
+      <div className="admin-content flex-1">
+        <AdminDashboardHeader />
+        <div className="admin-pages w-full min-h-[90vh]">
+        {children}
+        </div>
+      </div>
     </div>
   );
 }
