@@ -1,0 +1,13 @@
+.ant-table-wrapper .ant-table {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  font-family: '__Poppins_4a3e9c';
+  background: #ffffff;
+  border-radius: 8px 8px 0 0;
+  scrollbar-color: rgba(0, 0, 0, 0.25) rgba(5, 5, 5, 0.06);
+}

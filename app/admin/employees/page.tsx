@@ -1,5 +1,7 @@
+import EmployeeTable from "@/app/ui/tables/employee-table";
+
 export default function Employees() {
   return (
-    <h1>Employees!</h1>
+    <EmployeeTable/>
   )
 }

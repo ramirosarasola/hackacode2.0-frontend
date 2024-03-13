@@ -6,7 +6,7 @@ export default function Admin() {
   return (
     <section className="dashboard-home flex flex-col items-center gap-6">
       {/* UP GRID */}
-      <div className="up w-11/12 flex items-center justify-center gap-6 max-h-[400px]">
+      <div className="up w-full flex items-center justify-center gap-6 max-h-[400px]">
         <div className="w-[40%] h-full">
           <SaleChart title="Sales last Week" />
         </div>
@@ -21,7 +21,7 @@ export default function Admin() {
         </div>
       </div>
       {/* DOWN CHART */}
-      <div className="down w-11/12 flex items-center justify-center max-h-[400px]">
+      <div className="down w-full flex items-center justify-center max-h-[400px]">
         <SaleChart title="Sales per month" />
       </div>
     </section>

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { menuItems } from "../auth/routes";
 // import { useAppSelector } from "@/lib/hooks";
 import { BellOutlined, DownOutlined } from "@ant-design/icons";
+import UserProfile from "./user-profile";
 
 const AdminDashboardHeader = () => {
   const url = usePathname();
@@ -13,11 +14,11 @@ const AdminDashboardHeader = () => {
   const user = {
     name: "John",
     lastname: "Doe",
-    position:'Developer'
+    position: "Developer",
   };
 
   return (
-    <div className="h-[10vh] w-full px-6 flex justify-between items-center ">
+    <div className="h-[10vh] w-full px-10 flex justify-between items-center ">
       <div className="icon-path text-xl font-bold flex gap-4">
         <span>
           {menuItems
@@ -31,10 +32,13 @@ const AdminDashboardHeader = () => {
         </p>
       </div>
       <div className="flex gap-4 items-center ">
-        <BellOutlined style={{ fontSize: '24px', color:'#6A6E83'}}/>
-        <div className="text-lg flex flex-col items-center justify-center text-[#1F1F1F] text-[18px] font-[600] ">{`${user?.name} ${user?.lastname}`} <span className="text-[#A8B1CF] text-[16px] font-[400]">{user?.position}</span></div>
-        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-        <DownOutlined style={{ fontSize: '16px', color:'#1F1F1F'}} />
+        <BellOutlined style={{ fontSize: "24px", color: "#6A6E83" }} />
+        <UserProfile
+          name={user.name}
+          lastname={user.lastname}
+          position={user.position}
+        />
+        <DownOutlined style={{ fontSize: "16px", color: "#1F1F1F" }} />
       </div>
     </div>
   );
