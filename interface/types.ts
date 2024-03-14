@@ -44,3 +44,16 @@ export interface Employee {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Customer{
+  id: number;
+  user_id: number;
+  name: string;
+  lastname: string;
+  address: string;
+  dni: string;
+  birthdate: string;
+  email: string;
+  country: string;
+  phone: string;
+}

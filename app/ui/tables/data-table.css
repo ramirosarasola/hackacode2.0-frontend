@@ -1,0 +1,25 @@
+.ant-table-wrapper .ant-table {
+  font-family: '__Poppins_4a3e9c';
+}
+
+.ant-table-thead tr .ant-table-cell  {
+  background: #fff !important;
+}
+
+.custom-table {
+  border: 1px solid #CDDEFF !important;
+}
+
+.custom-table tr {
+  border-bottom: 1px solid #CDDEFF !important;
+}
+
+.custom-table th,
+.custom-table td {
+  border-bottom: 1px solid #CDDEFF !important;
+}
+
+.custom-table th:last-child,
+.custom-table td:last-child {
+  border-right: none !important;
+}
