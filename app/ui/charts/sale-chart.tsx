@@ -1,50 +1,63 @@
-import { AreaChart } from '@tremor/react';
+import { AreaChart } from "@tremor/react";
 
 const chartdata = [
   {
-    date: 'Monday',
-    'Online': 2890,
-    'Store': 500,
+    date: "January",
+    Online: 2890,
   },
   {
-    date: 'Tuesday',
-    'Online': 2756,
-    'Store': 700,
+    date: "February",
+    Online: 3440,
   },
   {
-    date: 'Wednesday',
-    'Online': 3322,
-    'Store': 850,
+    date: "March",
+    Online: 3200,
   },
   {
-    date: 'Thursday',
-    'Online': 3470,
-    'Store': 890,
+    date: "April",
+    Online: 4670,
   },
   {
-    date: 'Friday',
-    'Online': 3475,
-    'Store': 1100,
+    date: "May",
+    Online: 4680,
   },
   {
-    date: 'Saturday',
-    'Online': 3129,
-    'Store': 1300,
+    date: "June",
+    Online: 4680,
   },
   {
-    date: 'Sunday',
-    'Online': 3490,
-    'Store': 1523,
-  }
+    date: "July",
+    Online: 4680,
+  },
+  {
+    date: "August",
+    Online: 4680,
+  },
+  {
+    date: "September",
+    Online: 4680,
+  },
+  {
+    date: "October",
+    Online: 4680,
+  },
+  {
+    date: "November",
+    Online: 4680,
+  },
+  {
+    date: "December",
+    Online: 4680,
+  },
 ];
 
-const valueFormatter = function (number:number) {
-  return '$ ' + new Intl.NumberFormat('us').format(number).toString();
+const valueFormatter = function (number: number) {
+  return "$ " + new Intl.NumberFormat("us").format(number).toString();
 };
 
-export function SaleChart({title}:{title: string}) {
+export function SaleChart({ title }: { title: string }) {
   return (
-    <div className='bg-white p-4 rounded-md w-full h-[400px]'>
+    <div className="bg-white p-4 rounded-md w-full h-[400px]">
       <h3 className="text-[#1F1F1F] text-[16px] font-[400]">{title}</h3>
       <p className="text-[#6A6E83] font-semibold">$34,567</p>
       <AreaChart
@@ -52,9 +65,12 @@ export function SaleChart({title}:{title: string}) {
         data={chartdata}
         index="date"
         yAxisWidth={65}
-        categories={['Online', 'Store']}
-        colors={['indigo', 'orange']}
+        categories={["Online"]}
+        colors={["indigo", "orange"]}
         valueFormatter={valueFormatter}
+        showAnimation={true}
+        showGridLines={true}
+        tremor-border-radius="20px color-primary-500"
       />
     </div>
   );

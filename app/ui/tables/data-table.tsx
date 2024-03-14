@@ -31,7 +31,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
           onChange={(e) => handleSearch(e.target.value)}
         />
         <Button
-          className="rounded-xl border-[1px] border-[#CDDEFF] bg-[#5A81FA] text-[#fff]"
+          className={`custom-button rounded-xl border-[1px] border-[#CDDEFF] bg-[#5A81FA] text-[#fff]`}
           icon={<PlusOutlined />}
           onClick={handleAddUser}
         >
@@ -39,7 +39,6 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
         </Button>
       </div>
       <Table
-        style={{ fontFamily: "Poppins" }}
         rowKey="id"
         columns={columns}
         dataSource={data}

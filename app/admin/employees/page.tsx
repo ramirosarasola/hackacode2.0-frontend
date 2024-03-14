@@ -1,11 +1,18 @@
 "use client";
+import EditIconComponent from "@/app/ui/icons/edit-icon";
+import OptionsIconComponent from "@/app/ui/icons/settings-icon";
+import CustomTooltip from "@/app/ui/tables/custom-tooltip";
 import DataTable from "@/app/ui/tables/data-table";
 import UserProfile from "@/app/ui/user-profile";
 import { Employee } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchEmployees } from "@/lib/slices/employeeSlice";
-import { Space, TableProps, Tag } from "antd";
-import { useEffect } from "react";
+import { Popconfirm, Space, TableProps, Tag } from "antd";
+import React, { useEffect } from "react";
+
+const handleClickOption = (e: React.MouseEvent<HTMLElement>) => {
+  console.log("click ", e);
+};
 
 const columns: TableProps<Employee>["columns"] = [
   {
@@ -24,27 +31,14 @@ const columns: TableProps<Employee>["columns"] = [
     render: (salary) => `$${salary}`,
   },
   {
-    title: "Status",
-    dataIndex: "id", // should change after backend is updated. 😊
-    key: "status",
-    render: (id) => {
-      return (
-        <Tag
-          className={`border-[#5A81FA] border-[1.5px] rounded-full ${
-            id % 2 !== 0
-              ? "text-[#fff] bg-[#5A81FA]"
-              : "bg-[#fff] text-[#5A81FA] "
-          }`}
-        >
-          {id % 2 !== 0 ? "Active" : "Inactive"}
-        </Tag>
-      );
-    },
+    title: "Birthdate",
+    dataIndex: "birthdate",
+    key: "birthdate",
   },
   {
-    title: "Email Address",
-    dataIndex: "email",
-    key: "email",
+    title: "Nacionality",
+    dataIndex: "country",
+    key: "nacionality",
   },
   {
     title: "Position",
@@ -68,10 +62,10 @@ const columns: TableProps<Employee>["columns"] = [
     title: "Action",
     key: "action",
     align: "right",
-    render: (_, record) => (
+    render: () => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <EditIconComponent />
+        <CustomTooltip />
       </Space>
     ),
   },

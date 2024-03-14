@@ -1,8 +1,11 @@
 "use client";
+import EditIconComponent from "@/app/ui/icons/edit-icon";
+import OptionsIconComponent from "@/app/ui/icons/settings-icon";
 import DataTable from "@/app/ui/tables/data-table";
 import { Customer } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchCustomers } from "@/lib/slices/customerSlice";
+import { Settings } from "@mui/icons-material";
 import { Space, TableProps, Tag } from "antd";
 import { useEffect } from "react";
 
@@ -53,10 +56,10 @@ export default function Customers() {
       title: "Action",
       key: "action",
       align: "right",
-      render: (_, record) => (
+      render: () => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+          <EditIconComponent/>
+          <OptionsIconComponent/>
         </Space>
       ),
     },
