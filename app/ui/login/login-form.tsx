@@ -29,7 +29,7 @@ const LoginForm = () => {
   };
 
   const handleSignIn = () => {
-    router.push("auth/sign-up");
+    router.push("/sign-up");
     console.log("navigate to sign up");
   };
 
