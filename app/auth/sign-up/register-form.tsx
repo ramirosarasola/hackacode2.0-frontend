@@ -6,6 +6,8 @@ import { useAppDispatch } from "@/lib/hooks";
 import { ConfigProvider, Steps } from "antd";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface IFormValues {
   name: string;
@@ -26,6 +28,7 @@ const RegisterForm = () => {
   const { register, handleSubmit, reset } = useForm<IFormValues>();
   const dispatch = useAppDispatch();
   const [currentStep, setCurrentStep] = useState(0);
+  const router = useRouter();
 
   const onChangeStep = (value: number) => {
     console.log("onChange:", value);
@@ -36,20 +39,22 @@ const RegisterForm = () => {
     console.log(formData);
 
     dispatch(registerUser({ newUser: formData })).then((result) => {
-      console.log(result);
+      router.push('/admin')
 
       if (result.payload) {
-        console.log(result.payload);
+        
       }
       reset();
     });
   };
 
-
   const handleNextStep = () => {
+    if (currentStep === 2) {
+      handleSubmit(onSubmit)();
+      return;
+    }
     setCurrentStep(currentStep + 1);
   };
-
 
   return (
     <section className="register gap-8 flex flex-col items-center justify-between w-full md:w-2/4">
@@ -95,11 +100,7 @@ const RegisterForm = () => {
               type={""}
               autoComplete={"email"}
             />
-            <input
-              hidden
-              name="username"
-              autoComplete="username"
-            />
+            <input hidden name="username" autoComplete="username" />
             <AuthInput
               label="password"
               register={register}
@@ -108,7 +109,7 @@ const RegisterForm = () => {
               autoComplete={"new-password"}
             />
             <AuthInput
-              label="confirm_password"
+              label="confirm password"
               register={register}
               required
               type={"password"}
@@ -123,7 +124,6 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"dni"}
-              
             />
             <AuthInput
               label="address"
@@ -131,7 +131,6 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"address"}
-              
             />
             <AuthInput
               label="country"
@@ -139,7 +138,6 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"country"}
-              
             />
             <AuthInput
               label="birthdate"
@@ -147,7 +145,6 @@ const RegisterForm = () => {
               required
               type={"date"}
               autoComplete={"birthdate"}
-              
             />
           </>
         ) : (
@@ -158,7 +155,6 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"phone"}
-              
             />
             <AuthInput
               label="salary"
@@ -166,7 +162,6 @@ const RegisterForm = () => {
               required
               type={"number"}
               autoComplete={"salary"}
-              
             />
 
             <AuthInput
@@ -175,7 +170,6 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"position"}
-              
             />
           </>
         )}
@@ -190,14 +184,17 @@ const RegisterForm = () => {
         >
           {currentStep == 2 ? "Create Account" : "Next"}
         </button>
-        <button
-          onClick={handleSubmit(onSubmit)}
-          className="text-[3vw] md:text-[14px] bg-cuartary text-tertiary py-2 px-4 rounded-full w-full md:w-9/12 h-[15vw] md:h-[51px]"
-        >
-          Sign In
-        </button>
+        <p className="text-[#A8B1CF]">
+          Already have an account?{" "}
+          <Link href="/" className="text-blue-500 underline font-semibold">
+            Sign In
+          </Link>
+        </p>
       </div>
     </section>
+
+
+    
   );
 };
 export default RegisterForm;

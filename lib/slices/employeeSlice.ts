@@ -27,8 +27,7 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employees = action.payload.employees;
-      })
+        state.employees = action.payload.data})
       .addCase(fetchEmployees.rejected, (state) => {
         state.loading = "failed";
       });

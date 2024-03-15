@@ -11,7 +11,7 @@ export const fetchCustomers = createAsyncThunk(
 );
 
 // Customer slice
-const  customerSlice = createSlice({
+const customerSlice = createSlice({
   name: "customers",
   initialState: {
     customers: [],
@@ -27,7 +27,7 @@ const  customerSlice = createSlice({
       })
       .addCase(fetchCustomers.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.customers = action.payload.customers;
+        state.customers = action.payload.data;
       })
       .addCase(fetchCustomers.rejected, (state) => {
         state.loading = "failed";
