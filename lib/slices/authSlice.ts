@@ -32,17 +32,11 @@ export const loadUser = createAsyncThunk<
   void,
   { rejectValue: CustomError }
 >("auth/loadUser", async (_, { rejectWithValue }) => {
+  if(localStorage.token){
+    setAuthToken(localStorage.token);
+    console.log('Seteando token', localStorage.token)
+  }
   try {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      if (isTokenExpired(token)) {
-        localStorage.removeItem("token");
-      } else {
-        setAuthToken(token);
-      }
-    }
-
     const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
     return res.data;
   } catch (error) {
