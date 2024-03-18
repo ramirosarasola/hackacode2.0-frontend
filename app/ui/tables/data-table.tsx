@@ -24,14 +24,14 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
     <section className="employee bg-white p-6">
       <div className="flex items-center justify-end gap-4 mb-6">
         <Input
-          className="w-[300px]"
-          placeholder="Search employees"
+          className="w-[300px] bg-[#F3F5FF] text-[#6A6E83]"
+          placeholder="Search"
           prefix={<SearchOutlined />}
           allowClear
           onChange={(e) => handleSearch(e.target.value)}
         />
         <Button
-          className={`custom-button rounded-xl border-[1px] border-[#CDDEFF] bg-[#5A81FA] text-[#fff]`}
+          className={`custom-button rounded-lg ] bg-[#5A81FA] text-[#fff]`}
           icon={<PlusOutlined />}
           onClick={handleAddUser}
         >

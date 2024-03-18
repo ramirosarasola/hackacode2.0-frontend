@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AuthFormTitle from "./auth-form-title";
-import { menuItems } from "../auth/routes";
+import { menuItems } from "../(auth)/routes";
 
 export default function Sidebar() {
   const url = usePathname();

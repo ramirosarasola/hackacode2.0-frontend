@@ -8,6 +8,6 @@ export const menuItems = [
   { path: "/admin", text: "Home", icon: HomeIconComponent },
   { path: "/admin/employees", text: "Employees", icon: EmployeeIconComponent },
   { path: "/admin/customers", text: "Customers", icon: CustomerIconComponent },
-  { path: "/admin/servicies", text: "Servicies", icon: ServiceIconComponent },
+  { path: "/admin/services", text: "Services", icon: ServiceIconComponent },
   { path: "/admin/profile", text: "Profile", icon: ProfileIconComponent },
 ];

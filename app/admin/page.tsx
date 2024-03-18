@@ -1,8 +1,10 @@
 "use client";
 
 import { SaleChart } from "../ui/charts/sale-chart";
+import DataCard from "../ui/home-data-card";
 
 export default function Admin() {
+
   return (
     <section className="dashboard-home flex flex-col items-center gap-6">
       {/* UP GRID */}
@@ -12,12 +14,12 @@ export default function Admin() {
         </div>
         <div className="w-[60%] grid grid-cols-3 grid-rows-2 gap-6 min-h-[400px] h-full">
           {/* //? -> TODO: Loop over diferent items and render a respective cards */}
-          <div className="bg-white p-4 h-full">1</div>
-          <div className="bg-white p-4 h-full">2</div>
-          <div className="bg-white p-4 h-full">3</div>
-          <div className="bg-white p-4 h-full">4</div>
-          <div className="bg-white p-4 h-full">5</div>
-          <div className="bg-white p-4 h-full">6</div>
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
         </div>
       </div>
       {/* DOWN CHART */}

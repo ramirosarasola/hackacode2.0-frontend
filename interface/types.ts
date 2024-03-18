@@ -57,3 +57,12 @@ export interface Customer{
   country: string;
   phone: string;
 }
+
+export interface Sale {
+  id: number;
+  customer_id: number;
+  employee_id: number;
+  total: number;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -20,7 +20,7 @@ const columns: TableProps<Employee>["columns"] = [
     dataIndex: "name",
     key: "name",
     render: (_, { name, lastname, position }) => (
-      <UserProfile name={name} lastname={lastname} position={position} />
+        <UserProfile name={name} lastname={lastname} position={position} size={"small"} />
     ),
   },
 

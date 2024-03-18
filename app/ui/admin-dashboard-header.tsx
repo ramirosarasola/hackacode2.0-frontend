@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { menuItems } from "../auth/routes";
+import { menuItems } from "../(auth)/routes";
 // import { useAppSelector } from "@/lib/hooks";
 import { BellOutlined, DownOutlined } from "@ant-design/icons";
 import UserProfile from "./user-profile";
@@ -37,7 +37,7 @@ const AdminDashboardHeader = () => {
           name={user.name}
           lastname={user.lastname}
           position={user.position}
-        />
+          size={"large"} />
         <DownOutlined style={{ fontSize: "16px", color: "#1F1F1F" }} />
       </div>
     </div>
