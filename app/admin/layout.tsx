@@ -4,6 +4,7 @@ import AdminDashboardHeader from "../ui/admin-dashboard-header";
 import Sidebar from "../ui/admin-sidebar";
 import { loadUser } from "@/lib/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 
 export default function AdminLayout({
   children,
@@ -11,14 +12,16 @@ export default function AdminLayout({
   children: React.ReactNode;
   }) {
   
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        dispatch(loadUser())
-      }
-    }, [dispatch])
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/");
+    }
+  }, [dispatch, isAuthenticated, router]);
+  
   
   return (
     <div className="admin-layout min-h-screen flex">

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function Customers() {
   const [editing, setEditing] = useState(false);
-  const [editedData, setEditedData] = useState(null);
+  const [editedData, setEditedData] = useState({});
   const [editingKey, setEditingKey] = useState(0);
 
   function handleEdit(id: number) {
@@ -118,7 +118,7 @@ export default function Customers() {
         const editable = record.id === editingKey;
         return editable ? (
           <Input
-            value={editedData.birthdate}
+            value={editedData?.birthdate}
             onChange={(e) =>
               setEditedData({ ...editedData, birthdate: e.target.value })
             }
@@ -155,7 +155,7 @@ export default function Customers() {
 
   useEffect(() => {
     dispatch(fetchCustomers());
-  }, [dispatch]);
+  }, [dispatch, editing]);
 
   return <DataTable data={customers} columns={columns} />;
 }

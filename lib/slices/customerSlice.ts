@@ -14,8 +14,8 @@ export const fetchCustomers = createAsyncThunk(
 export const updateCustomer = createAsyncThunk(
   "customers/updateCustomer",
   async (updateData: { id: string, data: any }) => {
-    const response = await axios.put(`http://localhost:5000/api/v1/customers/${updateData.id}`, updateData.data);
-    return response.data;
+    const response = await axios.put(`http://localhost:5000/api/v1/customers/${updateData.id}`, updateData.data);    
+    return response.data.customer;
   }
 );
 
@@ -24,7 +24,6 @@ const customerSlice = createSlice({
   name: "customers",
   initialState: {
     customers: [],
-    customer: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -47,13 +46,13 @@ const customerSlice = createSlice({
       })
       .addCase(updateCustomer.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.customer = action.payload.data;
       })
       .addCase(updateCustomer.rejected, (state) => {
         state.loading = "failed";
       });
   },
 });
+
 
 export const { reducer } = customerSlice;
 export default customerSlice;

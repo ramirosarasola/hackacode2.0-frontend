@@ -10,6 +10,29 @@ export const fetchEmployees = createAsyncThunk(
   }
 );
 
+
+// Async action for creating an employee
+export const createEmployee = createAsyncThunk(
+  "employees/createEmployee",
+  async (employee: { user_id: string, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number }) => {
+    const response = await axios.post("http://localhost:5000/api/v1/employees/create", employee);
+    return response.data;
+  }
+);
+
+
+// Async action for updating an employee
+export const updateEmployee = createAsyncThunk(
+  "employees/updateEmployee",
+  async (updateData: { id: number, data: { user_id: string, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number } }) => {
+    const response = await axios.put(`http://localhost:5000/api/v1/employees/${updateData.id}`, updateData.data);
+    return response.data.employee;
+  }
+);
+
+
+
+
 // Employee slice
 const employeeSlice = createSlice({
   name: "employees",
@@ -29,6 +52,24 @@ const employeeSlice = createSlice({
         state.loading = "idle";
         state.employees = action.payload.data})
       .addCase(fetchEmployees.rejected, (state) => {
+        state.loading = "failed";
+      })
+      .addCase(createEmployee.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(createEmployee.fulfilled, (state, action) => {
+        state.loading = "idle";
+      })
+      .addCase(createEmployee.rejected, (state) => {
+        state.loading = "failed";
+      })
+      .addCase(updateEmployee.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        state.loading = "idle";
+      })
+      .addCase(updateEmployee.rejected, (state) => {
         state.loading = "failed";
       });
   },
