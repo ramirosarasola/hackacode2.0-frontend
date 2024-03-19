@@ -66,3 +66,12 @@ export interface Sale {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Service {
+  id: number;
+  service_code: string;
+  name: string;
+  description: string;
+  service_date: string;
+  price: number;
+}
