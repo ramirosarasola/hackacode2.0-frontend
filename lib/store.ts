@@ -3,6 +3,7 @@ import authSlice from "./slices/authSlice";
 import employeeSlice from "./slices/employeeSlice";
 import customerSlice from "./slices/customerSlice";
 import serviceSlice from "./slices/serviceSlice";
+import saleSlice from "./slices/saleSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       employee: employeeSlice.reducer,
       customer: customerSlice.reducer,
       service: serviceSlice.reducer,
+      sale: saleSlice.reducer
     },
   });
 };

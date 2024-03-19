@@ -6,6 +6,7 @@ export const fetchSales = createAsyncThunk(
   "sales/fetchSales",
   async () => {
     const response = await axios.get("http://localhost:5000/api/v1/sales");
+    console.log(response.data)
     return response.data;
   }
 );
@@ -17,6 +18,8 @@ export const fetchSalesWithDetails = createAsyncThunk(
     return response.data;
   }
 );
+
+
 
 // Sale slice
 const saleSlice = createSlice({
@@ -36,7 +39,8 @@ const saleSlice = createSlice({
       })
       .addCase(fetchSales.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.sales = action.payload.data;
+        state.sales = action.payload.sales;
+        console.log(action.payload.sales)
       })
       .addCase(fetchSales.rejected, (state) => {
         state.loading = "failed";
