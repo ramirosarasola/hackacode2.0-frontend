@@ -50,7 +50,13 @@ const employeeSlice = createSlice({
     error: null,
     fulfilled: false,
   },
-  reducers: {},
+  reducers: {
+    deleteEmployee: (state, action) => {
+      state.employees = state.employees.filter(
+        (employee) => employee.id !== action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchEmployees.pending, (state) => {
@@ -94,5 +100,6 @@ const employeeSlice = createSlice({
   },
 });
 
+export const { deleteEmployee } = employeeSlice.actions;
 export const { reducer } = employeeSlice;
 export default employeeSlice;

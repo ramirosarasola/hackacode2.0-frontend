@@ -1,3 +1,4 @@
+import { Service } from "@/interface/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -19,16 +20,29 @@ export const updateService = createAsyncThunk(
   }
 );
 
+export const createService = createAsyncThunk(
+  "services/createService",
+  async (serviceData: Service) => {
+    const response = await axios.post("http://localhost:5000/api/v1/services", serviceData);
+    return response.data.service;
+  }
+);
+
 // Service slice
 const serviceSlice = createSlice({
   name: "services",
   initialState: {
-    services: [],
+    services:[],
     loading: "idle",
     error: null,
     fulfilled: false,
   },
-  reducers: {},
+  reducers: {
+    // add reducers here
+    deleteService: (state, action) => {
+      state.services = state.services.filter((service) => service.id !== action.payload);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchServices.pending, (state) => {
@@ -49,10 +63,21 @@ const serviceSlice = createSlice({
       })
       .addCase(updateService.rejected, (state) => {
         state.loading = "failed";
+      })
+      .addCase(createService.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(createService.fulfilled, (state, action) => {
+        state.loading = "idle";
+        console.log(action.payload);
+      })
+      .addCase(createService.rejected, (state) => {
+        state.loading = "failed";
       });
+    
   },
 });
 
-
+export const { deleteService } = serviceSlice.actions;
 export const { reducer } = serviceSlice;
 export default serviceSlice;

@@ -4,7 +4,7 @@ import OptionsIconComponent from "@/app/ui/icons/settings-icon";
 import DataTable from "@/app/ui/tables/data-table";
 import { Customer } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { fetchCustomers, updateCustomer } from "@/lib/slices/customerSlice";
+import { deleteCustomer, fetchCustomers, updateCustomer } from "@/lib/slices/customerSlice";
 import { Button, Input, Space, TableProps } from "antd";
 import { useEffect, useState } from "react";
 
@@ -24,6 +24,14 @@ export default function Customers() {
     setEditing(false);
     setEditingKey(0);
     dispatch(updateCustomer({ id, data: editedData }));
+  }
+
+  function handleDelete(id: number) {
+    dispatch(deleteCustomer(id));
+  }
+
+  function handleAddCustomer() {
+    console.log("add customer");
   }
 
   const columns: TableProps<Customer>["columns"] = [
@@ -143,6 +151,7 @@ export default function Customers() {
               Guardar
             </Button>
           )}
+          <Button type="default" danger onClick={() => handleDelete(record.id)}>Borrar</Button>
         </Space>
       ),
     },
@@ -157,5 +166,5 @@ export default function Customers() {
     dispatch(fetchCustomers());
   }, [dispatch, editing]);
 
-  return <DataTable data={customers} columns={columns} />;
+  return <DataTable data={customers} columns={columns} add={"Add Customer"} addFunction={handleAddCustomer} />;
 }

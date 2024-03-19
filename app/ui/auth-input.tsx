@@ -7,9 +7,11 @@ type InputProps<T extends FieldValues> = {
   required: boolean;
   type: string;
   autoComplete: string;
+  placeholder: string;
 };
 
 export const AuthInput = <T extends FieldValues>({
+  placeholder,
   label,
   register,
   required,
@@ -19,7 +21,7 @@ export const AuthInput = <T extends FieldValues>({
   <input
     autoComplete={autoComplete}
     type={type}
-    placeholder={label}
+    placeholder={placeholder}
     className="auth-input"
     {...register(label, { required })}
   />

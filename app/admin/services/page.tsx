@@ -1,10 +1,17 @@
 "use client";
+import { AuthInput } from "@/app/ui/auth-input";
 import DataTable from "@/app/ui/tables/data-table";
 import { Service } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { fetchServices, updateService,  } from "@/lib/slices/serviceSlice";
-import { Button, Input, Space, TableProps } from "antd";
+import {
+  createService,
+  deleteService,
+  fetchServices,
+  updateService,
+} from "@/lib/slices/serviceSlice";
+import { Button, Input, Space, TableProps, Modal } from "antd";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Services() {
   const [editing, setEditing] = useState(false);
@@ -23,6 +30,31 @@ export default function Services() {
     setEditingKey(0);
     dispatch(updateService({ id, data: editedData }));
   }
+
+  function handleDelete(id: number) {
+    dispatch(deleteService(id));
+  }
+
+  function handleAddService() {
+    showModal();
+    console.log("add service");
+  }
+
+  const [open, setOpen] = useState(false);
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    setOpen(false);
+  };
+
+  const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    setOpen(false);
+  };
 
   const columns: TableProps<Service>["columns"] = [
     {
@@ -95,20 +127,24 @@ export default function Services() {
       dataIndex: "service_date",
       key: "service_date",
       render: (text, record) => {
-         const editable = record.id === editingKey;
-         const formattedDate = new Date(text).toLocaleDateString('en-EN', { day: 'numeric', month: 'long', year: 'numeric' });
-         return editable ? (
-           <Input
-             value={editedData.service_date}
-             onChange={(e) =>
-               setEditedData({ ...editedData, service_date: e.target.value })
-             }
-           />
-         ) : (
-           formattedDate
-         );
+        const editable = record.id === editingKey;
+        const formattedDate = new Date(text).toLocaleDateString("en-EN", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        return editable ? (
+          <Input
+            value={editedData.service_date}
+            onChange={(e) =>
+              setEditedData({ ...editedData, service_date: e.target.value })
+            }
+          />
+        ) : (
+          formattedDate
+        );
       },
-     },     
+    },
     {
       title: "Action",
       key: "action",
@@ -124,19 +160,87 @@ export default function Services() {
               Guardar
             </Button>
           )}
+          <Button type="default" danger onClick={() => handleDelete(record.id)}>Borrar</Button>
         </Space>
       ),
     },
   ];
 
   const dispatch = useAppDispatch();
-  const { services, loading, error } = useAppSelector(
-    (state) => state.service
-  );
+  const { services, loading, error } = useAppSelector((state) => state.service);
 
   useEffect(() => {
     dispatch(fetchServices());
-  }, [dispatch, editing]);
+  }, [dispatch, editing, open]);
 
-  return <DataTable data={services} columns={columns} />;
+  const { register, handleSubmit, reset } = useForm<Service>();
+
+  const onSubmit: SubmitHandler<Service> = (formData: Service) => {
+    console.log(formData);
+    dispatch(createService(formData));
+    setOpen(false);
+    reset();
+  };
+
+  return (
+    <>
+      <DataTable
+        data={services}
+        columns={columns}
+        add={"Add Service"}
+        addFunction={handleAddService}
+      />
+      <Modal
+        title="New Service"
+        open={open}
+        onOk={handleSubmit(onSubmit)}
+        onCancel={handleCancel}
+        okButtonProps={{ disabled: false, type: "default" }}
+        cancelButtonProps={{ disabled: false, type: "default" }}
+      >
+        <form action="" className="flex flex-col gap-4 mt-8">
+          <AuthInput
+            autoComplete="#000"
+            type="text"
+            label="service_code"
+            register={register}
+            required
+            placeholder="Service Code"
+          />
+          <AuthInput
+            autoComplete="#000"
+            type="text"
+            label="name"
+            register={register}
+            required
+            placeholder="Name"
+          />
+          <AuthInput
+            autoComplete="#000"
+            type="text"
+            label="description"
+            register={register}
+            required
+            placeholder="Description"
+          />
+          <AuthInput
+            autoComplete="#000"
+            type="date"
+            label="service_date"
+            register={register}
+            required
+            placeholder="Service Date"
+          />
+          <AuthInput
+            autoComplete="#000"
+            type="number"
+            label="price"
+            register={register}
+            required
+            placeholder="Price"
+          />
+        </form>
+      </Modal>
+    </>
+  );
 }

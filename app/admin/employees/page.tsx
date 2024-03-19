@@ -3,7 +3,7 @@ import DataTable from "@/app/ui/tables/data-table";
 import UserProfile from "@/app/ui/user-profile";
 import { Employee } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { fetchEmployees, updateEmployee } from "@/lib/slices/employeeSlice";
+import { deleteEmployee, fetchEmployees, updateEmployee } from "@/lib/slices/employeeSlice";
 import { Button, Input, Space, TableProps, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 
@@ -31,6 +31,15 @@ export default function Employees() {
     setEditingKey(0);
     console.log({ id, data: editedData });
     dispatch(updateEmployee({ id, data: editedData }));
+  }
+
+  function handleDelete(id: number) {
+    dispatch(deleteEmployee(id));
+  }
+
+  function handleAddEmployee(){
+    console.log('add employee');
+    
   }
 
   const columns: TableProps<Employee>["columns"] = [
@@ -167,6 +176,7 @@ export default function Employees() {
               Guardar
             </Button>
           )}
+          <Button type="default" danger onClick={() => handleDelete(record.id)}>Borrar</Button>
         </Space>
       ),
     },
@@ -176,5 +186,5 @@ export default function Employees() {
     dispatch(fetchEmployees());
   }, [dispatch, editing]);
 
-  return <DataTable data={employees} columns={columns} />;
+  return <DataTable data={employees} columns={columns} add="Add Employee" addFunction={handleAddEmployee} />;
 }

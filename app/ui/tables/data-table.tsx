@@ -7,9 +7,11 @@ import "./data-table.css";
 interface DataTableProps {
   data: never[];
   columns: TableProps<any>["columns"];
+  add: string;
+  addFunction: () => void;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
+const DataTable: React.FC<DataTableProps> = ({ data, columns, add, addFunction }) => {
   function handleSearch(value: string): void {
     throw new Error("Function not implemented.");
   }
@@ -33,9 +35,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
         <Button
           className={`custom-button rounded-lg ] bg-[#5A81FA] text-[#fff]`}
           icon={<PlusOutlined />}
-          onClick={handleAddUser}
+          onClick={addFunction}
         >
-          Add User
+          {add}
         </Button>
       </div>
       <Table

@@ -28,7 +28,13 @@ const customerSlice = createSlice({
     error: null,
     fulfilled: false,
   },
-  reducers: {},
+  reducers: {
+    deleteCustomer: (state, action) => {
+      state.customers = state.customers.filter(
+        (customer) => customer.id !== action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCustomers.pending, (state) => {
@@ -53,6 +59,6 @@ const customerSlice = createSlice({
   },
 });
 
-
+export const { deleteCustomer } = customerSlice.actions;
 export const { reducer } = customerSlice;
 export default customerSlice;

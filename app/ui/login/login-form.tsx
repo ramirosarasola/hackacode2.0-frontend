@@ -42,14 +42,14 @@ const LoginForm = () => {
           type="email"
           label="email"
           register={register}
-          required
-        />
+          required placeholder={"Email"}/>
         <AuthInput
           autoComplete="current-password"
           type="password"
           label="password"
           register={register}
           required
+          placeholder={"Password"}
         />
       </form>
 
