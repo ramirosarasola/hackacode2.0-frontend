@@ -14,8 +14,8 @@ export const fetchServices = createAsyncThunk(
 // Async action for updating a service
 export const updateService = createAsyncThunk(
   "services/updateService",
-  async (updateData: { id: string, data: any }) => {
-    const response = await axios.put(`http://localhost:5000/api/v1/services/${updateData.id}`, updateData.data);    
+  async (updateData: { id: number, data: any }) => {
+    const response = await axios.put(`http://localhost:5000/api/v1/services/${updateData.id}`, updateData.data);
     return response.data.service;
   }
 );
@@ -32,7 +32,7 @@ export const createService = createAsyncThunk(
 const serviceSlice = createSlice({
   name: "services",
   initialState: {
-    services:[],
+    services:[] as Service[],
     loading: "idle",
     error: null,
     fulfilled: false,

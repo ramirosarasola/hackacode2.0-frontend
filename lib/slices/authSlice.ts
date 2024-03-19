@@ -15,17 +15,17 @@ const initialState: AuthState = {
   error: null,
 };
 
-function isTokenExpired(token: string | null): boolean {
-  try {
-    if (token) {
-      const decoded = jwtDecode(token) as { exp?: any } | undefined;
-      return decoded?.exp ? decoded.exp < Date.now() / 1000 : true;
-    }
-    return true;
-  } catch (e) {
-    return true;
-  }
-}
+// function isTokenExpired(token: string | null): boolean {
+//   try {
+//     if (token) {
+//       const decoded = jwtDecode(token);
+//       return decoded?.exp ? decoded.exp < Date.now() / 1000 : true;
+//     }
+//     return true;
+//   } catch (e) {
+//     return true;
+//   }
+// }
 
 export const loadUser = createAsyncThunk<
   User,
@@ -38,7 +38,7 @@ export const loadUser = createAsyncThunk<
   }
   try {
     const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
-    return res.data.data;
+    return res.data;
   } catch (error) {
     return rejectWithValue({
       message: (error as CustomError).message || "Unknown error",

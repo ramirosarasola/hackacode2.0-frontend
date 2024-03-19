@@ -1,3 +1,4 @@
+import { Employee } from "@/interface/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -14,7 +15,7 @@ export const fetchEmployees = createAsyncThunk(
 // Async action for creating an employee
 export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
-  async (employee: { user_id: string, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number }) => {
+  async (employee: Employee) => {
     const response = await axios.post("http://localhost:5000/api/v1/employees/create", employee);
 });
 
@@ -31,20 +32,17 @@ export const fetchEmployeeById = createAsyncThunk(
 // Async action for updating an employee
 export const updateEmployee = createAsyncThunk(
   "employees/updateEmployee",
-  async (updateData: { id: number, data: { user_id: string, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number } }) => {
+  async (updateData: { id: number, data: { user_id: number, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number } }) => {
     const response = await axios.put(`http://localhost:5000/api/v1/employees/${updateData.id}`, updateData.data);
     return response.data.employee;
   }
 );
 
-
-
-
 // Employee slice
 const employeeSlice = createSlice({
   name: "employees",
   initialState: {
-    employees: [],
+    employees: [] as Employee[],
     employee : null,
     loading: "idle",
     error: null,
