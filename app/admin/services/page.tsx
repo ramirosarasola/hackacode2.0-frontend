@@ -153,14 +153,14 @@ export default function Services() {
         <Space size="middle">
           {!editing ? (
             <Button type="default" onClick={() => handleEdit(record.id)}>
-              Editar
+              Edit
             </Button>
           ) : (
             <Button type="default" onClick={() => handleSave(record.id)}>
-              Guardar
+              Save
             </Button>
           )}
-          <Button type="default" danger onClick={() => handleDelete(record.id)}>Borrar</Button>
+          <Button type="default" danger onClick={() => handleDelete(record.id)}>Delete</Button>
         </Space>
       ),
     },
