@@ -1,20 +1,17 @@
 'use client';
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import AuthWelcome from "./ui/auth-welcome";
 import LoginForm from "./ui/login/login-form";
-import { AuthState } from "@/interface/types";
 import { useRouter } from "next/navigation";
 import { loadUser } from "@/lib/slices/authSlice";
-import { useAppDispatch } from "@/lib/hooks";
-import AdminMain from "./ui/admin/admin-main";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function Auth() {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
-  const isLoading = useSelector((state) => state.auth.isLoading)
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+  const isLoading = useAppSelector((state) => state.auth.isLoading)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
