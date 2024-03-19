@@ -10,7 +10,7 @@ export default function Admin() {
       {/* UP GRID */}
       <div className="up w-full flex items-center justify-center gap-6 max-h-[400px]">
         <div className="w-[40%] h-full">
-          <SaleChart title="Sales last Week" />
+          <SaleChart title="Profit per Month" />
         </div>
         <div className="w-[60%] grid grid-cols-3 grid-rows-2 gap-6 min-h-[400px] h-full">
           {/* //? -> TODO: Loop over diferent items and render a respective cards */}
