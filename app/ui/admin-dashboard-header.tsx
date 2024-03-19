@@ -10,7 +10,6 @@ import { logout } from "@/lib/slices/authSlice";
 const AdminDashboardHeader = () => {
   const url = usePathname();
   const { user } = useAppSelector((state) => state.auth);
-  console.log(user);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -18,7 +17,7 @@ const AdminDashboardHeader = () => {
     dispatch(logout());
     router.push("/");
   };
-
+ 
   return (
     <div className="h-[10vh] w-full px-10 flex justify-between items-center ">
       <div className="icon-path text-xl font-bold flex gap-4">

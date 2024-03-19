@@ -16,6 +16,13 @@ export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
   async (employee: { user_id: string, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number }) => {
     const response = await axios.post("http://localhost:5000/api/v1/employees/create", employee);
+});
+
+export const fetchEmployeeById = createAsyncThunk(
+  "employees/fetchEmployeeById",
+  async (userId: string) => {
+    const response =  await axios.get(`http://localhost:5000/api/v1/employees?user_id=${userId}`);
+    console.log(response.data)
     return response.data;
   }
 );
@@ -38,6 +45,7 @@ const employeeSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [],
+    employee : null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -71,7 +79,18 @@ const employeeSlice = createSlice({
       })
       .addCase(updateEmployee.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(fetchEmployeeById.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(fetchEmployeeById.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.employee = action.payload.data
+      })
+      .addCase(fetchEmployeeById.rejected, (state) => {
+        state.loading = "failed";
+      })
+
   },
 });
 
