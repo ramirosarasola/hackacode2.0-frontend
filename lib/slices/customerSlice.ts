@@ -10,11 +10,21 @@ export const fetchCustomers = createAsyncThunk(
   }
 );
 
+// Async action for updating a customer
+export const updateCustomer = createAsyncThunk(
+  "customers/updateCustomer",
+  async (updateData: { id: string, data: any }) => {
+    const response = await axios.put(`http://localhost:5000/api/v1/customers/${updateData.id}`, updateData.data);
+    return response.data;
+  }
+);
+
 // Customer slice
 const customerSlice = createSlice({
   name: "customers",
   initialState: {
     customers: [],
+    customer: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -30,6 +40,16 @@ const customerSlice = createSlice({
         state.customers = action.payload.data;
       })
       .addCase(fetchCustomers.rejected, (state) => {
+        state.loading = "failed";
+      })
+      .addCase(updateCustomer.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.customer = action.payload.data;
+      })
+      .addCase(updateCustomer.rejected, (state) => {
         state.loading = "failed";
       });
   },
