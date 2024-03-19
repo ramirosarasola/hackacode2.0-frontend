@@ -1,7 +1,35 @@
+'use client';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import AuthWelcome from "./ui/auth-welcome";
 import LoginForm from "./ui/login/login-form";
+import { AuthState } from "@/interface/types";
+import { useRouter } from "next/navigation";
+import { loadUser } from "@/lib/slices/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 export default function Auth() {
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const isLoading = useSelector((state) => state.auth.isLoading)
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(loadUser())
+    }
+  }, [dispatch])
+
+  
+  if(isAuthenticated) router.push("/admin")
+  console.log(isAuthenticated);
+
+  if (localStorage.getItem('token') && isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
     <section className="bg-secondary flex justify-end w-full h-[100vh]">
       {/* Welcome Container */}
