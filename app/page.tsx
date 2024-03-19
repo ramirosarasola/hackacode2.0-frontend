@@ -7,6 +7,7 @@ import { AuthState } from "@/interface/types";
 import { useRouter } from "next/navigation";
 import { loadUser } from "@/lib/slices/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
+import AdminMain from "./ui/admin/admin-main";
 
 export default function Auth() {
 
@@ -23,8 +24,11 @@ export default function Auth() {
   }, [dispatch])
 
   
-  if(isAuthenticated) router.push("/admin")
-  console.log(isAuthenticated);
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/admin");
+    }
+  }, [isAuthenticated, router]);
 
   if (localStorage.getItem('token') && isLoading) {
     return <h1>Loading...</h1>;
