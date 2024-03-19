@@ -3,11 +3,9 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import AuthWelcome from "./ui/auth-welcome";
 import LoginForm from "./ui/login/login-form";
-import { AuthState } from "@/interface/types";
 import { useRouter } from "next/navigation";
 import { loadUser } from "@/lib/slices/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import AdminMain from "./ui/admin/admin-main";
 
 export default function Auth() {
 
