@@ -4,12 +4,28 @@ import OptionsIconComponent from "@/app/ui/icons/settings-icon";
 import DataTable from "@/app/ui/tables/data-table";
 import { Customer } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { fetchCustomers } from "@/lib/slices/customerSlice";
-import { Settings } from "@mui/icons-material";
-import { Space, TableProps, Tag } from "antd";
-import { useEffect } from "react";
+import { fetchCustomers, updateCustomer } from "@/lib/slices/customerSlice";
+import { Button, Input, Space, TableProps } from "antd";
+import { useEffect, useState } from "react";
 
 export default function Customers() {
+  const [editing, setEditing] = useState(false);
+  const [editedData, setEditedData] = useState({});
+  const [editingKey, setEditingKey] = useState(0);
+
+  function handleEdit(id: number) {
+    setEditing(true);
+    setEditingKey(id);
+    const record = customers.find((item) => id === item.id);
+    setEditedData(record);
+  }
+
+  function handleSave(id: number) {
+    setEditing(false);
+    setEditingKey(0);
+    dispatch(updateCustomer({ id, data: editedData }));
+  }
+
   const columns: TableProps<Customer>["columns"] = [
     {
       title: "Name & ID",
@@ -26,40 +42,107 @@ export default function Customers() {
       title: "Phone Number",
       dataIndex: "phone",
       key: "phone",
-      render: (phone) => <p className="text-[#A8B1CF]">{phone}</p>
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData.phone}
+            onChange={(e) =>
+              setEditedData({ ...editedData, phone: e.target.value })
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "Address",
-      dataIndex: "address", // should change after backend is updated. 😊
+      dataIndex: "address",
       key: "address",
-      render: (address) => <p className="text-[#A8B1CF]">{address}</p>
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData.address}
+            onChange={(e) =>
+              setEditedData({ ...editedData, address: e.target.value })
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "Email Address",
       dataIndex: "email",
       key: "email",
-      render: (email) => <p className="text-[#A8B1CF]">{email}</p>
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData.email}
+            onChange={(e) =>
+              setEditedData({ ...editedData, email: e.target.value })
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "DNI",
       dataIndex: "dni",
       key: "dni",
-      render: (dni) => <p className="text-[#A8B1CF]">{dni}</p>
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData.dni}
+            onChange={(e) =>
+              setEditedData({ ...editedData, dni: e.target.value })
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
-      title: "Birthdate & Nacionality",
+      title: "Birthdate & Nationality",
       dataIndex: "birthdate",
       key: "birthdate",
-      render: (birthdate) => <p className="text-[#A8B1CF]">{birthdate}</p>
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData?.birthdate}
+            onChange={(e) =>
+              setEditedData({ ...editedData, birthdate: e.target.value })
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "Action",
       key: "action",
       align: "right",
-      render: () => (
+      render: (_, record) => (
         <Space size="middle">
-          <EditIconComponent/>
-          <OptionsIconComponent/>
+          {!editing ? (
+            <Button type="default" onClick={() => handleEdit(record.id)}>
+              Editar
+            </Button>
+          ) : (
+            <Button type="default" onClick={() => handleSave(record.id)}>
+              Guardar
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -72,9 +155,7 @@ export default function Customers() {
 
   useEffect(() => {
     dispatch(fetchCustomers());
-  }, [dispatch]);
-
-  console.log({ customers, loading, error });
+  }, [dispatch, editing]);
 
   return <DataTable data={customers} columns={columns} />;
 }

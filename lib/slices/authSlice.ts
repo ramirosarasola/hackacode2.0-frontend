@@ -38,7 +38,7 @@ export const loadUser = createAsyncThunk<
   }
   try {
     const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
-    return res.data;
+    return res.data.data;
   } catch (error) {
     return rejectWithValue({
       message: (error as CustomError).message || "Unknown error",

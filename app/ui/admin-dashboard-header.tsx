@@ -1,20 +1,22 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { menuItems } from "../(auth)/routes";
-// import { useAppSelector } from "@/lib/hooks";
 import { BellOutlined, DownOutlined } from "@ant-design/icons";
 import UserProfile from "./user-profile";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { logout } from "@/lib/slices/authSlice";
 
 const AdminDashboardHeader = () => {
   const url = usePathname();
-  // const { user } = useAppSelector((state) => state.auth);
-  // test user
+  const { user } = useAppSelector((state) => state.auth);
+  console.log(user);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const user = {
-    name: "John",
-    lastname: "Doe",
-    position: "Developer",
+  const handleLogOut = () => {
+    dispatch(logout());
+    router.push("/");
   };
 
   return (
@@ -34,11 +36,11 @@ const AdminDashboardHeader = () => {
       <div className="flex gap-4 items-center ">
         <BellOutlined style={{ fontSize: "24px", color: "#6A6E83" }} />
         <UserProfile
-          name={user.name}
-          lastname={user.lastname}
-          position={user.position}
+          name={user?.email}
+          lastname={''}
+          position={''}
           size={"large"} />
-        <DownOutlined style={{ fontSize: "16px", color: "#1F1F1F" }} />
+        <DownOutlined style={{ fontSize: "16px", color: "#1F1F1F", cursor:'pointer' }} onClick={handleLogOut} />
       </div>
     </div>
   );
