@@ -35,6 +35,14 @@ export const fetchEmployeeWithMoreSales = createAsyncThunk(
   }
 );
 
+export const getSalesByEmployee = createAsyncThunk(
+  "sales/getSalesByEmployee",
+  async (employeeId: number) => {
+    const response = await axios.get(`http://localhost:5000/api/v1/sales/employee/${employeeId}`);
+    return response.data;
+  }
+);
+
 // Sale slice
 const saleSlice = createSlice({
   name: "sales",
@@ -42,6 +50,7 @@ const saleSlice = createSlice({
     sales: [],
     totalSalesCount: 0,
     employeeWithMoreSales: null,
+    saleByEmployee: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -89,6 +98,16 @@ const saleSlice = createSlice({
         console.log(state.employeeWithMoreSales)
       })
       .addCase(fetchEmployeeWithMoreSales.rejected, (state) => {
+        state.loading = "failed"
+      })
+      .addCase(getSalesByEmployee.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(getSalesByEmployee.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.saleByEmployee = action.payload.result;
+      })
+      .addCase(getSalesByEmployee.rejected, (state) => {
         state.loading = "failed"
       })
   },

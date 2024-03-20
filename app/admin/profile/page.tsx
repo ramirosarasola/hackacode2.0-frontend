@@ -1,15 +1,26 @@
 "use client";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { getSalesByEmployee } from "@/lib/slices/saleSlice";
 import { Tag } from "antd";
+import { get } from "http";
+import { useEffect } from "react";
 
 export default function Profile() {
-
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { employees } = useAppSelector((state) => state.employee);
-  const userEmployee = employees.find(
-    (employee) => employee.user_id === user.id
-  );
-  console.log(userEmployee);
+  const userEmployee =
+    employees.find((employee) => employee.user_id === user.id) || null;
+
+  const { saleByEmployee } = useAppSelector((state) => state.sale);
+
+  console.log(saleByEmployee);
+
+  useEffect(() => {
+    dispatch(getSalesByEmployee(userEmployee?.id));
+  }, [dispatch, userEmployee]);
+
+  console.log();
 
   return (
     <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000]">
@@ -30,8 +41,10 @@ export default function Profile() {
           <div className="profile-section px-6 flex justify-between items-center">
             <div className="w-[30%] h-full flex flex-col items-center justify-center py-4 gap-2">
               <div className="profile-img w-[70px] h-[70px] rounded-full bg-red-400 text-[#fff] flex items-center justify-center text-[18px]">
-                {userEmployee.name[0].toUpperCase() +
-                  userEmployee.lastname[0].toUpperCase()[0]}
+                {userEmployee
+                  ? userEmployee.name[0].toUpperCase() +
+                    userEmployee.lastname[0].toUpperCase()[0]
+                  : ""}
               </div>
               <h5>{`${userEmployee?.name} ${userEmployee?.lastname}`}</h5>
               <Tag className="border-[#5A81FA] border-[1.5px] rounded-full">
@@ -89,12 +102,13 @@ export default function Profile() {
           </div>
           <ul className="profile-section w-[90%] m-auto h-full flex flex-col items-start  justify-center gap-4">
             <li className="w-full flex gap-2">
-              <span className="w-[140px] text-[#CDDEFF]">Bank Name:</span>{" "}
-              {userEmployee?.dni}
+              <span className="w-[140px] text-[#CDDEFF]">Amount of Sales:</span>{" "}
+              {saleByEmployee && saleByEmployee.count}
             </li>
             <li className="w-full flex gap-2">
-              <span className="w-[140px] text-[#CDDEFF]">Account Name:</span>{" "}
-              {userEmployee?.dni}
+              <span className="w-[140px] text-[#CDDEFF]">Total Profit:</span>
+              {"$ "}
+              {saleByEmployee && saleByEmployee.total}
             </li>
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#CDDEFF]">Account Number:</span>{" "}

@@ -159,8 +159,8 @@ export const getTableColumns = (
       render: (text, record) => {
         return (
           <select defaultValue="">
-            {record.services.map((service) => (
-              <option key={service.service_code} value={service.name}>
+            {record.services.map((service, index) => (
+              <option key={index} value={service.name}>
                 {service.name}
               </option>
             ))}
@@ -168,7 +168,6 @@ export const getTableColumns = (
         );
       },
     },
-
     {
       title: "Action",
       key: "action",
