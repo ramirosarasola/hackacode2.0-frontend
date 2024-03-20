@@ -3,14 +3,11 @@ import DataTable from "@/app/ui/tables/data-table";
 import { useCustomModal } from "@/hooks/useModal";
 import { Customer } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import {
-  createCustomer,
-  fetchCustomers
-} from "@/lib/slices/customerSlice";
+import { createCustomer, fetchCustomers } from "@/lib/slices/customerSlice";
 import { Modal } from "antd";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ServiceForm from "../services/service-form";
+import CustomerForm from "./customer-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
 
 export default function Customers() {
@@ -25,7 +22,7 @@ export default function Customers() {
 
   useEffect(() => {
     dispatch(fetchCustomers());
-  }, [dispatch, open]);
+  }, [dispatch]);
 
   const { register, handleSubmit, reset } = useForm<Customer>();
 
@@ -45,14 +42,14 @@ export default function Customers() {
         addFunction={showModal}
       />
       <Modal
-        title="New Service"
+        title="New Customer"
         onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
         okButtonProps={{ disabled: false, type: "default" }}
         cancelButtonProps={{ disabled: false, type: "default" }}
       >
-        <ServiceForm register={register} />
+        <CustomerForm register={register} />
       </Modal>
     </>
   );

@@ -80,6 +80,10 @@ const employeeSlice = createSlice({
       })
       .addCase(updateEmployee.fulfilled, (state, action) => {
         state.loading = "idle";
+        // Update the specific employee in the array with the updated data
+        state.employees = state.employees.map((employee) => 
+          employee.id === action.payload.id ? action.payload : employee
+        );
       })
       .addCase(updateEmployee.rejected, (state) => {
         state.loading = "failed";

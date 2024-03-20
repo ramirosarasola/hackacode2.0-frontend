@@ -4,6 +4,7 @@ import configApi from "../../utils/configApi";
 import jwtDecode from "../../utils/setAuthToken";
 import setAuthToken from "../../utils/setAuthToken";
 import { AuthState, User, CustomError } from "@/interface/types";
+import { useAppStore } from "../hooks";
 
 const apiUrl = configApi.apiUrl;
 
@@ -38,7 +39,7 @@ export const loadUser = createAsyncThunk<
   }
   try {
     const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
-    return res.data;
+    return res.data.data;
   } catch (error) {
     return rejectWithValue({
       message: (error as CustomError).message || "Unknown error",
@@ -143,7 +144,7 @@ export const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {

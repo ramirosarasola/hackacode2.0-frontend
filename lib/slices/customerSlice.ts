@@ -1,5 +1,5 @@
 import { Customer } from "@/interface/types";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Async action for fetching customers
@@ -14,8 +14,11 @@ export const fetchCustomers = createAsyncThunk(
 // Async action for updating a customer
 export const updateCustomer = createAsyncThunk(
   "customers/updateCustomer",
-  async (updateData: { id: number, data: any }) => {
-    const response = await axios.put(`http://localhost:5000/api/v1/customers/${updateData.id}`, updateData.data);    
+  async (updateData: { id: number; data: any }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/customers/${updateData.id}`,
+      updateData.data
+    );
     return response.data.customer;
   }
 );
@@ -24,7 +27,10 @@ export const updateCustomer = createAsyncThunk(
 export const createCustomer = createAsyncThunk(
   "customers/createCustomer",
   async (customerData: any) => {
-    const response = await axios.post("http://localhost:5000/api/v1/customers", customerData);
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/customers/create",
+      customerData
+    );
     return response.data.customer;
   }
 );
@@ -62,6 +68,10 @@ const customerSlice = createSlice({
       })
       .addCase(updateCustomer.fulfilled, (state, action) => {
         state.loading = "idle";
+        // Update the specific employee in the array with the updated data
+        state.customers = state.customers.map((customer) =>
+          customer.id === action.payload.id ? action.payload : customer
+        );
       })
       .addCase(updateCustomer.rejected, (state) => {
         state.loading = "failed";

@@ -21,7 +21,7 @@ export default function Services() {
   // Efecto para cargar los servicios
   useEffect(() => {
     dispatch(fetchServices());
-  }, [dispatch, open]);
+  }, [dispatch]);
 
   // Formulario y funciones de edición
   const { register, handleSubmit, reset } = useForm<Service>();

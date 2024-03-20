@@ -9,25 +9,27 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
 import EmployeeForm from "./employee-form";
+import { registerUser } from "@/lib/slices/authSlice";
 
 export default function Employees() {
   const dispatch = useAppDispatch();
   const { employees } = useAppSelector((state) => state.employee);
   const { open, showModal, handleCancel } = useCustomModal();
 
-  useEffect(() => {
-    dispatch(fetchEmployees());
-  }, [dispatch, open]);
-
   const { register, handleSubmit, reset } = useForm<RegisterEmployee>();
   const editFunctions = useEditFunctions(employees, dispatch);
+
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
+
 
   // Manejador para enviar el formulario
   const onSubmit: SubmitHandler<RegisterEmployee> = (
     formData: RegisterEmployee
   ) => {
     console.log(formData);
-    dispatch(createEmployee(formData));
+    dispatch(registerUser({ newUser: formData }));
     reset();
   };
 
