@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
 import EmployeeForm from "./employee-form";
+import RegisterForm from "@/app/(auth)/sign-up/register-form";
 
 export default function Employees() {
   const dispatch = useAppDispatch();
@@ -48,7 +49,8 @@ export default function Employees() {
         okButtonProps={{ disabled: false, type: "default" }}
         cancelButtonProps={{ disabled: false, type: "default" }}
       >
-        <EmployeeForm register={register} />
+        {/* <EmployeeForm register={register} /> */}
+        <RegisterForm></RegisterForm>
       </Modal>
     </>
   );

@@ -58,7 +58,7 @@ const customerSlice = createSlice({
       })
       .addCase(fetchCustomers.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.customers = action.payload.data;
+        state.customers = action.payload;
       })
       .addCase(fetchCustomers.rejected, (state) => {
         state.loading = "failed";

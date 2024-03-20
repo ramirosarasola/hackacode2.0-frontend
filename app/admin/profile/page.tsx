@@ -1,90 +1,187 @@
-import Image from "next/image";
+"use client";
+import { useAppSelector } from "@/lib/hooks";
+import { Tag } from "antd";
 
 export default function Profile() {
+
+  const { user } = useAppSelector((state) => state.auth);
+  const { employees } = useAppSelector((state) => state.employee);
+  const userEmployee = employees.find(
+    (employee) => employee.user_id === user.id
+  );
+  console.log(userEmployee);
+
   return (
-    <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000] ">
+    <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000]">
       {/* ProfileHeader */}
       <div className="profile-header h-[5rem] w-full border-b border-[#CDDEFF] text-[#000]">
-        <h5>Jane Cooper</h5>
-        <p className="text-[#A8B1CF]">@Janec</p>
+        <h5>{`${userEmployee?.name} ${userEmployee?.lastname}`}</h5>
+        <p className="text-[#A8B1CF]">@{userEmployee?.name}</p>
       </div>
 
       {/* ProfileContent */}
       <div className=" w-full flex gap-8 ">
-
         {/* Personal Details Card */}
         <article className="w-[70%] h-[315px]  border border-[#CDDEFF] rounded-lg ">
-
           <div className="card-title h-[75px] border-b border-[#cddeff] text-[#000] flex px-6 items-center">
-            Card Title
+            Personal Details
           </div>
 
-          <div className="profile-section px-6 bg-red-500 flex justify-between items-center">
-
+          <div className="profile-section px-6 flex justify-between items-center">
             <div className="w-[30%] h-full flex flex-col items-center justify-center py-4 gap-2">
-              <Image src="/" alt="" className="rounded-full" width={70} height={70} />
-              <h5>Full Name</h5>
-              <p>Jane Cooper</p>
+              <div className="profile-img w-[70px] h-[70px] rounded-full bg-red-400 text-[#fff] flex items-center justify-center text-[18px]">
+                {userEmployee.name[0].toUpperCase() +
+                  userEmployee.lastname[0].toUpperCase()[0]}
+              </div>
+              <h5>{`${userEmployee?.name} ${userEmployee?.lastname}`}</h5>
+              <Tag className="border-[#5A81FA] border-[1.5px] rounded-full">
+                {userEmployee?.position}
+              </Tag>
             </div>
 
-            <div className="flex w-[70%] h-full items-center py-4">
+            <div className="flex w-[70%] h-full items-center justify-between py-4">
               <div className="flex flex-col flex-1 gap-2">
                 {/* User Information */}
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> First Name: </span>{" "}
+                  {userEmployee?.name}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Last Name: </span>{" "}
+                  {userEmployee?.lastname}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Position: </span>{" "}
+                  {userEmployee?.position}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Salary: </span> $
+                  {userEmployee?.salary}
                 </p>
               </div>
               <div className="flex flex-col flex-1 gap-2">
                 {/* User Information */}
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Date of Birth: </span>{" "}
+                  {userEmployee?.birthdate}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Nacionality: </span>{" "}
+                  {userEmployee?.country}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Email Adress: </span>{" "}
+                  {user?.email}
                 </p>
                 <p>
-                  Username: @Janec
+                  <span className="text-[#A8B1CF] "> Phone: </span>{" "}
+                  {userEmployee?.phone}
                 </p>
               </div>
             </div>
-
           </div>
-
         </article>
 
         {/* Payment Details */}
-        <div className="w-[30%] h-[315px] border border-[#CDDEFF] rounded-lg ">
+        <div className="w-[30%] h-[315px] border border-[#CDDEFF] rounded-lg">
           <div className="card-title h-[75px] border-b border-[#cddeff] text-[#000] flex px-6 items-center">
-            Card Title
+            Payment Details
           </div>
+          <ul className="profile-section w-[90%] m-auto h-full flex flex-col items-start  justify-center gap-4">
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Bank Name:</span>{" "}
+              {userEmployee?.dni}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Account Name:</span>{" "}
+              {userEmployee?.dni}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Account Number:</span>{" "}
+              {userEmployee?.dni}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">SSN:</span>{" "}
+              {userEmployee?.dni}
+            </li>
+          </ul>
         </div>
       </div>
 
       {/* ProfileContent */}
       <div className=" w-full flex gap-8">
         {/* Job Details */}
-        <div className="w-[70%] h-[315px]  border border-[#CDDEFF] rounded-lg ">
+        <article className="w-[70%] h-[315px]  border border-[#CDDEFF] rounded-lg ">
           <div className="card-title h-[75px] border-b border-[#cddeff] text-[#000] flex px-6 items-center">
-            Card Title
+            Job Details
           </div>
-        </div>
+
+          <div className="profile-section px-6 flex justify-between items-center">
+            <div className="flex gap-4 h-full items-center mx-auto justify-between py-4">
+              <div className="flex flex-col gap-2">
+                {/* User Information */}
+                <p>
+                  <span className="text-[#A8B1CF] "> First Name: </span>{" "}
+                  {userEmployee?.name}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Last Name: </span>{" "}
+                  {userEmployee?.lastname}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Position: </span>{" "}
+                  {userEmployee?.position}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Salary: </span> $
+                  {userEmployee?.salary}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                {/* User Information */}
+                <p>
+                  <span className="text-[#A8B1CF] "> Date of Birth: </span>{" "}
+                  {userEmployee?.birthdate}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Nacionality: </span>{" "}
+                  {userEmployee?.country}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Email Adress: </span>{" "}
+                  {user?.email}
+                </p>
+                <p>
+                  <span className="text-[#A8B1CF] "> Phone: </span>{" "}
+                  {userEmployee?.phone}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
         {/* Address */}
         <div className="w-[30%] h-[315px]  border border-[#CDDEFF] rounded-lg ">
           <div className="card-title h-[75px] border-b border-[#cddeff] text-[#000] flex px-6 items-center">
-            Card Title
+            Address
           </div>
+          <ul className="profile-section w-[90%] m-auto h-full flex flex-col items-start  justify-center gap-4">
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Address:</span>{" "}
+              {userEmployee?.address}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Address:</span>{" "}
+              {userEmployee?.address}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Address:</span>{" "}
+              {userEmployee?.address}
+            </li>
+            <li className="w-full flex gap-2">
+              <span className="w-[140px] text-[#CDDEFF]">Address:</span>{" "}
+              {userEmployee?.address}
+            </li>
+          </ul>
         </div>
       </div>
     </section>

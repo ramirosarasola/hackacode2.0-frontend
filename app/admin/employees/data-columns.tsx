@@ -1,6 +1,6 @@
 import UserProfile from "@/app/ui/user-profile";
 import { Employee } from "@/interface/types";
-import { deleteEmployee, updateEmployee } from "@/lib/slices/employeeSlice";
+import { fetchEmployees, softDeleteEmployee, updateEmployee } from "@/lib/slices/employeeSlice";
 import { formatDate } from "@/utils/formatters";
 import { Button, Input, Space, TableProps, Tag } from "antd";
 import { useState } from "react";
@@ -37,7 +37,8 @@ export const useEditFunctions = (employees: Employee[], dispatch: any) => {
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteEmployee(id));
+    dispatch(softDeleteEmployee(id));
+    dispatch(fetchEmployees());
   };
 
   return {

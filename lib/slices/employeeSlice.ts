@@ -11,30 +11,61 @@ export const fetchEmployees = createAsyncThunk(
   }
 );
 
-
 // Async action for creating an employee
 export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
   async (employee: Employee) => {
-    const response = await axios.post("http://localhost:5000/api/v1/employees/create", employee);
-});
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/employees/create",
+      employee
+    );
+  }
+);
 
 export const fetchEmployeeById = createAsyncThunk(
   "employees/fetchEmployeeById",
   async (userId: string) => {
-    const response =  await axios.get(`http://localhost:5000/api/v1/employees?user_id=${userId}`);
-    console.log(response.data)
+    const response = await axios.get(
+      `http://localhost:5000/api/v1/employees?user_id=${userId}`
+    );
+    console.log(response.data);
     return response.data;
   }
 );
 
-
 // Async action for updating an employee
 export const updateEmployee = createAsyncThunk(
   "employees/updateEmployee",
-  async (updateData: { id: number, data: { user_id: number, name: string, lastname: string, address: string, dni: string, birthdate: string, country: string, phone: string, position: string, salary: number } }) => {
-    const response = await axios.put(`http://localhost:5000/api/v1/employees/${updateData.id}`, updateData.data);
+  async (updateData: {
+    id: number;
+    data: {
+      user_id: number;
+      name: string;
+      lastname: string;
+      address: string;
+      dni: string;
+      birthdate: string;
+      country: string;
+      phone: string;
+      position: string;
+      salary: number;
+    };
+  }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/employees/${updateData.id}`,
+      updateData.data
+    );
     return response.data.employee;
+  }
+);
+
+export const softDeleteEmployee = createAsyncThunk(
+  "employees/deleteEmployee",
+  async (id: number) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/employees/softdelete/${id}`
+    );
+    return response.data;
   }
 );
 
@@ -43,7 +74,7 @@ const employeeSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [] as Employee[],
-    employee : null,
+    employee: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -62,7 +93,8 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employees = action.payload.data})
+        state.employees = action.payload;
+      })
       .addCase(fetchEmployees.rejected, (state) => {
         state.loading = "failed";
       })
@@ -81,7 +113,7 @@ const employeeSlice = createSlice({
       .addCase(updateEmployee.fulfilled, (state, action) => {
         state.loading = "idle";
         // Update the specific employee in the array with the updated data
-        state.employees = state.employees.map((employee) => 
+        state.employees = state.employees.map((employee) =>
           employee.id === action.payload.id ? action.payload : employee
         );
       })
@@ -93,12 +125,23 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployeeById.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employee = action.payload.data
+        state.employee = action.payload;
       })
       .addCase(fetchEmployeeById.rejected, (state) => {
         state.loading = "failed";
       })
-
+      .addCase(softDeleteEmployee.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(softDeleteEmployee.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.employees = state.employees = state.employees.filter(
+          (employee) => employee.id !== action.payload
+        );
+      })
+      .addCase(softDeleteEmployee.rejected, (state) => {
+        state.loading = "failed";
+      });
   },
 });
 
