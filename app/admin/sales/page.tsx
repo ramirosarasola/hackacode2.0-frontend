@@ -1,54 +1,54 @@
 "use client";
 import DataTable from "@/app/ui/tables/data-table";
 import { useCustomModal } from "@/hooks/useModal";
-import { RegisterEmployee } from "@/interface/types";
+import { Sale } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { registerUser } from "@/lib/slices/authSlice";
-import { fetchEmployees } from "@/lib/slices/employeeSlice";
+import { createSale } from "@/lib/slices/saleSlice";
+import { fetchSales } from "@/lib/slices/saleSlice";
 import { Modal } from "antd";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { getTableColumns, useEditFunctions } from "./data-columns";
-import EmployeeForm from "./employee-form";
+import { getTableColumns, useEditFunctions } from "./data-column";
+import SaleForm from "./sale-form";
 
-export default function Employees() {
+export default function Sales() {
   const dispatch = useAppDispatch();
-  const { employees } = useAppSelector((state) => state.employee);
+  const { sales } = useAppSelector((state) => state.sale);
   const { open, showModal, handleCancel } = useCustomModal();
 
-  const { register, handleSubmit, reset } = useForm<RegisterEmployee>();
-  const editFunctions = useEditFunctions(employees, dispatch);
+  const { register, handleSubmit, reset } = useForm<Sale>();
+  const editFunctions = useEditFunctions(sales, dispatch);
 
   useEffect(() => {
-    dispatch(fetchEmployees());
+    dispatch(fetchSales());
   }, [dispatch]);
 
   // Manejador para enviar el formulario
-  const onSubmit: SubmitHandler<RegisterEmployee> = (
-    formData: RegisterEmployee
+  const onSubmit: SubmitHandler<Sale> = (
+    formData: Sale
   ) => {
     console.log(formData);
-    dispatch(registerUser({ newUser: formData }));
+    dispatch(createSale(formData));
     reset();
   };
 
   return (
     <>
       <DataTable
-        data={employees}
+        data={sales}
         columns={getTableColumns(editFunctions) || []}
-        add="Add Employee"
+        add="Add Sale"
         addFunction={showModal}
       />
       <Modal
-        title="New Employee"
+        title="New Sale"
         onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
         okButtonProps={{ disabled: false, type: "default" }}
         cancelButtonProps={{ disabled: false, type: "default" }}
       >
-        <EmployeeForm register={register} />
+        <SaleForm register={register} />
       </Modal>
     </>
   );

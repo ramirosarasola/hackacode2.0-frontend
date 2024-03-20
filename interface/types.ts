@@ -80,3 +80,10 @@ export interface Service {
   service_date: string;
   price: number;
 }
+
+export interface Sale{
+  sale_id: number;
+  customer_id: number;
+  employee_id: number;
+  services: Service[];
+}

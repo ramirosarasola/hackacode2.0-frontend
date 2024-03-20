@@ -1,3 +1,4 @@
+import { Sale } from "@/interface/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -15,6 +16,14 @@ export const fetchSalesWithDetails = createAsyncThunk(
   "sales/fetchSalesWithDetails",
   async () => {
     const response = await axios.get("http://localhost:5000/api/v1/sales/details");
+    return response.data;
+  }
+);
+
+export const createSale = createAsyncThunk(
+  "sales/createSale",
+  async (sale: Sale) => {
+    const response = await axios.post("http://localhost:5000/api/v1/sales", sale);
     return response.data;
   }
 );
@@ -56,6 +65,16 @@ const saleSlice = createSlice({
       .addCase(fetchSalesWithDetails.rejected, (state) => {
         state.loading = "failed";
       })
+      .addCase(createSale.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(createSale.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.sales.push(action.payload.sale);
+      })
+      .addCase(createSale.rejected, (state) => {
+        state.loading = "failed";
+      });
   },
 });
 
