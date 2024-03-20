@@ -7,7 +7,6 @@ export const fetchSales = createAsyncThunk(
   "sales/fetchSales",
   async () => {
     const response = await axios.get("http://localhost:5000/api/v1/sales");
-    console.log(response.data)
     return response.data;
   }
 );
@@ -28,7 +27,13 @@ export const createSale = createAsyncThunk(
   }
 );
 
-
+export const fetchEmployeeWithMoreSales = createAsyncThunk(
+  "sales/fetchEmployeeWithMoreSales",
+  async () => {
+    const response = await axios.get("http://localhost:5000/api/v1/sales/most-sales/2024");
+    return response.data;
+  }
+);
 
 // Sale slice
 const saleSlice = createSlice({
@@ -36,6 +41,7 @@ const saleSlice = createSlice({
   initialState: {
     sales: [],
     totalSalesCount: 0,
+    employeeWithMoreSales: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -49,7 +55,6 @@ const saleSlice = createSlice({
       .addCase(fetchSales.fulfilled, (state, action) => {
         state.loading = "idle";
         state.sales = action.payload.sales;
-        console.log(action.payload.sales)
       })
       .addCase(fetchSales.rejected, (state) => {
         state.loading = "failed";
@@ -74,7 +79,18 @@ const saleSlice = createSlice({
       })
       .addCase(createSale.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(fetchEmployeeWithMoreSales.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(fetchEmployeeWithMoreSales.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.employeeWithMoreSales = action.payload.result;
+        console.log(state.employeeWithMoreSales)
+      })
+      .addCase(fetchEmployeeWithMoreSales.rejected, (state) => {
+        state.loading = "failed"
+      })
   },
 });
 

@@ -28,7 +28,6 @@ export const fetchEmployeeById = createAsyncThunk(
     const response = await axios.get(
       `http://localhost:5000/api/v1/employees?user_id=${userId}`
     );
-    console.log(response.data);
     return response.data;
   }
 );
