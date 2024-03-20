@@ -5,6 +5,8 @@ import Sidebar from "../ui/admin-sidebar";
 import { loadUser } from "@/lib/slices/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { useRequireAuth } from "../(auth)/auth";
+import { fetchEmployees } from "@/lib/slices/employeeSlice";
+import { fetchCustomers } from "@/lib/slices/customerSlice";
 
 export default function AdminLayout({
   children,
@@ -15,6 +17,8 @@ export default function AdminLayout({
   useRequireAuth();
   useEffect(() => {
     dispatch(loadUser());
+    dispatch(fetchEmployees())
+    dispatch(fetchCustomers())
   }, [dispatch]);
 
   return (

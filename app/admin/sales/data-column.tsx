@@ -1,4 +1,5 @@
 import { Sale } from "@/interface/types";
+import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { Button, Input, Space, TableProps } from "antd";
 import { useState } from "react";
 
@@ -8,6 +9,9 @@ export const useEditFunctions = (sales: Sale[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
+
+  const { employees } = useAppSelector((state) => state.employee);
+  const { customers } = useAppSelector((state) => state.customer);
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -34,6 +38,8 @@ export const useEditFunctions = (sales: Sale[], dispatch: any) => {
     handleEdit,
     handleSave,
     handleDelete,
+    employees,
+    customers,
   };
 };
 
@@ -48,6 +54,8 @@ export const getTableColumns = (
     handleEdit,
     handleSave,
     handleDelete,
+    employees,
+    customers,
   } = editFunctions;
 
   return [
@@ -59,7 +67,7 @@ export const getTableColumns = (
         const editable = record.id === editingKey;
         return editable ? (
           <Input
-            value={editedData.sale_id}
+            value={record.sale_id}
             onChange={(e) =>
               setEditedData({ ...editedData, sale_id: e.target.value })
             }
@@ -76,15 +84,25 @@ export const getTableColumns = (
       key: "employee_id",
       render: (text, record) => {
         const editable = record.id === editingKey;
+        const employee = employees.find(
+          (employee) => employee.id === record.employee_id
+        );
+
         return editable ? (
-          <Input
-            value={editedData.employee_id}
+          <select
+            defaultValue={record.employee_id}
             onChange={(e) =>
               setEditedData({ ...editedData, employee_id: e.target.value })
             }
-          />
+          >
+            {employees.map((employee) => (
+              <option key={employee.id} value={employee.id}>
+                {`${employee.name} ${employee.lastname}`}
+              </option>
+            ))}
+          </select>
         ) : (
-          text
+          `${employee?.name} ${employee?.lastname}`
         );
       },
     },
@@ -94,18 +112,25 @@ export const getTableColumns = (
       key: "customer_id",
       render: (text, record) => {
         const editable = record.id === editingKey;
+        const customer = customers.find(
+          (customer) => customer.id === record.customer_id
+        );
+
         return editable ? (
-          <Input
-            value={editedData.customer_id}
+          <select
+            defaultValue={record.customer_id}
             onChange={(e) =>
-              setEditedData({
-                ...editedData,
-                customer_id: e.target.value,
-              })
+              setEditedData({ ...editedData, customer_id: e.target.value })
             }
-          />
+          >
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {`${customer.name} ${customer.lastname}`}
+              </option>
+            ))}
+          </select>
         ) : (
-          text
+          `${customer?.name} ${customer?.lastname}`
         );
       },
     },
@@ -135,8 +160,8 @@ export const getTableColumns = (
         return (
           <select defaultValue="">
             {record.services.map((service) => (
-              <option key={service.service_code} value={service.service_code}>
-                {service.service_code}
+              <option key={service.service_code} value={service.name}>
+                {service.name}
               </option>
             ))}
           </select>
@@ -148,22 +173,30 @@ export const getTableColumns = (
       title: "Action",
       key: "action",
       align: "right",
-      render: (_, record) => (
-        <Space size="middle">
-          {!editing ? (
-            <Button type="default" onClick={() => handleEdit(record.id)}>
-              Editar
+      render: (_, record) => {
+        console.log(record);
+
+        return (
+          <Space size="middle">
+            {!editing ? (
+              <Button type="default" onClick={() => handleEdit(record.id)}>
+                Editar
+              </Button>
+            ) : (
+              <Button type="default" onClick={() => handleSave(record.id)}>
+                Guardar
+              </Button>
+            )}
+            <Button
+              type="default"
+              danger
+              onClick={() => handleDelete(record.id)}
+            >
+              Borrar
             </Button>
-          ) : (
-            <Button type="default" onClick={() => handleSave(record.id)}>
-              Guardar
-            </Button>
-          )}
-          <Button type="default" danger onClick={() => handleDelete(record.id)}>
-            Borrar
-          </Button>
-        </Space>
-      ),
+          </Space>
+        );
+      },
     },
   ];
 };
