@@ -6,6 +6,7 @@ import { fetchEmployeeWithMoreSales } from "@/lib/slices/saleSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
 import { stat } from "fs";
+import { MainSaleChart } from "../ui/charts/main-sale-chart";
 
 export default function Admin() {
 
@@ -41,7 +42,7 @@ export default function Admin() {
       </div>
       {/* DOWN CHART */}
       <div className="down w-full flex items-center justify-center max-h-[400px]">
-        <SaleChart title="Sales per month" />
+        <MainSaleChart title="Sales per month 2024" />
       </div>
     </section>
   );

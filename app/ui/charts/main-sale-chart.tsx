@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchSales } from "@/lib/slices/saleSlice";
 import { valueFormatter } from "@/utils/formatters";
 
-export function SaleChart({ title }: { title: string }) {
+export function MainSaleChart({ title }: { title: string }) {
   const { sales, loading } = useAppSelector((state) => state.sale);
   const [totalSales, setTotalSales] = useState(0);
   const dispatch = useAppDispatch();
@@ -15,29 +15,31 @@ export function SaleChart({ title }: { title: string }) {
 
   useEffect(() => {
     if (sales.length > 0) {
-      let total = 0;
-      const salesByMonth = sales.reduce((acc, sale) => {
-        const month = new Date(sale.createdAt).toLocaleString("en-US", {
-          month: "long",
-        });
-        const totalPrice = sale.services.reduce(
-          (sum, service) => sum + parseFloat(service.price),
-          0
-        );
-        acc[month] = (acc[month] || 0) + totalPrice;
-        total += totalPrice;
-        return acc;
-      }, {});
-
-      const chartData = Object.entries(salesByMonth).map(([month, total]) => ({
-        date: month,
-        Online: total,
-      }));
-
-      setChartData(chartData);
-      setTotalSales(total);
+       let total = 0;
+       const salesOf2024 = sales.filter(sale => new Date(sale.createdAt).getFullYear() === 2024);
+   
+       const salesByMonth = salesOf2024.reduce((acc, sale) => {
+         const month = new Date(sale.createdAt).toLocaleString("en-US", {
+           month: "long",
+         });
+         const totalPrice = sale.services.reduce(
+           (sum, service) => sum + parseFloat(service.price),
+           0
+         );
+         acc[month] = (acc[month] || 0) + totalPrice;
+         total += totalPrice;
+         return acc;
+       }, {});
+   
+       const chartData = Object.entries(salesByMonth).map(([month, total]) => ({
+         date: month,
+         Online: total,
+       }));
+   
+       setChartData(chartData);
+       setTotalSales(total);
     }
-  }, [sales]);
+   }, [sales]);
 
   return (
     <div className="bg-white p-4 rounded-md w-full h-[400px]">
