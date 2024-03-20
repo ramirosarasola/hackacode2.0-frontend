@@ -2,9 +2,24 @@
 
 import { SaleChart } from "../ui/charts/sale-chart";
 import DataCard from "../ui/home-data-card";
+import { fetchEmployeeWithMoreSales } from "@/lib/slices/saleSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useEffect } from "react";
+import { stat } from "fs";
 
 export default function Admin() {
 
+  const dispatch = useAppDispatch();
+  const { employeeWithMoreSales } = useAppSelector(state => state.sale);
+  const { employees } = useAppSelector(state => state.employee)
+
+  useEffect(() => {
+    dispatch(fetchEmployeeWithMoreSales())
+  }, [dispatch])
+
+  const totalSales = employeeWithMoreSales?.sales_count;
+  const employee = employees.find(employee => employee?.id === employeeWithMoreSales?.employee_id)
+ 
   return (
     <section className="dashboard-home flex flex-col items-center gap-6">
       {/* UP GRID */}
@@ -14,7 +29,9 @@ export default function Admin() {
         </div>
         <div className="w-[60%] grid grid-cols-3 grid-rows-2 gap-6 min-h-[400px] h-full">
           {/* //? -> TODO: Loop over diferent items and render a respective cards */}
-          <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
+          { employee && 
+            <DataCard title={"Most sales 2024"} date={`${employee.name}  ${employee.lastname}`} value={totalSales} percentage={20} />
+          }
           <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
           <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />
           <DataCard title={"Most sales 2023"} date={"September"} value={88} percentage={20} />

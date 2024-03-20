@@ -16,9 +16,6 @@ const AdminDashboardHeader = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  console.log({user, employee});
-  
-
   const userId = user?.id;
   useEffect(() => {
     if(userId){
