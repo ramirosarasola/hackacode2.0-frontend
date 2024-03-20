@@ -14,8 +14,11 @@ export const fetchServices = createAsyncThunk(
 // Async action for updating a service
 export const updateService = createAsyncThunk(
   "services/updateService",
-  async (updateData: { id: string, data: any }) => {
-    const response = await axios.put(`http://localhost:5000/api/v1/services/${updateData.id}`, updateData.data);    
+  async (updateData: { id: number; data: any }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/services/${updateData.id}`,
+      updateData.data
+    );
     return response.data.service;
   }
 );
@@ -23,7 +26,10 @@ export const updateService = createAsyncThunk(
 export const createService = createAsyncThunk(
   "services/createService",
   async (serviceData: Service) => {
-    const response = await axios.post("http://localhost:5000/api/v1/services", serviceData);
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/services",
+      serviceData
+    );
     return response.data.service;
   }
 );
@@ -32,7 +38,7 @@ export const createService = createAsyncThunk(
 const serviceSlice = createSlice({
   name: "services",
   initialState: {
-    services:[],
+    services: [] as Service[],
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -40,8 +46,10 @@ const serviceSlice = createSlice({
   reducers: {
     // add reducers here
     deleteService: (state, action) => {
-      state.services = state.services.filter((service) => service.id !== action.payload);
-    }
+      state.services = state.services.filter(
+        (service) => service.id !== action.payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,6 +68,9 @@ const serviceSlice = createSlice({
       })
       .addCase(updateService.fulfilled, (state, action) => {
         state.loading = "idle";
+        state.services = state.services.map((service) =>
+          service.id === action.payload.id ? action.payload : service
+        );
       })
       .addCase(updateService.rejected, (state) => {
         state.loading = "failed";
@@ -74,7 +85,6 @@ const serviceSlice = createSlice({
       .addCase(createService.rejected, (state) => {
         state.loading = "failed";
       });
-    
   },
 });
 

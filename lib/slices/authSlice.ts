@@ -4,6 +4,7 @@ import configApi from "../../utils/configApi";
 import jwtDecode from "../../utils/setAuthToken";
 import setAuthToken from "../../utils/setAuthToken";
 import { AuthState, User, CustomError } from "@/interface/types";
+import { useAppStore } from "../hooks";
 
 const apiUrl = configApi.apiUrl;
 
@@ -15,17 +16,17 @@ const initialState: AuthState = {
   error: null,
 };
 
-function isTokenExpired(token: string | null): boolean {
-  try {
-    if (token) {
-      const decoded = jwtDecode(token) as { exp?: any } | undefined;
-      return decoded?.exp ? decoded.exp < Date.now() / 1000 : true;
-    }
-    return true;
-  } catch (e) {
-    return true;
-  }
-}
+// function isTokenExpired(token: string | null): boolean {
+//   try {
+//     if (token) {
+//       const decoded = jwtDecode(token);
+//       return decoded?.exp ? decoded.exp < Date.now() / 1000 : true;
+//     }
+//     return true;
+//   } catch (e) {
+//     return true;
+//   }
+// }
 
 export const loadUser = createAsyncThunk<
   User,
@@ -143,7 +144,7 @@ export const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {

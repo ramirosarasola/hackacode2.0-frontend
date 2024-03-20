@@ -45,6 +45,11 @@ export interface Employee {
   updatedAt: string;
 }
 
+export interface RegisterEmployee extends Employee{
+  email: string;
+  password: string;
+}
+
 export interface Customer{
   id: number;
   user_id: number;

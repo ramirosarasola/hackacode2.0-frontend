@@ -1,25 +1,24 @@
-"use client";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import type { TableProps } from "antd";
 import { Button, Input, Table } from "antd";
 import "./data-table.css";
+import { ColumnsType } from "antd/es/table";
 
-interface DataTableProps {
-  data: never[];
-  columns: TableProps<any>["columns"];
+interface DataTableProps<T> {
+  data: T[];
+  columns: ColumnsType<T>;
   add: string;
   addFunction: () => void;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, columns, add, addFunction }) => {
+const DataTable: React.FC<DataTableProps<any>> = ({
+  data,
+  columns = [] as ColumnsType<any>,
+  add,
+  addFunction,
+}: DataTableProps<any>) => {
   function handleSearch(value: string): void {
-    throw new Error("Function not implemented.");
-  }
-
-  function handleAddUser(
-    event: React.MouseEvent<HTMLElement, MouseEvent>
-  ): void {
-    console.log("Add User button clicked");
+    console.log("Search value:", value);
+    // Aquí deberías implementar la lógica para filtrar los datos según el valor de búsqueda
   }
 
   return (
@@ -33,7 +32,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, add, addFunction }
           onChange={(e) => handleSearch(e.target.value)}
         />
         <Button
-          className={`custom-button rounded-lg ] bg-[#5A81FA] text-[#fff]`}
+          className="custom-button rounded-lg bg-[#5A81FA] text-[#fff]"
           icon={<PlusOutlined />}
           onClick={addFunction}
         >

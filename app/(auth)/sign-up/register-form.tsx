@@ -39,10 +39,9 @@ const RegisterForm = () => {
     console.log(formData);
 
     dispatch(registerUser({ newUser: formData })).then((result) => {
-      router.push('/admin')
+      router.push("/admin");
 
       if (result.payload) {
-        
       }
       reset();
     });
@@ -79,6 +78,7 @@ const RegisterForm = () => {
           <>
             <div className="flex gap-4 w-full">
               <AuthInput
+                placeholder="Enter name"
                 label="name"
                 register={register}
                 required
@@ -86,6 +86,7 @@ const RegisterForm = () => {
                 autoComplete={"name"}
               />
               <AuthInput
+                placeholder="Enter lastname"
                 label="lastname"
                 register={register}
                 required
@@ -94,6 +95,7 @@ const RegisterForm = () => {
               />
             </div>
             <AuthInput
+              placeholder="Enter email"
               label="email"
               register={register}
               required
@@ -102,6 +104,7 @@ const RegisterForm = () => {
             />
             <input hidden name="username" autoComplete="username" />
             <AuthInput
+              placeholder="Enter password"
               label="password"
               register={register}
               required
@@ -109,7 +112,8 @@ const RegisterForm = () => {
               autoComplete={"new-password"}
             />
             <AuthInput
-              label="confirm password"
+              placeholder="Confirm password"
+              label="confirm_password"
               register={register}
               required
               type={"password"}
@@ -119,6 +123,7 @@ const RegisterForm = () => {
         ) : currentStep === 1 ? (
           <>
             <AuthInput
+              placeholder="Enter DNI"
               label="dni"
               register={register}
               required
@@ -126,6 +131,7 @@ const RegisterForm = () => {
               autoComplete={"dni"}
             />
             <AuthInput
+              placeholder="Enter address"
               label="address"
               register={register}
               required
@@ -133,6 +139,7 @@ const RegisterForm = () => {
               autoComplete={"address"}
             />
             <AuthInput
+              placeholder="Enter country"
               label="country"
               register={register}
               required
@@ -140,6 +147,7 @@ const RegisterForm = () => {
               autoComplete={"country"}
             />
             <AuthInput
+              placeholder="Enter birthdate"
               label="birthdate"
               register={register}
               required
@@ -150,6 +158,7 @@ const RegisterForm = () => {
         ) : (
           <>
             <AuthInput
+              placeholder="Enter phone"
               label="phone"
               register={register}
               required
@@ -157,6 +166,7 @@ const RegisterForm = () => {
               autoComplete={"phone"}
             />
             <AuthInput
+              placeholder="Enter salary"
               label="salary"
               register={register}
               required
@@ -165,6 +175,7 @@ const RegisterForm = () => {
             />
 
             <AuthInput
+              placeholder="Enter position"
               label="position"
               register={register}
               required
@@ -192,9 +203,6 @@ const RegisterForm = () => {
         </p>
       </div>
     </section>
-
-
-    
   );
 };
 export default RegisterForm;

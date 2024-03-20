@@ -2,28 +2,28 @@ import { AreaChart } from "@tremor/react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect, useState } from "react";
 import { fetchSales } from "@/lib/slices/saleSlice";
-
-const valueFormatter = function (number: number) {
-  return "$ " + new Intl.NumberFormat("us").format(number).toString();
-};
+import { valueFormatter } from "@/utils/formatters";
 
 export function SaleChart({ title }: { title: string }) {
-
-  const { sales, loading } = useAppSelector((state) => state.sale); 
-  const [ totalSales, setTotalSales ] = useState(0); 
+  const { sales, loading } = useAppSelector((state) => state.sale);
+  const [totalSales, setTotalSales] = useState(0);
   const dispatch = useAppDispatch();
-  const [ chartData, setChartData ] = useState([]);
+  const [chartData, setChartData] = useState([]);
   useEffect(() => {
     dispatch(fetchSales());
-  }, [dispatch])
-
+  }, [dispatch]);
 
   useEffect(() => {
     if (sales.length > 0) {
-      let total = 0; 
+      let total = 0;
       const salesByMonth = sales.reduce((acc, sale) => {
-        const month = new Date(sale.createdAt).toLocaleString('en-US', { month: 'long' });
-        const totalPrice = sale.services.reduce((sum, service) => sum + parseFloat(service.price), 0);
+        const month = new Date(sale.createdAt).toLocaleString("en-US", {
+          month: "long",
+        });
+        const totalPrice = sale.services.reduce(
+          (sum, service) => sum + parseFloat(service.price),
+          0
+        );
         acc[month] = (acc[month] || 0) + totalPrice;
         total += totalPrice;
         return acc;
@@ -35,19 +35,22 @@ export function SaleChart({ title }: { title: string }) {
       }));
 
       setChartData(chartData);
-      setTotalSales(total); 
+      setTotalSales(total);
     }
- }, [sales]);
+  }, [sales]);
+
+  // add default parameters to fix the XAxis issues
 
   return (
     <div className="bg-white p-4 rounded-md w-full h-[400px]">
       <h3 className="text-[#1F1F1F] text-[16px] font-[400]">{title}</h3>
-      <p className="text-[#6A6E83] font-semibold">Total: {valueFormatter(totalSales)}</p>
+      <p className="text-[#6A6E83] font-semibold">
+        Total: {valueFormatter(totalSales)}
+      </p>
       <AreaChart
         className="mt-4 h-72"
         data={chartData}
         index="date"
-        yAxisWidth={65}
         categories={["Online"]}
         colors={["indigo", "orange"]}
         valueFormatter={valueFormatter}
