@@ -26,7 +26,7 @@ export const fetchEmployeeById = createAsyncThunk(
   "employees/fetchEmployeeById",
   async (userId: string) => {
     const response = await axios.get(
-      `http://localhost:5000/api/v1/employees?user_id=${userId}`
+      `http://localhost:5000/api/v1/employees/user/${userId}`
     );
     return response.data;
   }
@@ -92,7 +92,7 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employees = action.payload;
+        state.employees = action.payload.data.filter((employee: Employee) => employee.is_active === true);
       })
       .addCase(fetchEmployees.rejected, (state) => {
         state.loading = "failed";
@@ -124,7 +124,7 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployeeById.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employee = action.payload;
+        state.employee = action.payload.employee;
       })
       .addCase(fetchEmployeeById.rejected, (state) => {
         state.loading = "failed";

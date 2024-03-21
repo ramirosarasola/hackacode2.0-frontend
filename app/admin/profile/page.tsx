@@ -14,13 +14,12 @@ export default function Profile() {
 
   const { saleByEmployee } = useAppSelector((state) => state.sale);
 
-  console.log(saleByEmployee);
+  // console.log(saleByEmployee);
 
   useEffect(() => {
     dispatch(getSalesByEmployee(userEmployee?.id));
   }, [dispatch, userEmployee]);
 
-  console.log();
 
   return (
     <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000]">

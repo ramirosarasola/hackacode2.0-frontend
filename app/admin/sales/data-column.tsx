@@ -209,7 +209,6 @@ export const getTableColumns = (
       key: "action",
       align: "right",
       render: (_, record) => {
-        console.log(record);
 
         return (
           <Space size="middle">

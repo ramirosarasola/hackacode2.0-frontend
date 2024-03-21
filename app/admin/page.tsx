@@ -4,9 +4,10 @@ import { SaleChart } from "../ui/charts/sale-chart";
 import DataCard from "../ui/home-data-card";
 import { fetchEmployeeWithMoreSales, fetchSales } from "@/lib/slices/saleSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { stat } from "fs";
 import { MainSaleChart } from "../ui/charts/main-sale-chart";
+import { log } from "console";
 
 export default function Admin() {
 
@@ -14,11 +15,19 @@ export default function Admin() {
   const { employeeWithMoreSales } = useAppSelector(state => state.sale);
   const { employees } = useAppSelector(state => state.employee)
   const { profitsByPayment } = useAppSelector(state => state.sale)
+  const [employee, setEmployee] = useState(null);
 
   useEffect(() => {
     dispatch(fetchEmployeeWithMoreSales())
     dispatch(fetchSales())
   }, [dispatch])
+
+  useEffect(() => {
+    const employeeFounded = employees.find(employee => employee?.id === employeeWithMoreSales?.employee_id);
+    setEmployee(employeeFounded)
+  },[employeeWithMoreSales])
+
+
 
   const paymentMethodWithHighestProfit = profitsByPayment?.reduce((prev, current) => {
       return (prev.total_profit > current.total_profit) ? prev : current;
@@ -30,7 +39,7 @@ export default function Admin() {
   }).payment_method;
 
   const totalSales = employeeWithMoreSales?.sales_count;
-  const employee = employees.find(employee => employee?.id === employeeWithMoreSales?.employee_id)
+  // const employee = employees.find(employee => employee?.id === employeeWithMoreSales?.employee_id)
 
   const highestProfit = profitsByPayment?.find(item => item.payment_method === paymentMethodWithHighestProfit)?.total_profit;
   const mostSales = profitsByPayment?.find(item => item.payment_method === paymentMethodWithMostSales)?.total_sales;

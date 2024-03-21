@@ -31,7 +31,7 @@ const RegisterForm = () => {
   const router = useRouter();
 
   const onChangeStep = (value: number) => {
-    console.log("onChange:", value);
+    // console.log("onChange:", value);
     setCurrentStep(value);
   };
 

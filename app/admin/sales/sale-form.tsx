@@ -1,5 +1,5 @@
 import { AuthInput } from "@/app/ui/auth-input";
-import { RegisterEmployee, Sale } from "@/interface/types";
+import { Sale } from "@/interface/types";
 import { UseFormRegister } from "react-hook-form";
 
 // Define la interface para los props de ServiceForm
@@ -16,7 +16,7 @@ const SaleForm: React.FC<SaleFormProps> = ({ register }) => {
         placeholder="Employee ID"
         register={register}
         required={true}
-        type={"number"}
+        type={"text"}
         autoComplete={"Employee"}
       />
       {/* customer_id */}
@@ -25,17 +25,17 @@ const SaleForm: React.FC<SaleFormProps> = ({ register }) => {
         placeholder="Customer ID"
         register={register}
         required={true}
-        type={"number"}
+        type={"text"}
         autoComplete={"Customer"}
       />
-      {/* createdAt */}
+      {/* payment_method */}
       <AuthInput
-        label="createdAt"
-        placeholder="Date"
+        label="payment_method"
+        placeholder="Payment Method"
         register={register}
         required={true}
-        type={"date"}
-        autoComplete={"Date"}
+        type={"text"}
+        autoComplete={"Payment Method"}
       />
     </form>
   );

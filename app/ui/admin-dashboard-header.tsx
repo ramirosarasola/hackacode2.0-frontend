@@ -6,7 +6,7 @@ import { BellOutlined, DownOutlined } from "@ant-design/icons";
 import UserProfile from "./user-profile";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { logout } from "@/lib/slices/authSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchEmployeeById } from "@/lib/slices/employeeSlice";
 
 const AdminDashboardHeader = () => {
@@ -14,15 +14,20 @@ const AdminDashboardHeader = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { employee } = useAppSelector((state) => state.employee);
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const [show, setShow] = useState(false);
 
   const userId = user?.id;
   useEffect(() => {
-    if(userId){
-      dispatch(fetchEmployeeById(userId));
+    if (userId) {
+      dispatch(fetchEmployeeById(userId)).then((result) => {
+        if (result.payload.employee) {
+          setShow(true);
+        }
+      });
     }
-  }, [userId])
-   
+  }, [userId, dispatch]);
+
+
   return (
     <div className="h-[10vh] w-full px-10 flex justify-between items-center ">
       <div className="icon-path text-xl font-bold flex gap-4">
@@ -39,16 +44,16 @@ const AdminDashboardHeader = () => {
       </div>
       <div className="flex gap-4 items-center ">
         <BellOutlined style={{ fontSize: "24px", color: "#6A6E83" }} />
-        {
-          employee && <>
-          <UserProfile
-            name={employee[0].name} 
-            lastname={employee[0].lastname}
-            position={employee[0].position}
-            size={"large"} />
-          <DownOutlined style={{ fontSize: "16px", color: "#1F1F1F", cursor:'pointer' }} />
+        {show && (
+          <>
+            <UserProfile
+              name={employee.name}
+              lastname={employee.lastname}
+              position={employee.position}
+              size={"large"}
+            />
           </>
-        }
+        )}
       </div>
     </div>
   );

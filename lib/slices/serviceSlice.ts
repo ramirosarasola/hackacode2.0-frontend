@@ -80,7 +80,6 @@ const serviceSlice = createSlice({
       })
       .addCase(createService.fulfilled, (state, action) => {
         state.loading = "idle";
-        console.log(action.payload);
       })
       .addCase(createService.rejected, (state) => {
         state.loading = "failed";

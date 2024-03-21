@@ -19,7 +19,6 @@ export default function CustomTooltip() {
   };
 
   const handleClose = (event: { target: any }) => {
-    console.log("handle close...");
     setOpen(false);
   };
 

@@ -33,6 +33,7 @@ export interface Employee {
   id: number;
   user_id: number;
   name: string;
+  is_active: boolean;
   lastname: string;
   address: string;
   dni: string;
@@ -70,6 +71,7 @@ export interface Sale {
   total: number;
   createdAt: string;
   updatedAt: string;
+  paymenth_method: string;
 }
 
 export interface Service {

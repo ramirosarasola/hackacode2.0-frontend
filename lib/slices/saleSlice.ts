@@ -66,7 +66,6 @@ const saleSlice = createSlice({
         state.loading = "idle";
         state.sales = action.payload.sales;
         state.profitsByPayment = action.payload.profit_by_payment_method;
-        console.log(state.profitsByPayment)
       })
       .addCase(fetchSales.rejected, (state) => {
         state.loading = "failed";
