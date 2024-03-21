@@ -3,7 +3,7 @@ import { Button, Input, Space } from "antd";
 import { Service } from "@/interface/types";
 import { deleteService, updateService } from "@/lib/slices/serviceSlice";
 import { TableProps } from "antd";
-
+import { Edit, Delete, Save } from "@mui/icons-material";
 
 const initialState = {
   service_code: "",
@@ -139,15 +139,17 @@ export const getTableColumns = (editFunctions: any): TableProps<Service>["column
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (
-            <Button type="default" onClick={() => handleEdit(record.id)}>
-              Editar
+              <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
+                <Edit className="text-yellow-400"/>
+              </Button>
+            ) : (
+              <Button type="dang" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
+                <Save className="text-blue-500"/>
+              </Button>
+            )}
+            <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
+                <Delete className="text-red-500"/>
             </Button>
-          ) : (
-            <Button type="default" onClick={() => handleSave(record.id)}>
-              Guardar
-            </Button>
-          )}
-          <Button type="default" danger onClick={() => handleDelete(record.id)}>Borrar</Button>
         </Space>
       ),
     },
