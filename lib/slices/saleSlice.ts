@@ -51,6 +51,7 @@ const saleSlice = createSlice({
     totalSalesCount: 0,
     employeeWithMoreSales: null,
     saleByEmployee: null,
+    profitsByPayment: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -64,6 +65,8 @@ const saleSlice = createSlice({
       .addCase(fetchSales.fulfilled, (state, action) => {
         state.loading = "idle";
         state.sales = action.payload.sales;
+        state.profitsByPayment = action.payload.profit_by_payment_method;
+        console.log(state.profitsByPayment)
       })
       .addCase(fetchSales.rejected, (state) => {
         state.loading = "failed";
@@ -95,7 +98,6 @@ const saleSlice = createSlice({
       .addCase(fetchEmployeeWithMoreSales.fulfilled, (state, action) => {
         state.loading = "idle";
         state.employeeWithMoreSales = action.payload.result;
-        console.log(state.employeeWithMoreSales)
       })
       .addCase(fetchEmployeeWithMoreSales.rejected, (state) => {
         state.loading = "failed"
