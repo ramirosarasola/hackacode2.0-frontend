@@ -2,6 +2,7 @@ import { Sale } from "@/interface/types";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { Button, Input, Space, TableProps } from "antd";
 import { useState } from "react";
+import { Edit, Delete, Save } from "@mui/icons-material";
 
 const initialState = {};
 
@@ -209,25 +210,19 @@ export const getTableColumns = (
       key: "action",
       align: "right",
       render: (_, record) => {
-        console.log(record);
-
         return (
           <Space size="middle">
             {!editing ? (
-              <Button type="default" onClick={() => handleEdit(record.id)}>
-                Editar
+              <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
+                <Edit className="text-yellow-400"/>
               </Button>
             ) : (
-              <Button type="default" onClick={() => handleSave(record.id)}>
-                Guardar
+              <Button type="dang" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
+                <Save className="text-blue-500"/>
               </Button>
             )}
-            <Button
-              type="default"
-              danger
-              onClick={() => handleDelete(record.id)}
-            >
-              Borrar
+            <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
+                <Delete className="text-red-500"/>
             </Button>
           </Space>
         );
