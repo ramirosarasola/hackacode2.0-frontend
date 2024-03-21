@@ -86,4 +86,6 @@ export interface Sale{
   customer_id: number;
   employee_id: number;
   services: Service[];
+  profit: number;
+  payment_method: string;
 }

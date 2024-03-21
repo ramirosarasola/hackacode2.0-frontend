@@ -169,6 +169,42 @@ export const getTableColumns = (
       },
     },
     {
+      title: "Payment Method",
+      dataIndex: "payment_method",
+      key: "payment_method",
+      render: (_, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={record.payment_method}
+            onChange={(e) =>
+              setEditedData({ ...editedData, payment_method: e.target.value })
+            }
+          />
+        ) : (
+          record.payment_method
+        );
+      },
+    },
+    {
+      title: "Profit",
+      dataIndex: "profit",
+      key: "profit",
+      render: (_, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={record.profit}
+            onChange={(e) =>
+              setEditedData({ ...editedData, profit: e.target.value })
+            }
+          />
+        ) : (
+          record.profit
+        );
+      },
+    },
+    {
       title: "Action",
       key: "action",
       align: "right",
