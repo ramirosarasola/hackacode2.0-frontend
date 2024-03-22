@@ -19,10 +19,11 @@ const initialState = {
 };
 // Funciones para manejar la edición de datos
 export const useEditFunctions = (customers: Customer[], dispatch: any) => {
+  const date = new Date();
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
-  const formatDate = useFormatDate();
+  const formatDate = useFormatDate(date.toISOString());
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -197,7 +198,7 @@ export const getTableColumns = (
                 <Edit className="text-yellow-400"/>
               </Button>
             ) : (
-              <Button type="dang" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
+              <Button type="default" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
                 <Save className="text-blue-500"/>
               </Button>
             )}
