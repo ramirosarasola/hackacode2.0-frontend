@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { useRequireAuth } from "../(auth)/auth";
 import { fetchEmployees } from "@/lib/slices/employeeSlice";
 import { fetchCustomers } from "@/lib/slices/customerSlice";
+import { fetchServices } from "@/lib/slices/serviceSlice";
 
 export default function AdminLayout({
   children,
@@ -19,6 +20,7 @@ export default function AdminLayout({
     dispatch(loadUser());
     dispatch(fetchEmployees())
     dispatch(fetchCustomers())
+    dispatch(fetchServices())
   }, [dispatch]);
 
   return (

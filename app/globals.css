@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-} 
+}
 
 :root {
-  --foreground-rgb: 248,249,253;
+  --foreground-rgb: 248, 249, 253;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
@@ -29,7 +29,7 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  } 
+  }
 }
 
 /*
@@ -47,10 +47,27 @@ body {
   border-radius: 8px;
   width: 100%;
 }
-.auth-input:focus{
+
+.auth-input:focus {
   border: 2px solid #5A81FA;
 }
 
-.profile-section{
+.sale-select {
+  border: 2px solid #5A81FA7A;
+  box-shadow: 0px 1px 3.5999999046325684px 0px #5A81FA4A;
+  height: 51px;
+  border-radius: 8px;
+  padding: 0 1rem;
+}
+
+.sale-multi-select{
+  border: 2px solid #5A81FA7A;
+  box-shadow: 0px 1px 3.5999999046325684px 0px #5A81FA4A;
+  border-radius: 8px;
+  padding: 0 1rem;
+}
+
+
+.profile-section {
   height: calc(100% - 75px);
 }

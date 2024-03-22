@@ -1,4 +1,4 @@
-import { Sale } from "@/interface/types";
+import { ICreateSale } from "@/app/admin/sales/sale-form";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -21,7 +21,7 @@ export const fetchSalesWithDetails = createAsyncThunk(
 
 export const createSale = createAsyncThunk(
   "sales/createSale",
-  async (sale: Sale) => {
+  async (sale: ICreateSale) => {
     const response = await axios.post("http://localhost:5000/api/v1/sales", sale);
     return response.data;
   }
