@@ -5,7 +5,7 @@ import { formatDate } from "@/utils/formatters";
 import { Button, Input, Space, TableProps, Tag } from "antd";
 import { useState } from "react";
 import { Edit, Delete, Save } from "@mui/icons-material";
-
+import useFormatDate from "@/hooks/useFormatDate";
 
 const initialState = {
   user_id: 0,
@@ -24,6 +24,7 @@ export const useEditFunctions = (employees: Employee[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
+  const formatDate = useFormatDate();
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -142,7 +143,7 @@ export const getTableColumns = (
             }
           />
         ) : (
-        text
+        formatDate(text)
         );
       },
     },
