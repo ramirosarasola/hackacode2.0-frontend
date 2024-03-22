@@ -105,7 +105,7 @@ export const loginUser = createAsyncThunk<
 export const fetchUsers = createAsyncThunk(
   "employees/fetchUsers",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/users");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/users`);
     return response.data;
   }
 );

@@ -1,6 +1,6 @@
 const configApi = {
-  // apiUrl: 'https://controlcalidad.aspblindajes.com.ar',
-  apiUrl: 'http://localhost',
+  apiUrl: 'http://vps-3991846-x.dattaweb.com',
+  // apiUrl: 'http://localhost',
 };
 
 export default configApi;

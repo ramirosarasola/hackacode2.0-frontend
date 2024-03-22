@@ -1,12 +1,16 @@
 import { Customer } from "@/interface/types";
+import configApi from "@/utils/configApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
+
+const apiUrl = configApi.apiUrl;
 
 // Async action for fetching customers
 export const fetchCustomers = createAsyncThunk(
   "customers/fetchCustomers",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/customers");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/customers`);
     return response.data;
   }
 );
@@ -16,7 +20,7 @@ export const updateCustomer = createAsyncThunk(
   "customers/updateCustomer",
   async (updateData: { id: number; data: any }) => {
     const response = await axios.put(
-      `http://localhost:5000/api/v1/customers/${updateData.id}`,
+      `${apiUrl}:5000/api/v1/customers/${updateData.id}`,
       updateData.data
     );
     return response.data.customer;
@@ -28,7 +32,7 @@ export const createCustomer = createAsyncThunk(
   "customers/createCustomer",
   async (customerData: any) => {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/customers/create",
+      `${apiUrl}:5000/api/v1/customers/create`,
       customerData
     );
     return response.data.customer;

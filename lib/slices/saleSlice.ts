@@ -1,12 +1,15 @@
 import { ICreateSale } from "@/app/admin/sales/sale-form";
+import configApi from "@/utils/configApi";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+
+const apiUrl = configApi.apiUrl;
 
 // Async action for fetching customers
 export const fetchSales = createAsyncThunk(
   "sales/fetchSales",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/sales");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/sales`);
     return response.data;
   }
 );
@@ -14,7 +17,7 @@ export const fetchSales = createAsyncThunk(
 export const fetchSalesWithDetails = createAsyncThunk(
   "sales/fetchSalesWithDetails",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/sales/details");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/details`);
     return response.data;
   }
 );
@@ -22,7 +25,7 @@ export const fetchSalesWithDetails = createAsyncThunk(
 export const createSale = createAsyncThunk(
   "sales/createSale",
   async (sale: ICreateSale) => {
-    const response = await axios.post("http://localhost:5000/api/v1/sales", sale);
+    const response = await axios.post(`${apiUrl}:5000/api/v1/sales`, sale);
     return response.data;
   }
 );
@@ -30,7 +33,7 @@ export const createSale = createAsyncThunk(
 export const fetchEmployeeWithMoreSales = createAsyncThunk(
   "sales/fetchEmployeeWithMoreSales",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/sales/most-sales/2024");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/most-sales/2024`);
     return response.data;
   }
 );
@@ -38,7 +41,7 @@ export const fetchEmployeeWithMoreSales = createAsyncThunk(
 export const getSalesByEmployee = createAsyncThunk(
   "sales/getSalesByEmployee",
   async (employeeId: number) => {
-    const response = await axios.get(`http://localhost:5000/api/v1/sales/employee/${employeeId}`);
+    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/employee/${employeeId}`);
     return response.data;
   }
 );

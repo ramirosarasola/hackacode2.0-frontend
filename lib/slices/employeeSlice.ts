@@ -1,12 +1,16 @@
 import { Employee } from "@/interface/types";
+import configApi from "@/utils/configApi";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+
+
+const apiUrl = configApi.apiUrl;
 
 // Async action for fetching employees
 export const fetchEmployees = createAsyncThunk(
   "employees/fetchEmployees",
   async () => {
-    const response = await axios.get("http://localhost:5000/api/v1/employees");
+    const response = await axios.get(`${apiUrl}:5000/api/v1/employees`);
     return response.data;
   }
 );
@@ -16,7 +20,7 @@ export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
   async (employee: Employee) => {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/employees/create",
+      `${apiUrl}:5000/api/v1/employees/create`,
       employee
     );
   }
@@ -26,7 +30,7 @@ export const fetchEmployee = createAsyncThunk(
   "employees/fetchEmployee",
   async (id: string) => {
     const response = await axios.get(
-      `http://localhost:5000/api/v1/employees/${id}`,
+      `${apiUrl}:5000/api/v1/employees/${id}`,
       
     );
     return response.data;
@@ -37,7 +41,7 @@ export const fetchEmployeeById = createAsyncThunk(
   "employees/fetchEmployeeById",
   async (userId: string) => {
     const response = await axios.get(
-      `http://localhost:5000/api/v1/employees/user/${userId}`
+      `${apiUrl}:5000/api/v1/employees/user/${userId}`
     );
     return response.data;
   }
@@ -62,7 +66,7 @@ export const updateEmployee = createAsyncThunk(
     };
   }) => {
     const response = await axios.put(
-      `http://localhost:5000/api/v1/employees/${updateData.id}`,
+      `${apiUrl}:5000/api/v1/employees/${updateData.id}`,
       updateData.data
     );
     return response.data.employee;
@@ -73,7 +77,7 @@ export const softDeleteEmployee = createAsyncThunk(
   "employees/deleteEmployee",
   async (id: number) => {
     const response = await axios.put(
-      `http://localhost:5000/api/v1/employees/softdelete/${id}`
+      `${apiUrl}:5000/api/v1/employees/softdelete/${id}`
     );
     return response.data;
   }
