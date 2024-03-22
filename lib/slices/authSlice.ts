@@ -14,6 +14,7 @@ const initialState: AuthState = {
   isLoading: false,
   user: null,
   error: null,
+  users: [],
 };
 
 
@@ -101,6 +102,14 @@ export const loginUser = createAsyncThunk<
   }
 });
 
+export const fetchUsers = createAsyncThunk(
+  "employees/fetchUsers",
+  async () => {
+    const response = await axios.get("http://localhost:5000/api/v1/users");
+    console.log(response.data.data);
+    return response.data;
+  }
+);
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -157,7 +166,18 @@ export const authSlice = createSlice({
         state.error = action.payload
           ? action.payload
           : { message: "Unknown error" };
-      });
+      })
+      .addCase(fetchUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.users = action.payload.data;
+        console.log(state.users);
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.isLoading = false;
+      })
   },
 });
 

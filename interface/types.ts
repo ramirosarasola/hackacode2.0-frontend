@@ -27,6 +27,7 @@ export interface AuthState {
   isLoading: boolean;
   user: User | null;
   error: CustomError | null;
+  users: User[];
 }
 
 export interface Employee {

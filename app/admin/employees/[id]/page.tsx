@@ -4,22 +4,25 @@ import { Tag } from "@mui/icons-material";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchEmployee } from "@/lib/slices/employeeSlice";
+import { fetchUsers } from "@/lib/slices/authSlice";
 
 export default function EmployeePage () {
     const dispatch = useAppDispatch();
     const  params  = useParams();
     const id = params?.id;
+    const { users } = useAppSelector((state) => state.auth);
     const { employee } = useAppSelector((state) => state.employee);
-    console.log(employee);
-    console.log(id)
+    const userEmployee = users.find((user) => user.id === employee.user_id) || null
 
     useEffect(() => {
         dispatch(fetchEmployee(id));
+        dispatch(fetchUsers());
     }, [id, dispatch]);
 
     if (!employee) {
         <h1>Loading...</h1>
     }
+
 
     return (
         
@@ -84,7 +87,7 @@ export default function EmployeePage () {
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Email Adress: </span>{" "}
-                  
+                  {userEmployee?.email}
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Phone: </span>{" "}
@@ -163,7 +166,7 @@ export default function EmployeePage () {
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Email Adress: </span>{" "}
-                  
+                  {userEmployee?.email}
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Phone: </span>{" "}
