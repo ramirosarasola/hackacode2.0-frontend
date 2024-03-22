@@ -3,6 +3,8 @@ import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { Button, Input, Space, TableProps } from "antd";
 import { useState } from "react";
 import { Edit, Delete, Save } from "@mui/icons-material";
+import useFormatDate from "@/hooks/useFormatDate";
+import { formatDate } from "@/utils/formatters";
 
 const initialState = {};
 
@@ -10,6 +12,7 @@ export const useEditFunctions = (sales: Sale[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
+  const formatDate = useFormatDate();
 
   const { employees } = useAppSelector((state) => state.employee);
   const { customers } = useAppSelector((state) => state.customer);
@@ -149,7 +152,7 @@ export const getTableColumns = (
             }
           />
         ) : (
-          text
+          formatDate(text)
         );
       },
     },

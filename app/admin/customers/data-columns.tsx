@@ -4,6 +4,8 @@ import { Customer } from "@/interface/types";
 import { deleteCustomer, updateCustomer } from "@/lib/slices/customerSlice";
 import { TableProps } from "antd";
 import { Edit, Delete, Save } from "@mui/icons-material";
+import useFormatDate from "@/hooks/useFormatDate";
+import { formatDate } from "@/utils/formatters";
 
 
 const initialState = {
@@ -20,6 +22,7 @@ export const useEditFunctions = (customers: Customer[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
+  const formatDate = useFormatDate();
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -148,7 +151,7 @@ export const getTableColumns = (
       },
     },
     {
-      title: "Birthdate & Nationality",
+      title: "Birthdate",
       dataIndex: "birthdate",
       key: "birthdate",
       render: (text, record) => {
@@ -158,6 +161,24 @@ export const getTableColumns = (
             value={editedData?.birthdate}
             onChange={(e) =>
               setEditedData({ ...editedData, birthdate: e.target.value })
+            }
+          />
+        ) : (
+          formatDate(text)
+        );
+      },
+    },
+    {
+      title: "Nationality",
+      dataIndex: "country",
+      key: "country",
+      render: (text, record) => {
+        const editable = record.id === editingKey;
+        return editable ? (
+          <Input
+            value={editedData?.country}
+            onChange={(e) =>
+              setEditedData({ ...editedData, country: e.target.value })
             }
           />
         ) : (
