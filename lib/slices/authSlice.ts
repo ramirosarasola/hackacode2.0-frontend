@@ -16,17 +16,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-// function isTokenExpired(token: string | null): boolean {
-//   try {
-//     if (token) {
-//       const decoded = jwtDecode(token);
-//       return decoded?.exp ? decoded.exp < Date.now() / 1000 : true;
-//     }
-//     return true;
-//   } catch (e) {
-//     return true;
-//   }
-// }
 
 export const loadUser = createAsyncThunk<
   User,
