@@ -97,6 +97,7 @@ export const getTableColumns = (
           </>
         ) : (
           <UserProfile
+            id={record.id}
             name={record.name}
             lastname={record.lastname}
             position={record.position}
