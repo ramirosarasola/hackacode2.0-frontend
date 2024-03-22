@@ -12,7 +12,7 @@ import { fetchEmployeeById } from "@/lib/slices/employeeSlice";
 const AdminDashboardHeader = () => {
   const url = usePathname();
   const { user } = useAppSelector((state) => state.auth);
-  const { employee } = useAppSelector((state) => state.employee);
+  const { userEmployee } = useAppSelector((state) => state.employee);
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
 
@@ -47,9 +47,9 @@ const AdminDashboardHeader = () => {
         {show && (
           <>
             <UserProfile
-              name={employee.name}
-              lastname={employee.lastname}
-              position={employee.position}
+              name={userEmployee.name}
+              lastname={userEmployee.lastname}
+              position={userEmployee.position}
               size={"large"}
             />
           </>
