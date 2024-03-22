@@ -1,7 +1,10 @@
+'use client'
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import "./data-table.css";
 import { ColumnsType } from "antd/es/table";
+import { useState } from "react";
+
 
 interface DataTableProps<T> {
   data: T[];
@@ -16,10 +19,19 @@ const DataTable: React.FC<DataTableProps<any>> = ({
   add,
   addFunction,
 }: DataTableProps<any>) => {
-  function handleSearch(value: string): void {
-    console.log("Search value:", value);
-    // Aquí deberías implementar la lógica para filtrar los datos según el valor de búsqueda
-  }
+  
+  const [searchText, setSearchText] = useState('');
+ const [filteredData, setFilteredData] = useState(data);
+
+ const handleSearch = (value: string): void => {
+    setSearchText(value);
+    const filtered = data.filter(item =>
+      Object.keys(item).some(key =>
+        String(item[key]).toLowerCase().includes(value.toLowerCase())
+      )
+    );
+    setFilteredData(filtered);
+ };
 
   return (
     <section className="employee bg-white p-6">
@@ -42,7 +54,7 @@ const DataTable: React.FC<DataTableProps<any>> = ({
       <Table
         rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         className="custom-table rounded-xl border-[1px] border-[#CDDEFF]"
       />
     </section>
