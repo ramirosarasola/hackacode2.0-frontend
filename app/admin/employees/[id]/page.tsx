@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { fetchUsers } from "@/lib/slices/authSlice";
+import { getSalesByEmployee } from "@/lib/slices/saleSlice";
 
 export default function EmployeePage () {
     const dispatch = useAppDispatch();
@@ -12,17 +13,20 @@ export default function EmployeePage () {
     const id = params?.id;
     const { users } = useAppSelector((state) => state.auth);
     const { employee } = useAppSelector((state) => state.employee);
-    const userEmployee = users.find((user) => user.id === employee.user_id) || null
-
+    const { saleByEmployee } = useAppSelector(state => state.sale)
+    const userEmployee = users.find((user) => user.id === employee?.user_id) || null
+    
     useEffect(() => {
         dispatch(fetchEmployee(id));
         dispatch(fetchUsers());
-    }, [id, dispatch]);
+        if(employee){
+          dispatch(getSalesByEmployee(employee?.id))
+        }
+    }, [id, employee, dispatch]);
 
     if (!employee) {
         <h1>Loading...</h1>
     }
-
 
     return (
         
@@ -106,12 +110,12 @@ export default function EmployeePage () {
           <ul className="profile-section w-[90%] m-auto h-full flex flex-col items-start  justify-center gap-4">
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#CDDEFF]">Amount of Sales:</span>{" "}
-              
+              {saleByEmployee && saleByEmployee.count}
             </li>
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#CDDEFF]">Total Profit:</span>
               {"$ "}
-              
+              {saleByEmployee && saleByEmployee.total}
             </li>
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#CDDEFF]">Account Number:</span>{" "}

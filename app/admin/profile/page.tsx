@@ -14,7 +14,6 @@ export default function Profile() {
 
   const { saleByEmployee } = useAppSelector((state) => state.sale);
 
-  // console.log(saleByEmployee);
 
   useEffect(() => {
     dispatch(getSalesByEmployee(userEmployee?.id));

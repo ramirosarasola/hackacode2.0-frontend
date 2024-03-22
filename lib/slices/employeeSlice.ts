@@ -29,7 +29,6 @@ export const fetchEmployee = createAsyncThunk(
       `http://localhost:5000/api/v1/employees/${id}`,
       
     );
-    console.log(response.data);
     return response.data;
   }
 );
