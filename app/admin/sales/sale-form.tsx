@@ -14,6 +14,11 @@ export interface ICreateSale {
   services: { id: string }[]; // Cambia el tipo de array
 }
 
+interface ServiceOption {
+  label: string;
+  value: string;
+}
+
 const PAYMENT_METHODS = [
   { method: 'Credit Card', value: 'credit' },
   { method: 'Debit Card', value: 'debit' },
@@ -41,10 +46,17 @@ const SaleForm: React.FC<SaleFormProps> = ({ register }) => {
       (option) => option.value
     );
   
-    const formattedServices = selectedServices.map((id) => ({ id }));
+    console.log(selectedServices);
+    const formattedServices:any = [];
+    selectedServices.forEach((serviceId) => {
+      formattedServices.push({ id: serviceId });
+    });
+
+    console.log({formattedServices});
+    
   
     register('services', {
-      value: formattedServices,
+      value: [...formattedServices],
       required: true,
     });
   };
