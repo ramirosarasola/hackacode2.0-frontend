@@ -27,7 +27,6 @@ const AdminDashboardHeader = () => {
     }
   }, [userId, dispatch]);
 
-
   return (
     <div className="h-[10vh] w-full px-10 flex justify-between items-center ">
       <div className="icon-path text-xl font-bold flex gap-4">
@@ -50,7 +49,7 @@ const AdminDashboardHeader = () => {
               name={userEmployee.name}
               lastname={userEmployee.lastname}
               position={userEmployee.position}
-              size={"large"}
+              size={"small"}
             />
           </>
         )}

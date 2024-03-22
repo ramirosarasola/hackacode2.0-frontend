@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import { Tag } from "@mui/icons-material";
+import { Tag } from "antd";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchEmployee } from "@/lib/slices/employeeSlice";
@@ -53,8 +53,7 @@ export default function EmployeePage() {
               </div>
               <h5>{`${employee?.name} ${employee?.lastname}`}</h5>
               <Tag className="border-[#5A81FA] border-[1.5px] rounded-full">
-                {/* {employee?.position} */}
-                <p>ramirosarasolaaaa</p>
+                 # {employee?.id}
               </Tag>
             </div>
 
