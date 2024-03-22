@@ -39,7 +39,6 @@ export const getSalesByEmployee = createAsyncThunk(
   "sales/getSalesByEmployee",
   async (employeeId: number) => {
     const response = await axios.get(`http://localhost:5000/api/v1/sales/employee/${employeeId}`);
-    console.log(response.data);
     return response.data;
   }
 );
@@ -108,7 +107,6 @@ const saleSlice = createSlice({
       .addCase(getSalesByEmployee.fulfilled, (state, action) => {
         state.loading = "idle";
         state.saleByEmployee = action.payload.result;
-        console.log(action.payload)
       })
       .addCase(getSalesByEmployee.rejected, (state) => {
         state.loading = "failed"
