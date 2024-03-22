@@ -194,7 +194,7 @@ export const getTableColumns = (
     {
       title: "Action",
       key: "action",
-      align: "right",
+      align: "center",
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (

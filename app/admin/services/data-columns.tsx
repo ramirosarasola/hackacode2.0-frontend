@@ -135,7 +135,7 @@ export const getTableColumns = (editFunctions: any): TableProps<Service>["column
     {
       title: "Action",
       key: "action",
-      align: "right",
+      align: "center",
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (

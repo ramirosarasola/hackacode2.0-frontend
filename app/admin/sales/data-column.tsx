@@ -211,7 +211,7 @@ export const getTableColumns = (
     {
       title: "Action",
       key: "action",
-      align: "right",
+      align: "center",
       render: (_, record) => {
         return (
           <Space size="middle">

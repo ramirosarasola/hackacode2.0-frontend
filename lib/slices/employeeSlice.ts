@@ -104,7 +104,7 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employees = action.payload.data.filter((employee: Employee) => employee.is_active === true);
+        state.employees = action.payload.filter((employee: Employee) => employee.is_active === true);
       })
       .addCase(fetchEmployees.rejected, (state) => {
         state.loading = "failed";
