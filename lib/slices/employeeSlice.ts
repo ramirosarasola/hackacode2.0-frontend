@@ -22,6 +22,18 @@ export const createEmployee = createAsyncThunk(
   }
 );
 
+export const fetchEmployee = createAsyncThunk(
+  "employees/fetchEmployee",
+  async (id: string) => {
+    const response = await axios.get(
+      `http://localhost:5000/api/v1/employees/${id}`,
+      
+    );
+    console.log(response.data);
+    return response.data;
+  }
+);
+
 export const fetchEmployeeById = createAsyncThunk(
   "employees/fetchEmployeeById",
   async (userId: string) => {
@@ -74,6 +86,7 @@ const employeeSlice = createSlice({
   initialState: {
     employees: [] as Employee[],
     employee: null,
+    userEmployee: null,
     loading: "idle",
     error: null,
     fulfilled: false,
@@ -124,7 +137,7 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployeeById.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employee = action.payload.employee;
+        state.userEmployee = action.payload.employee;
       })
       .addCase(fetchEmployeeById.rejected, (state) => {
         state.loading = "failed";
@@ -140,7 +153,17 @@ const employeeSlice = createSlice({
       })
       .addCase(softDeleteEmployee.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(fetchEmployee.pending, (state) => {
+        state.loading = "loading"
+      })
+      .addCase(fetchEmployee.fulfilled, (state, action) => {
+        state.loading = "idle"
+        state.employee = action.payload.employee
+      })
+      .addCase(fetchEmployee.rejected, (state) => {
+        state.loading = "failed"
+      })
   },
 });
 
