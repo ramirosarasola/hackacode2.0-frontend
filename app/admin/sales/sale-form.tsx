@@ -39,28 +39,6 @@ const SaleForm: React.FC<SaleFormProps> = ({ register }) => {
     label: service.name,
     value: service.id,
   }));
-
-  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedServices = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-  
-    console.log(selectedServices);
-    const formattedServices:any = [];
-    selectedServices.forEach((serviceId) => {
-      formattedServices.push({ id: serviceId });
-    });
-
-    console.log({formattedServices});
-    
-  
-    register('services', {
-      value: [...formattedServices],
-      required: true,
-    });
-  };
-  
   
 
   return (
@@ -83,7 +61,7 @@ const SaleForm: React.FC<SaleFormProps> = ({ register }) => {
         ))}
       </select>
       <select
-        onChange={handleServiceChange} // Maneja el cambio de selección
+        {...register('services', { required: true })}
         multiple
         className="sale-multiselect"
       >

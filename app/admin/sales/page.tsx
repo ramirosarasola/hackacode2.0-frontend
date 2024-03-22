@@ -25,8 +25,12 @@ export default function Sales() {
 
   // Manejador para enviar el formulario
   const onSubmit: SubmitHandler<ICreateSale> = (formData: ICreateSale) => {
-    console.log(formData);
-    dispatch(createSale(formData));
+    console.log(formData.services);
+    const processedData:any = {
+      ...formData,
+      services: formData.services ? formData.services.map((value) => ({ id: value })) : [],
+    }
+    dispatch(createSale(processedData));
     reset();
   };
 

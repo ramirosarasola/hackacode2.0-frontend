@@ -20,9 +20,7 @@ export default function EmployeePage() {
   useEffect(() => {
     dispatch(fetchEmployee(id));
     dispatch(fetchUsers());
-    if (employee) {
-      dispatch(getSalesByEmployee(employee?.id));
-    }
+    dispatch(getSalesByEmployee(id));
   }, [dispatch]);
 
   if (!employee) {
@@ -55,7 +53,8 @@ export default function EmployeePage() {
               </div>
               <h5>{`${employee?.name} ${employee?.lastname}`}</h5>
               <Tag className="border-[#5A81FA] border-[1.5px] rounded-full">
-                {employee?.position}
+                {/* {employee?.position} */}
+                <p>ramirosarasolaaaa</p>
               </Tag>
             </div>
 
