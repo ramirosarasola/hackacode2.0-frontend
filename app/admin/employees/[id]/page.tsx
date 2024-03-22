@@ -1,5 +1,5 @@
-'use client'
-import { useParams } from "next/navigation"
+"use client";
+import { useParams } from "next/navigation";
 import { Tag } from "@mui/icons-material";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -7,29 +7,29 @@ import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { fetchUsers } from "@/lib/slices/authSlice";
 import { getSalesByEmployee } from "@/lib/slices/saleSlice";
 
-export default function EmployeePage () {
-    const dispatch = useAppDispatch();
-    const  params  = useParams();
-    const id = params?.id;
-    const { users } = useAppSelector((state) => state.auth);
-    const { employee } = useAppSelector((state) => state.employee);
-    const { saleByEmployee } = useAppSelector(state => state.sale)
-    const userEmployee = users.find((user) => user.id === employee?.user_id) || null
-    
-    useEffect(() => {
-        dispatch(fetchEmployee(id));
-        dispatch(fetchUsers());
-        if(employee){
-          dispatch(getSalesByEmployee(employee?.id))
-        }
-    }, [id, employee, dispatch]);
+export default function EmployeePage() {
+  const dispatch = useAppDispatch();
+  const params = useParams();
+  const id = params?.id;
+  const { users } = useAppSelector((state) => state.auth);
+  const { employee } = useAppSelector((state) => state.employee);
+  const { saleByEmployee } = useAppSelector((state) => state.sale);
+  const userEmployee =
+    users.find((user) => user.id === employee?.user_id) || null;
 
-    if (!employee) {
-        <h1>Loading...</h1>
+  useEffect(() => {
+    dispatch(fetchEmployee(id));
+    dispatch(fetchUsers());
+    if (employee) {
+      dispatch(getSalesByEmployee(employee?.id));
     }
+  }, [dispatch]);
 
-    return (
-        
+  if (!employee) {
+    <h1>Loading...</h1>;
+  }
+
+  return (
     <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000]">
       {/* ProfileHeader */}
       <div className="profile-header h-[5rem] w-full border-b border-[#CDDEFF] text-[#000]">
@@ -206,5 +206,5 @@ export default function EmployeePage () {
         </div>
       </div>
     </section>
-    );
+  );
 }
