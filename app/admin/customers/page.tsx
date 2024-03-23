@@ -60,8 +60,8 @@ export default function Customers() {
       <Modal
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{ disabled: false, type: "default", hidden: true }}
-        cancelButtonProps={{ disabled: false, type: "default", hidden: true }}
+        okButtonProps={{hidden: true }}
+        cancelButtonProps={{hidden: true }}
       >
         <AddForm
           dynamicFormFields={dynamicFormFields}

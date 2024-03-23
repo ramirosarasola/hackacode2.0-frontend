@@ -42,7 +42,7 @@ export const registerUser = createAsyncThunk<
   User,
   any,
   { rejectValue: CustomError }
->("api/v1/auth/register", async ({ newUser }, { rejectWithValue }) => {
+>("api/v1/auth/register", async ( newUser , { rejectWithValue }) => {
   try {
     const config = {
       headers: {
