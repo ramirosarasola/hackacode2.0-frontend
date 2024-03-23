@@ -2,7 +2,7 @@ import { Employee } from "@/interface/types";
 import configApi from "@/utils/configApi";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { get } from "http";
 
 const apiUrl = configApi.apiUrl;
 
@@ -29,10 +29,7 @@ export const createEmployee = createAsyncThunk(
 export const fetchEmployee = createAsyncThunk(
   "employees/fetchEmployee",
   async (id: string) => {
-    const response = await axios.get(
-      `${apiUrl}:5000/api/v1/employees/${id}`,
-      
-    );
+    const response = await axios.get(`${apiUrl}:5000/api/v1/employees/${id}`);
     return response.data;
   }
 );
@@ -83,6 +80,15 @@ export const softDeleteEmployee = createAsyncThunk(
   }
 );
 
+// get employee by user ID
+export const fetchEmployeeByUserId = createAsyncThunk(
+  "employees/fetchEmployeeByUserId",
+  async (id: string) => {
+    const response = await axios.get(`${apiUrl}:5000/api/v1/employees/${id}`);
+    return response.data;
+  }
+);
+
 // Employee slice
 const employeeSlice = createSlice({
   name: "employees",
@@ -108,7 +114,9 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.employees = action.payload.filter((employee: Employee) => employee.is_active === true);
+        state.employees = action.payload.filter(
+          (employee: Employee) => employee.is_active === true
+        );
       })
       .addCase(fetchEmployees.rejected, (state) => {
         state.loading = "failed";
@@ -158,15 +166,25 @@ const employeeSlice = createSlice({
         state.loading = "failed";
       })
       .addCase(fetchEmployee.pending, (state) => {
-        state.loading = "loading"
+        state.loading = "loading";
       })
       .addCase(fetchEmployee.fulfilled, (state, action) => {
-        state.loading = "idle"
-        state.employee = action.payload.employee
+        state.loading = "idle";
+        state.employee = action.payload.employee;
       })
       .addCase(fetchEmployee.rejected, (state) => {
-        state.loading = "failed"
+        state.loading = "failed";
       })
+      .addCase(fetchEmployeeByUserId.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(fetchEmployeeByUserId.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.employee = action.payload.employee;
+      })
+      .addCase(fetchEmployeeByUserId.rejected, (state) => {
+        state.loading = "failed";
+      });
   },
 });
 
