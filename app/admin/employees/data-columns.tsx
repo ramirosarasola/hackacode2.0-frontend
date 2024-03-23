@@ -202,7 +202,7 @@ export const getTableColumns = (
                 <Edit className="text-yellow-400"/>
               </Button>
             ) : (
-              <Button type="dang" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
+              <Button type="default" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
                 <Save className="text-blue-500"/>
               </Button>
             )}

@@ -1,10 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState, CustomError, User } from "@/interface/types";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import configApi from "../../utils/configApi";
-import jwtDecode from "../../utils/setAuthToken";
 import setAuthToken from "../../utils/setAuthToken";
-import { AuthState, User, CustomError } from "@/interface/types";
-import { useAppStore } from "../hooks";
 
 const apiUrl = configApi.apiUrl;
 
@@ -17,13 +15,12 @@ const initialState: AuthState = {
   users: [],
 };
 
-
 export const loadUser = createAsyncThunk<
   User,
   void,
   { rejectValue: CustomError }
 >("auth/loadUser", async (_, { rejectWithValue }) => {
-  if(localStorage.token){
+  if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
   try {
@@ -42,7 +39,7 @@ export const registerUser = createAsyncThunk<
   User,
   any,
   { rejectValue: CustomError }
->("api/v1/auth/register", async ( newUser , { rejectWithValue }) => {
+>("api/v1/auth/register", async (newUser, { rejectWithValue }) => {
   try {
     const config = {
       headers: {
@@ -87,10 +84,10 @@ export const loginUser = createAsyncThunk<
       config
     );
     // Save token to local storage and set
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       localStorage.setItem("token", response.data.token);
     }
-    
+
     dispatch(loadUser());
     return response.data;
   } catch (error) {
@@ -102,13 +99,10 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-export const fetchUsers = createAsyncThunk(
-  "employees/fetchUsers",
-  async () => {
-    const response = await axios.get(`${apiUrl}:5000/api/v1/users`);
-    return response.data;
-  }
-);
+export const fetchUsers = createAsyncThunk("employees/fetchUsers", async () => {
+  const response = await axios.get(`${apiUrl}:5000/api/v1/users`);
+  return response.data;
+});
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -175,7 +169,7 @@ export const authSlice = createSlice({
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.isLoading = false;
-      })
+      });
   },
 });
 
