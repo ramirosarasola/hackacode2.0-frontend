@@ -8,7 +8,6 @@ import { createCustomer, fetchCustomers } from "@/lib/slices/customerSlice";
 import { Modal } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
 
 export default function Customers() {
@@ -60,8 +59,8 @@ export default function Customers() {
       <Modal
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{hidden: true }}
-        cancelButtonProps={{hidden: true }}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
       >
         <AddForm
           dynamicFormFields={dynamicFormFields}

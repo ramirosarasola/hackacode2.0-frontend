@@ -1,14 +1,17 @@
-'use client';
-import React, { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Modal } from "antd";
+"use client";
+import AddForm from "@/app/ui/add-form";
 import DataTable from "@/app/ui/tables/data-table";
+import { useCustomModal } from "@/hooks/useModal";
 import { Service } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { createService, fetchServices, updateService } from "@/lib/slices/serviceSlice";
+import {
+  createService,
+  fetchServices
+} from "@/lib/slices/serviceSlice";
+import { Modal } from "antd";
+import { ColumnsType } from "antd/es/table";
+import { useEffect } from "react";
 import { getTableColumns, useEditFunctions } from "./data-columns";
-import { useCustomModal } from "@/hooks/useModal";
-import ServiceForm from "./service-form";
 
 export default function Services() {
   // Estado y funciones del modal
@@ -23,34 +26,54 @@ export default function Services() {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  // Formulario y funciones de edición
-  const { register, handleSubmit, reset } = useForm<Service>();
-  const editFunctions = useEditFunctions(services, dispatch); 
+  const editFunctions = useEditFunctions(services, dispatch);
 
-  // Manejador para enviar el formulario
-  const onSubmit: SubmitHandler<Service> = (formData: Service) => {
-    console.log(formData);
-    dispatch(createService(formData));
-    reset();
-  };
+  const columns: ColumnsType<Service> | undefined =
+    getTableColumns(editFunctions); // replace getColumns() with your actual function or variable
+
+  if (columns !== undefined) {
+    // Now you can assign columns to a variable or property of type ColumnsType<any>
+    const anyColumns: ColumnsType<any> = columns;
+  }
+
+  const dynamicFormFields = [
+    {
+      name: "service_code",
+      label: "service_code",
+      type: "text",
+      required: true,
+    },
+    { name: "name", label: "name", type: "text", required: true },
+    { name: "description", label: "description", type: "text", required: true },
+    { name: "description", label: "description", type: "text", required: true },
+    { name: "price", label: "price", type: "text", required: true },
+    {
+      name: "service_date",
+      label: "service_date",
+      type: "date",
+      required: true,
+    },
+  ];
 
   return (
     <>
       <DataTable
         data={services}
-        columns={getTableColumns(editFunctions)}
+        columns={columns || []}
         add={"Add Service"}
         addFunction={showModal}
       />
       <Modal
-        title="New Service"
-        onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{ disabled: false, type: "default" }}
-        cancelButtonProps={{ disabled: false, type: "default" }}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
       >
-        <ServiceForm register={register} />
+        <AddForm
+          dynamicFormFields={dynamicFormFields}
+          createEntity={createService}
+          setShowModal={handleCancel}
+        />
       </Modal>
     </>
   );
