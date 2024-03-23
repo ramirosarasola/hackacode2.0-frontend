@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   name: string;
   email: string;
   password: string;
@@ -47,12 +48,12 @@ export interface Employee {
   updatedAt: string;
 }
 
-export interface RegisterEmployee extends Employee{
+export interface RegisterEmployee extends Employee {
   email: string;
   password: string;
 }
 
-export interface Customer{
+export interface Customer {
   id: number;
   user_id: number;
   name: string;
@@ -84,7 +85,7 @@ export interface Service {
   price: number;
 }
 
-export interface Sale{
+export interface Sale {
   sale_id: number;
   customer_id: number;
   employee_id: number;

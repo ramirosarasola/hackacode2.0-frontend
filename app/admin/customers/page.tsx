@@ -1,13 +1,14 @@
 "use client";
+import AddForm from "@/app/ui/add-form";
 import DataTable from "@/app/ui/tables/data-table";
 import { useCustomModal } from "@/hooks/useModal";
 import { Customer } from "@/interface/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { createCustomer, fetchCustomers } from "@/lib/slices/customerSlice";
 import { Modal } from "antd";
+import { ColumnsType } from "antd/es/table";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import CustomerForm from "./customer-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
 
 export default function Customers() {
@@ -24,32 +25,49 @@ export default function Customers() {
     dispatch(fetchCustomers());
   }, [dispatch]);
 
-  const { register, handleSubmit, reset } = useForm<Customer>();
+  const columns: ColumnsType<Customer> | undefined =
+    getTableColumns(editFunctions); // replace getColumns() with your actual function or variable
 
-  // Manejador para enviar el formulario
-  const onSubmit: SubmitHandler<Customer> = (formData: Customer) => {
-    console.log(formData);
-    dispatch(createCustomer(formData));
-    reset();
-  };
+  if (columns !== undefined) {
+    // Now you can assign columns to a variable or property of type ColumnsType<any>
+    const anyColumns: ColumnsType<any> = columns;
+  }
+
+  const dynamicFormFields = [
+    { name: "email", label: "email", type: "text", required: true },
+    { name: "name", label: "name", type: "text", required: true },
+    { name: "lastname", label: "lastname", type: "text", required: true },
+    { name: "address", label: "address", type: "text", required: true },
+    { name: "dni", label: "dni", type: "text", required: true },
+    {
+      name: "birthdate",
+      label: "birthdate",
+      type: "date",
+      required: true,
+    },
+    { name: "country", label: "country", type: "text", required: true },
+    { name: "phone", label: "phone", type: "text", required: true },
+  ];
 
   return (
     <>
       <DataTable
         data={customers}
-        columns={getTableColumns(editFunctions)}
+        columns={columns || []}
         add={"Add Customer"}
         addFunction={showModal}
       />
       <Modal
-        title="New Customer"
-        onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{ disabled: false, type: "default" }}
-        cancelButtonProps={{ disabled: false, type: "default" }}
+        okButtonProps={{ disabled: false, type: "default", hidden: true }}
+        cancelButtonProps={{ disabled: false, type: "default", hidden: true }}
       >
-        <CustomerForm register={register} />
+        <AddForm
+          dynamicFormFields={dynamicFormFields}
+          createEntity={createCustomer}
+          setShowModal={handleCancel}
+        />
       </Modal>
     </>
   );
