@@ -1,5 +1,6 @@
 import useFormatDate from "@/hooks/useFormatDate";
 import { Sale, Service } from "@/interface/types";
+import { useAppSelector } from "@/lib/hooks";
 import { fetchSales, softDeleteSale, updateSale } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
 import { Delete, Edit, Save } from "@mui/icons-material";
@@ -19,6 +20,8 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
   const [editingKey, setEditingKey] = useState(0);
   const date = new Date().toISOString();
   const formatDate = useFormatDate(date);
+  const { employees } = useAppSelector((state) => state.employee);
+  const { customers } = useAppSelector((state) => state.customer);
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -36,13 +39,11 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
   };
 
   const handleDelete = (id: number) => {
-    dispatch(softDeleteSale(id)).then((result:any) => {
+    dispatch(softDeleteSale(id)).then((result: any) => {
       if (result.payload.success) {
         dispatch(fetchSales());
       }
-      
-      
-    })
+    });
   };
 
   return {
@@ -53,6 +54,8 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
     handleEdit,
     handleSave,
     handleDelete,
+    employees,
+    customers,
   };
 };
 
@@ -67,6 +70,8 @@ export const getTableColumns = (
     handleEdit,
     handleSave,
     handleDelete,
+    employees,
+    customers,
   } = editFunctions;
 
   return [
@@ -80,11 +85,28 @@ export const getTableColumns = (
       title: "Employee",
       dataIndex: "employee_id",
       key: "employee_id",
+      // Need to render the employee name that matches the employee_id with id of the employees array.
+      render: (employee_id: number) => {
+        const employee = employees.find(
+          (employee: any) => employee.id === employee_id
+        );
+        return employee
+          ? `${employee?.name} ${employee?.lastname}`
+          : "Employee not found";
+      },
     },
     {
       title: "Customer",
       dataIndex: "customer_id",
       key: "customer_id",
+      render: (customer_id: number) => {
+        const customer = customers.find(
+          (customer: any) => customer.id === customer_id
+        );
+        return customer
+          ? `${customer?.name} ${customer?.lastname}`
+          : "Customer not found";
+      },
     },
     {
       title: "Profit",
@@ -109,16 +131,14 @@ export const getTableColumns = (
       title: "Services",
       dataIndex: "services",
       key: "services",
-      render: (services: Service[]) => services.map((service: Service) => service.name).join(", "),
+      render: (services: Service[]) =>
+        services.map((service: Service) => service.name).join(", "),
     },
     {
       title: "Action",
       key: "action",
       align: "center",
-      render: (
-        _,
-        { sale_id }
-      ) => (
+      render: (_, { sale_id }) => (
         <Space size="middle">
           {!editing ? (
             <Button
