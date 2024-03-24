@@ -38,13 +38,13 @@ export default function Employees() {
   ];
 
   // Manejador para enviar el formulario
-  const onSubmit: SubmitHandler<RegisterEmployee> = (
-    formData: RegisterEmployee
-  ) => {
-    console.log(formData);
-    dispatch(registerUser({ newUser: formData }));
-    reset();
-  };
+  // const onSubmit: SubmitHandler<RegisterEmployee> = (
+  //   formData: RegisterEmployee
+  // ) => {
+  //   console.log(formData);
+  //   dispatch(registerUser({ newUser: formData }));
+  //   reset();
+  // };
 
   return (
     <>

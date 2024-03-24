@@ -8,7 +8,13 @@ import { useEffect } from "react";
 import { createSale, fetchSales } from "@/lib/slices/saleSlice";
 import DataTable from "@/app/ui/tables/data-table";
 import { Modal } from "antd";
-import SaleForm, { ICreateSale } from "./sale-form";
+import SaleForm from "./sale-form";
+
+type ICreateSale = {
+  customer_id: number;
+  employee_id: number;
+  services: number[];
+};
 
 export default function Sales() {
   const dispatch = useAppDispatch();
@@ -16,20 +22,22 @@ export default function Sales() {
   const { open, showModal, handleCancel } = useCustomModal();
 
   const editFunctions = useEditFunctions(sales, dispatch);
-  
+
   useEffect(() => {
     dispatch(fetchSales());
   }, [dispatch]);
-  
+
   const { register, handleSubmit, reset } = useForm<ICreateSale>();
 
   // Manejador para enviar el formulario
   const onSubmit: SubmitHandler<ICreateSale> = (formData: ICreateSale) => {
     console.log(formData.services);
-    const processedData:any = {
+    const processedData: any = {
       ...formData,
-      services: formData.services ? formData.services.map((value) => ({ id: value })) : [],
-    }
+      services: formData.services
+        ? formData.services.map((value: any) => ({ id: value }))
+        : [],
+    };
     dispatch(createSale(processedData));
     reset();
   };
@@ -43,14 +51,12 @@ export default function Sales() {
         addFunction={showModal}
       />
       <Modal
-        title="New Sale"
-        onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{ disabled: false, type: "default" }}
-        cancelButtonProps={{ disabled: false, type: "default" }}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
       >
-        <SaleForm register={register} />
+        <SaleForm createEntity={createSale} setShowModal={handleCancel} />
       </Modal>
     </>
   );
