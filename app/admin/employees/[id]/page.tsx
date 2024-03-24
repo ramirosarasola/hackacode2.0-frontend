@@ -7,14 +7,15 @@ import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { fetchUsers } from "@/lib/slices/authSlice";
 import { getSalesByEmployee } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
+import { Employee } from "@/interface/types";
 
 export default function EmployeePage() {
   const dispatch = useAppDispatch();
   const params = useParams();
-  const id = params?.id;
+  const id: any = params?.id;
   const { users } = useAppSelector((state) => state.auth);
-  const { employee } = useAppSelector((state) => state.employee);
-  const { saleByEmployee } = useAppSelector((state) => state.sale);
+  const { employee }: any = useAppSelector((state) => state.employee);
+  const { saleByEmployee }: any = useAppSelector((state) => state.sale);
   const userEmployee =
     users.find((user) => user.id === employee?.user_id) || null;
 
@@ -54,7 +55,7 @@ export default function EmployeePage() {
               </div>
               <h5>{`${employee?.name} ${employee?.lastname}`}</h5>
               <Tag className="border-[#5A81FA] border-[1.5px] rounded-full">
-                 # {employee?.id}
+                # {employee?.id}
               </Tag>
             </div>
 
@@ -82,7 +83,7 @@ export default function EmployeePage() {
                 {/* User Information */}
                 <p>
                   <span className="text-[#A8B1CF] "> Date of Birth: </span>{" "}
-                  {formatDate( employee?.birthdate)}
+                  {formatDate(employee?.birthdate)}
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Nacionality: </span>{" "}

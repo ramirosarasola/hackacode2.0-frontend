@@ -1,20 +1,19 @@
 "use client";
 
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchEmployeeWithMoreSales, fetchSales } from "@/lib/slices/saleSlice";
+import { useEffect, useState } from "react";
+import { MainSaleChart } from "../ui/charts/main-sale-chart";
 import { SaleChart } from "../ui/charts/sale-chart";
 import DataCard from "../ui/home-data-card";
-import { fetchEmployeeWithMoreSales, fetchSales } from "@/lib/slices/saleSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect, useState } from "react";
-import { stat } from "fs";
-import { MainSaleChart } from "../ui/charts/main-sale-chart";
-import { log } from "console";
+import { Employee } from "@/interface/types";
 
 export default function Admin() {
   const dispatch = useAppDispatch();
-  const { employeeWithMoreSales } = useAppSelector((state) => state.sale);
+  const { employeeWithMoreSales }: any = useAppSelector((state) => state.sale);
   const { employees } = useAppSelector((state) => state.employee);
-  const { profitsByPayment } = useAppSelector((state) => state.sale);
-  const [employee, setEmployee] = useState(null);
+  const { profitsByPayment }: any = useAppSelector((state) => state.sale);
+  const [employee, setEmployee] = useState<any>(null);
 
   useEffect(() => {
     dispatch(fetchEmployeeWithMoreSales());
@@ -29,13 +28,13 @@ export default function Admin() {
   }, [employeeWithMoreSales]);
 
   const paymentMethodWithHighestProfit = profitsByPayment?.reduce(
-    (prev, current) => {
+    (prev: any, current: any) => {
       return prev.total_profit > current.total_profit ? prev : current;
     }
   ).payment_method;
 
   const paymentMethodWithMostSales = profitsByPayment?.reduce(
-    (prev, current) => {
+    (prev: any, current: any) => {
       return prev.total_sales > current.total_sales ? prev : current;
     }
   ).payment_method;
@@ -44,21 +43,21 @@ export default function Admin() {
   // const employee = employees.find(employee => employee?.id === employeeWithMoreSales?.employee_id)
 
   const highestProfit = profitsByPayment?.find(
-    (item) => item.payment_method === paymentMethodWithHighestProfit
+    (item: any) => item.payment_method === paymentMethodWithHighestProfit
   )?.total_profit;
   const mostSales = profitsByPayment?.find(
-    (item) => item.payment_method === paymentMethodWithMostSales
+    (item: any) => item.payment_method === paymentMethodWithMostSales
   )?.total_sales;
 
   const profitWithCurrency = `${highestProfit}$`;
   const eWalletProfit = profitsByPayment?.find(
-    (item) => item.payment_method === "ewallet"
+    (item: any) => item.payment_method === "ewallet"
   )?.total_profit;
   const creditProfit = profitsByPayment?.find(
-    (item) => item.payment_method === "credit"
+    (item: any) => item.payment_method === "credit"
   )?.total_profit;
   const debitProfit = profitsByPayment?.find(
-    (item) => item.payment_method === "debit"
+    (item: any) => item.payment_method === "debit"
   )?.total_profit;
   const eWalletProfitWithCurrency = `${parseFloat(eWalletProfit).toFixed(0)}$`;
   const creditProfitWithCurrency = `${parseFloat(creditProfit).toFixed(0)}$`;

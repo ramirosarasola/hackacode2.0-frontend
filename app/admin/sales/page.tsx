@@ -1,13 +1,13 @@
 "use client";
 
+import DataTable from "@/app/ui/tables/data-table";
 import { useCustomModal } from "@/hooks/useModal";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { createSale, fetchSales } from "@/lib/slices/saleSlice";
+import { Modal } from "antd";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getTableColumns, useEditFunctions } from "./data-column";
-import { useEffect } from "react";
-import { createSale, fetchSales } from "@/lib/slices/saleSlice";
-import DataTable from "@/app/ui/tables/data-table";
-import { Modal } from "antd";
 import SaleForm from "./sale-form";
 
 type ICreateSale = {
@@ -18,7 +18,7 @@ type ICreateSale = {
 
 export default function Sales() {
   const dispatch = useAppDispatch();
-  const { sales } = useAppSelector((state) => state.sale);
+  const { sales }: any = useAppSelector((state) => state.sale);
   const { open, showModal, handleCancel } = useCustomModal();
 
   const editFunctions = useEditFunctions(sales, dispatch);

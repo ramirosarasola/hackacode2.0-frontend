@@ -22,7 +22,7 @@ export const useEditFunctions = (services: Service[], dispatch: any) => {
     setEditing(true);
     setEditingKey(id);
     const record = services.find((item) => id === item.id || initialState);
-    if(record === undefined) return setEditedData(initialState);
+    if (record === undefined) return setEditedData(initialState);
     setEditedData(record);
   };
 
@@ -36,12 +36,30 @@ export const useEditFunctions = (services: Service[], dispatch: any) => {
     dispatch(deleteService(id));
   };
 
-  return { editing, editedData, editingKey,setEditedData ,handleEdit, handleSave, handleDelete };
+  return {
+    editing,
+    editedData,
+    editingKey,
+    setEditedData,
+    handleEdit,
+    handleSave,
+    handleDelete,
+  };
 };
 
 // Función para obtener las columnas de la tabla
-export const getTableColumns = (editFunctions: any): TableProps<Service>["columns"] => {
-  const { editing, editedData, editingKey, setEditedData ,handleEdit, handleSave, handleDelete } = editFunctions;
+export const getTableColumns = (
+  editFunctions: any
+): TableProps<Service>["columns"] => {
+  const {
+    editing,
+    editedData,
+    editingKey,
+    setEditedData,
+    handleEdit,
+    handleSave,
+    handleDelete,
+  } = editFunctions;
 
   return [
     {
@@ -139,17 +157,29 @@ export const getTableColumns = (editFunctions: any): TableProps<Service>["column
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (
-              <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
-                <Edit className="text-yellow-400"/>
-              </Button>
-            ) : (
-              <Button type="dang" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
-                <Save className="text-blue-500"/>
-              </Button>
-            )}
-            <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
-                <Delete className="text-red-500"/>
+            <Button
+              type="default"
+              onClick={() => handleEdit(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Edit className="text-yellow-400" />
             </Button>
+          ) : (
+            <Button
+              type="default"
+              onClick={() => handleSave(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Save className="text-blue-500" />
+            </Button>
+          )}
+          <Button
+            type="default"
+            onClick={() => handleDelete(record.id)}
+            className="border-none bg-transparent shadow-none"
+          >
+            <Delete className="text-red-500" />
+          </Button>
         </Space>
       ),
     },

@@ -1,14 +1,14 @@
-import { AreaChart } from "@tremor/react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect, useState } from "react";
 import { fetchSales } from "@/lib/slices/saleSlice";
 import { valueFormatter } from "@/utils/formatters";
+import { AreaChart } from "@tremor/react";
+import { useEffect, useState } from "react";
 
 export function SaleChart({ title }: { title: string }) {
   const { sales, loading } = useAppSelector((state) => state.sale);
   const [totalSales, setTotalSales] = useState(0);
   const dispatch = useAppDispatch();
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState<any>([]);
   useEffect(() => {
     dispatch(fetchSales());
   }, [dispatch]);
@@ -16,12 +16,12 @@ export function SaleChart({ title }: { title: string }) {
   useEffect(() => {
     if (sales.length > 0) {
       let total = 0;
-      const salesByMonth = sales.reduce((acc, sale) => {
+      const salesByMonth = sales.reduce((acc: any, sale: any) => {
         const month = new Date(sale.createdAt).toLocaleString("en-US", {
           month: "long",
         });
         const totalPrice = sale.services.reduce(
-          (sum, service) => sum + parseFloat(service.price),
+          (sum: any, service: any) => sum + parseFloat(service.price),
           0
         );
         acc[month] = (acc[month] || 0) + totalPrice;

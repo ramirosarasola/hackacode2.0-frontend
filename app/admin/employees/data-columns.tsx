@@ -1,6 +1,10 @@
 import UserProfile from "@/app/ui/user-profile";
 import { Employee } from "@/interface/types";
-import { fetchEmployees, softDeleteEmployee, updateEmployee } from "@/lib/slices/employeeSlice";
+import {
+  fetchEmployees,
+  softDeleteEmployee,
+  updateEmployee,
+} from "@/lib/slices/employeeSlice";
 import { formatDate } from "@/utils/formatters";
 import { Button, Input, Space, TableProps, Tag } from "antd";
 import { useState } from "react";
@@ -24,7 +28,8 @@ export const useEditFunctions = (employees: Employee[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState(initialState);
   const [editingKey, setEditingKey] = useState(0);
-  const formatDate = useFormatDate();
+  const date = new Date();
+  const formatDate = useFormatDate(date.toISOString());
 
   const handleEdit = (id: number) => {
     setEditing(true);
@@ -143,7 +148,7 @@ export const getTableColumns = (
             }
           />
         ) : (
-        formatDate(text)
+          formatDate(text)
         );
       },
     },
@@ -198,17 +203,29 @@ export const getTableColumns = (
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (
-              <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
-                <Edit className="text-yellow-400"/>
-              </Button>
-            ) : (
-              <Button type="default" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
-                <Save className="text-blue-500"/>
-              </Button>
-            )}
-            <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
-                <Delete className="text-red-500"/>
+            <Button
+              type="default"
+              onClick={() => handleEdit(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Edit className="text-yellow-400" />
             </Button>
+          ) : (
+            <Button
+              type="default"
+              onClick={() => handleSave(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Save className="text-blue-500" />
+            </Button>
+          )}
+          <Button
+            type="default"
+            onClick={() => handleDelete(record.id)}
+            className="border-none bg-transparent shadow-none"
+          >
+            <Delete className="text-red-500" />
+          </Button>
         </Space>
       ),
     },

@@ -8,7 +8,7 @@ const DataCard = ({
 }: {
   title: string;
   date: string;
-  value: number;
+  value: any;
   percentage: number;
 }) => {
   return (

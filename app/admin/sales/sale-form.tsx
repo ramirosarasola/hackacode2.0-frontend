@@ -17,7 +17,7 @@ const SaleForm = ({
   const dispatch = useAppDispatch();
   const { services } = useAppSelector((state) => state.service);
   const { customers } = useAppSelector((state) => state.customer);
-  const { userEmployee } = useAppSelector((state) => state.employee);
+  const { userEmployee }: any = useAppSelector((state) => state.employee);
   const employeeId = userEmployee?.id;
   const employeeName = `${userEmployee?.name} ${userEmployee?.lastname}`;
   const [servicesAmount, setServicesAmount] = useState([1]);
@@ -63,7 +63,7 @@ const SaleForm = ({
   };
 
   const handleServiceChange = (e: any, index: number) => {
-    const newServiceValues = [...serviceValues];
+    const newServiceValues: any = [...serviceValues];
     newServiceValues[index] = e.target.value;
     setServiceValues(newServiceValues);
   };
