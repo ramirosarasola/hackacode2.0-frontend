@@ -124,7 +124,7 @@ const SaleForm = ({
           onChange={handleChange}
           value={formData.customer_id}
         >
-          <option value="defult" className="text-gray-400">
+          <option value="defult" className="text-gray-400" id="auth-gray">
             Select a customer
           </option>
           {customers.map((customer: any) => (
@@ -148,7 +148,7 @@ const SaleForm = ({
           onChange={handleChange}
           value={formData.payment_method}
         >
-          <option value="defult" className="text-gray-400" hidden>
+          <option value="defult" className="text-gray-400" id="auth-gray" hidden>
             Select a payment method
           </option>
           {paymentMethods.map((paymentMethod: any, index) => (

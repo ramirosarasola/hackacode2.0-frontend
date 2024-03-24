@@ -4,10 +4,11 @@ import { useAppSelector } from "@/lib/hooks";
 import { fetchSales, softDeleteSale, updateSale } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
 import { Delete, Edit, Save } from "@mui/icons-material";
-import { Button, Space, TableProps } from "antd";
+import { Button, Input, Space, TableProps } from "antd";
 import { useState } from "react";
 
 export type UpdateSale = {
+  id: 0;
   sale_id: 0;
   customer_id: 0;
   employee_id: 0;
@@ -35,7 +36,8 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
   const handleSave = (id: number) => {
     setEditing(false);
     setEditingKey(0);
-    dispatch(updateSale({ id, data: editedData }));
+    // dispatch(updateSale({ id, data: editedData }));''
+    console.log(editedData);
   };
 
   const handleDelete = (id: number) => {
@@ -86,13 +88,31 @@ export const getTableColumns = (
       dataIndex: "employee_id",
       key: "employee_id",
       // Need to render the employee name that matches the employee_id with id of the employees array.
-      render: (employee_id: number) => {
-        const employee = employees.find(
-          (employee: any) => employee.id === employee_id
+      render: (_, record) => {
+        const editable = record.sale_id === editingKey;
+        const employee_name = employees.find(
+          (employee: any) => employee.id === record.employee_id
+        )?.name
+        return editable ? (
+          <>
+            <Input
+              value={editedData.employee_id}
+              onChange={(e) =>
+                setEditedData({ ...editedData, employee_id: e.target.value })
+              }
+            />
+          </>
+        ) : (
+          <>
+            {employee_name}
+          </>
         );
-        return employee
-          ? `${employee?.name} ${employee?.lastname}`
-          : "Employee not found";
+        // const employee = employees.find(
+        //   (employee: any) => employee.id === employee_id
+        // );
+        // return employee
+        //   ? `${employee?.name} ${employee?.lastname}`
+        //   : "Employee not found";
       },
     },
     {
