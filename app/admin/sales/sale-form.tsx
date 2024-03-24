@@ -2,7 +2,7 @@ import AuthFormTitle from "@/app/ui/auth-form-title";
 import { AuthInput } from "@/app/ui/auth-input";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { ConfigProvider } from "antd";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -18,50 +18,47 @@ const SaleForm = ({
   const { services } = useAppSelector((state) => state.service);
   const { customers } = useAppSelector((state) => state.customer);
   const { userEmployee } = useAppSelector((state) => state.employee);
-  const employeeId = userEmployee?.id
-  const employeeName = `${userEmployee?.name} ${userEmployee?.lastname}`
+  const employeeId = userEmployee?.id;
+  const employeeName = `${userEmployee?.name} ${userEmployee?.lastname}`;
   const [servicesAmount, setServicesAmount] = useState([1]);
   const [serviceValues, setServiceValues] = useState([]);
-  
-  const sale = {
+
+  const initialState = {
     customer_id: "",
     employee_id: employeeId,
     payment_method: "",
     services: [],
-  }
-  
-  const [formData, setFormData] = useState(sale);
+  };
+
+  const [formData, setFormData] = useState(initialState);
   const paymentMethods = [
     {
-      value:'ewallet',
-      label: 'eWallet'
+      value: "ewallet",
+      label: "eWallet",
     },
     {
-      value: 'cash',
-      label: 'Cash'
+      value: "cash",
+      label: "Cash",
     },
     {
-      value: 'debit',
-      label: 'Debit'
+      value: "debit",
+      label: "Debit",
     },
     {
-      value: 'credit',
-      label: 'Credit'
+      value: "credit",
+      label: "Credit",
     },
     {
-      value: 'transfer',
-      label: 'Transfer'
+      value: "transfer",
+      label: "Transfer",
     },
-    
   ];
 
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: value
-    }));
+    setFormData({ ...formData, [name]: value });
     console.log(formData);
   };
 
@@ -81,13 +78,19 @@ const SaleForm = ({
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const services = serviceValues.map((value) => ({ id: value }));
-      
+    const selectedServices = serviceValues.map((value) => ({ id: value }));
+
     console.log(formData);
-   
-    dispatch(createEntity(formData));
-   };
-   
+    const processedData = {
+      ...formData,
+      services: selectedServices,
+    };
+
+    dispatch(createEntity(processedData));
+    setShowModal(false);
+    setFormData(initialState);
+    setServiceValues([]);
+  };
 
   const handleDeleteServiceSelect = (e: any, indexToRemove: number) => {
     e.preventDefault();
@@ -101,7 +104,6 @@ const SaleForm = ({
     setServicesAmount(newServicesAmount);
     setServiceValues(newServiceValues);
   };
-   
 
   return (
     <section className="register gap-8 flex flex-col items-center justify-between w-full md:w-3/4 mx-auto">
@@ -115,23 +117,24 @@ const SaleForm = ({
         }}
       ></ConfigProvider>
 
-      <form className="flex flex-col items-center justify-center gap-8 w-full">        
-      <select 
-        className="auth-input"
-        name="customer_id"
-        onChange={handleChange}
-      >
-        {customers.map((customer: any) => (
-          <option 
-            key={customer.id} 
-            value={customer.id}
-          >
-            {customer.name} {customer.lastname}
-          </option>
-        ))}
-      </select>
-        <input
+      <form className="flex flex-col items-center justify-center gap-8 w-full">
+        <select
           className="auth-input"
+          name="customer_id"
+          onChange={handleChange}
+          value={formData.customer_id}
+        >
+          <option value="defult" className="text-gray-400">
+            Select a customer
+          </option>
+          {customers.map((customer: any) => (
+            <option key={customer.id} value={customer.id}>
+              {customer.name} {customer.lastname}
+            </option>
+          ))}
+        </select>
+        <input
+          className="auth-input text-gray-400"
           type="text"
           name="employee_id"
           placeholder={employeeName}
@@ -139,16 +142,20 @@ const SaleForm = ({
           disabled={true}
           onChange={handleChange}
         />
-        <select 
-        className="auth-input"
-        onChange={handleChange}
+        <select
+          className="auth-input"
+          name="payment_method"
+          onChange={handleChange}
+          value={formData.payment_method}
         >
-          { paymentMethods.map((paymentMethod: any, index) => (
-            <option 
-            key={index} 
-            value={paymentMethod.value}>{paymentMethod.label}
+          <option value="defult" className="text-gray-400" hidden>
+            Select a payment method
+          </option>
+          {paymentMethods.map((paymentMethod: any, index) => (
+            <option key={index} value={paymentMethod.value}>
+              {paymentMethod.label}
             </option>
-          )) }
+          ))}
         </select>
         {servicesAmount.map((_, index) => (
           <div className="w-full flex gap-2" key={index}>
