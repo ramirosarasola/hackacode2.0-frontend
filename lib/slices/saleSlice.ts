@@ -1,22 +1,24 @@
 import { UpdateSale } from "@/app/admin/sales/data-column";
-import { ICreateSale } from "@/app/admin/sales/sale-form";
 import { Sale } from "@/interface/types";
 import configApi from "@/utils/configApi";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const apiUrl = configApi.apiUrl;
 console.log(apiUrl);
 
+type ICreateSale = {
+  employee_id: number;
+  customer_id: number;
+  payment_method: string;
+  services: [];
+};
 
 // Async action for fetching customers
-export const fetchSales = createAsyncThunk(
-  "sales/fetchSales",
-  async () => {
-    const response = await axios.get(`${apiUrl}:5000/api/v1/sales`);
-    return response.data;
-  }
-);
+export const fetchSales = createAsyncThunk("sales/fetchSales", async () => {
+  const response = await axios.get(`${apiUrl}:5000/api/v1/sales`);
+  return response.data;
+});
 // Async action for fetching sales with details
 export const fetchSalesWithDetails = createAsyncThunk(
   "sales/fetchSalesWithDetails",
@@ -37,7 +39,9 @@ export const createSale = createAsyncThunk(
 export const fetchEmployeeWithMoreSales = createAsyncThunk(
   "sales/fetchEmployeeWithMoreSales",
   async () => {
-    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/most-sales/2024`);
+    const response = await axios.get(
+      `${apiUrl}:5000/api/v1/sales/most-sales/2024`
+    );
     return response.data;
   }
 );
@@ -45,7 +49,9 @@ export const fetchEmployeeWithMoreSales = createAsyncThunk(
 export const getSalesByEmployee = createAsyncThunk(
   "sales/getSalesByEmployee",
   async (employeeId: number) => {
-    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/employee/${employeeId}`);
+    const response = await axios.get(
+      `${apiUrl}:5000/api/v1/sales/employee/${employeeId}`
+    );
     return response.data;
   }
 );
@@ -124,7 +130,7 @@ const saleSlice = createSlice({
         state.employeeWithMoreSales = action.payload.result;
       })
       .addCase(fetchEmployeeWithMoreSales.rejected, (state) => {
-        state.loading = "failed"
+        state.loading = "failed";
       })
       .addCase(getSalesByEmployee.pending, (state) => {
         state.loading = "loading";
@@ -134,7 +140,7 @@ const saleSlice = createSlice({
         state.saleByEmployee = action.payload.result;
       })
       .addCase(getSalesByEmployee.rejected, (state) => {
-        state.loading = "failed"
+        state.loading = "failed";
       })
       .addCase(updateSale.pending, (state) => {
         state.loading = "loading";

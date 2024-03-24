@@ -24,7 +24,7 @@ const AddForm = ({
   } = useForm({
     mode: "onBlur",
     defaultValues: dynamicFormFields.reduce(
-      (acc, field) => ({ ...acc, [field.name]: "" }),
+      (acc: any, field: any) => ({ ...acc, [field.name]: "" }),
       {}
     ),
   });
@@ -41,7 +41,8 @@ const AddForm = ({
 
     dispatch(createEntity(formData)).then((result: any) => {
       if (!result.payload) {
-        alert("Error creating entity");}
+        alert("Error creating entity");
+      }
       reset();
       setShowModal(false);
     });

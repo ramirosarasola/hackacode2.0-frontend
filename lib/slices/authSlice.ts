@@ -24,7 +24,7 @@ export const loadUser = createAsyncThunk<
     setAuthToken(localStorage.token);
   }
   try {
-    const res = await axios.get<User>(`${apiUrl}:5000/api/v1/auth/me`);
+    const res = await axios.get<any>(`${apiUrl}:5000/api/v1/auth/me`);
     return res.data.data;
   } catch (error) {
     return rejectWithValue({
