@@ -1,4 +1,5 @@
 "use client";
+import AddForm from "@/app/ui/add-form";
 import DataTable from "@/app/ui/tables/data-table";
 import { useCustomModal } from "@/hooks/useModal";
 import { RegisterEmployee } from "@/interface/types";
@@ -9,8 +10,6 @@ import { Modal } from "antd";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getTableColumns, useEditFunctions } from "./data-columns";
-import EmployeeForm from "./employee-form";
-import RegisterForm from "@/app/(auth)/sign-up/register-form";
 
 export default function Employees() {
   const dispatch = useAppDispatch();
@@ -23,6 +22,20 @@ export default function Employees() {
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
+
+  const dynamicFormFields = [
+    { name: "email", label: "email", type: "text", required: true },
+    { name: "password", label: "password", type: "password", required: true },
+    { name: "name", label: "name", type: "text", required: true },
+    { name: "lastname", label: "lastname", type: "text", required: true },
+    { name: "address", label: "address", type: "text", required: true },
+    { name: "dni", label: "dni", type: "text", required: true },
+    { name: "birthdate", label: "birthdate", type: "date", required: true },
+    { name: "country", label: "country", type: "text", required: true },
+    { name: "phone", label: "phone", type: "text", required: true },
+    { name: "position", label: "position", type: "text", required: true },
+    { name: "salary", label: "salary", type: "number", required: true },
+  ];
 
   // Manejador para enviar el formulario
   const onSubmit: SubmitHandler<RegisterEmployee> = (
@@ -42,15 +55,16 @@ export default function Employees() {
         addFunction={showModal}
       />
       <Modal
-        title="New Employee"
-        onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
         open={open}
-        okButtonProps={{ disabled: false, type: "default" }}
-        cancelButtonProps={{ disabled: false, type: "default" }}
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
       >
-        {/* <EmployeeForm register={register} /> */}
-        <RegisterForm></RegisterForm>
+        <AddForm
+          dynamicFormFields={dynamicFormFields}
+          createEntity={registerUser}
+          setShowModal={handleCancel}
+        />
       </Modal>
     </>
   );

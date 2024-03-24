@@ -1,9 +1,13 @@
+import { UpdateSale } from "@/app/admin/sales/data-column";
 import { ICreateSale } from "@/app/admin/sales/sale-form";
+import { Sale } from "@/interface/types";
 import configApi from "@/utils/configApi";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const apiUrl = configApi.apiUrl;
+console.log(apiUrl);
+
 
 // Async action for fetching customers
 export const fetchSales = createAsyncThunk(
@@ -46,11 +50,29 @@ export const getSalesByEmployee = createAsyncThunk(
   }
 );
 
+// Async action for updating a sale
+export const updateSale = createAsyncThunk(
+  "sales/updateSale",
+  async ({ id, data }: { id: number; data: UpdateSale | null }) => {
+    const response = await axios.put(`${apiUrl}:5000/api/v1/sales/${id}`, data);
+    return response.data;
+  }
+);
+
+//soft delete for sale;
+export const softDeleteSale = createAsyncThunk(
+  "sales/softDeleteSale",
+  async (id: number) => {
+    const response = await axios.delete(`${apiUrl}:5000/api/v1/sales/${id}`);
+    return response.data;
+  }
+);
+
 // Sale slice
 const saleSlice = createSlice({
   name: "sales",
   initialState: {
-    sales: [],
+    sales: [] as Sale[],
     totalSalesCount: 0,
     employeeWithMoreSales: null,
     saleByEmployee: [],
@@ -114,6 +136,27 @@ const saleSlice = createSlice({
       .addCase(getSalesByEmployee.rejected, (state) => {
         state.loading = "failed"
       })
+      .addCase(updateSale.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(updateSale.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.sales = state.sales.map((sale) =>
+          sale.id === action.payload.sale.id ? action.payload.sale : sale
+        );
+      })
+      .addCase(updateSale.rejected, (state) => {
+        state.loading = "failed";
+      })
+      .addCase(softDeleteSale.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(softDeleteSale.fulfilled, (state, action) => {
+        state.loading = "idle";
+      })
+      .addCase(softDeleteSale.rejected, (state) => {
+        state.loading = "failed";
+      });
   },
 });
 

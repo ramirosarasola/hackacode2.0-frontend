@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { fetchUsers } from "@/lib/slices/authSlice";
 import { getSalesByEmployee } from "@/lib/slices/saleSlice";
+import { formatDate } from "@/utils/formatters";
 
 export default function EmployeePage() {
   const dispatch = useAppDispatch();
@@ -81,7 +82,7 @@ export default function EmployeePage() {
                 {/* User Information */}
                 <p>
                   <span className="text-[#A8B1CF] "> Date of Birth: </span>{" "}
-                  {employee?.birthdate}
+                  {formatDate( employee?.birthdate)}
                 </p>
                 <p>
                   <span className="text-[#A8B1CF] "> Nacionality: </span>{" "}
