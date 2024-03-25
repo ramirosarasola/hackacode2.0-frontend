@@ -29,8 +29,10 @@ export const AuthInput = <T extends FieldValues>({
       className="auth-input"
       {...register(label, { required, ...validation })}
     />
-    {errors[label] && (
-      <span className="error-message">{errors[label].message}</span>
+    {
+      errors &&
+      errors[label] && (
+        <span className="error-message">{errors[label]?.message}</span>
     )}
   </label>
 );

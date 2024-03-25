@@ -2,7 +2,7 @@ import AuthFormTitle from "@/app/ui/auth-form-title";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { ConfigProvider, Input } from "antd";
+import { ConfigProvider, Input, message } from "antd";
 import { useState } from "react";
 
 const SaleForm = ({
@@ -57,7 +57,6 @@ const SaleForm = ({
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleServiceChange = (e: any, index: number) => {
@@ -84,10 +83,14 @@ const SaleForm = ({
       services: selectedServices,
     };
 
-    dispatch(createEntity(processedData));
-    setShowModal(false);
-    setFormData(initialState);
-    setServiceValues([]);
+    dispatch(createEntity(processedData)).then((result: any) => {
+      if (result.payload) {
+        setShowModal(false);
+        setFormData(initialState);
+        setServiceValues([]);
+        message.success("Sale created successfully");
+      }
+    })
   };
 
   const handleDeleteServiceselect = (e: any, indexToRemove: number) => {
