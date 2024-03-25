@@ -201,15 +201,15 @@ export const getTableColumns = (
         <Space size="middle">
           {!editing ? (
               <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
-                <Edit className="text-yellow-400"/>
+                <Edit className="text-[##33363F]"/>
               </Button>
             ) : (
               <Button type="default" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
-                <Save className="text-blue-500"/>
+                <Save className="text-[##33363F]"/>
               </Button>
             )}
             <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
-                <Delete className="text-red-500"/>
+                <Delete className="text-[##33363F]"/>
             </Button>
         </Space>
       ),

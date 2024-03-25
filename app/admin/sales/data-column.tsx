@@ -139,7 +139,7 @@ export const getTableColumns = (
           >
             {employees.map((employee: any) => (
               <Select.Option key={employee.id} value={employee.id}>
-                {employee.name}
+                {employee.name} {employee.lastname}
               </Select.Option>
             ))}
           </Select>
@@ -236,7 +236,6 @@ export const getTableColumns = (
       {
         const editable = record.sale_id === editingKey;
         const services = record.services.map((service: any) => service?.service_id);
-        console.log(services);
         
         return editable ? (
           <Select
@@ -270,7 +269,7 @@ export const getTableColumns = (
               onClick={() => handleEdit(sale_id)}
               className="border-none bg-transparent shadow-none"
             >
-              <Edit className="text-yellow-400" />
+              <Edit className="text-[##33363F]" />
             </Button>
           ) : (
             <Button
@@ -278,7 +277,7 @@ export const getTableColumns = (
               onClick={() => handleSave(sale_id)}
               className="border-none bg-transparent shadow-none"
             >
-              <Save className="text-blue-500" />
+              <Save className="text-[##33363F]" />
             </Button>
           )}
           <Button
@@ -286,7 +285,7 @@ export const getTableColumns = (
             onClick={() => handleDelete(sale_id)}
             className="border-none bg-transparent shadow-none"
           >
-            <Delete className="text-red-500" />
+            <Delete className="text-[##33363F]" />
           </Button>
         </Space>
       ),
