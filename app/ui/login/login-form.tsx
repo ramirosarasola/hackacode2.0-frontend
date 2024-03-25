@@ -6,6 +6,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
+import { message } from "antd";
 
 interface IFormValues {
   email: string;
@@ -18,10 +19,10 @@ const LoginForm = () => {
   const { register, handleSubmit, reset } = useForm<IFormValues>();
 
   const onSubmit: SubmitHandler<IFormValues> = ({ email, password }) => {
-    dispatch(loginUser({ email, password })).then((result) => {
-      console.log(result.payload);
-
-      if (result.payload) {
+    dispatch(loginUser({ email, password })).then((result: any) => {
+      if (!result.payload.success) {
+        message.error("Invalid email or password");
+      } else {
         router.push("/admin");
       }
     });
@@ -41,7 +42,10 @@ const LoginForm = () => {
           type="email"
           label="email"
           register={register}
-          required placeholder={"Email"}/>
+          required
+          placeholder={"Email"}
+          errors={"Email not found"}
+        />
         <AuthInput
           autoComplete="current-password"
           type="password"
@@ -49,6 +53,7 @@ const LoginForm = () => {
           register={register}
           required
           placeholder={"Password"}
+          errors={"Invalid password"}
         />
       </form>
 
@@ -59,12 +64,6 @@ const LoginForm = () => {
         >
           Login
         </button>
-        <p className="text-[#A8B1CF]">
-          Don´t have an account?{" "}
-          <Link href="/sign-up" className="text-blue-500 underline font-semibold">
-            Sign Up
-          </Link>
-        </p>
       </div>
     </section>
   );

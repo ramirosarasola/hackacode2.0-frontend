@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Button, Input, Space, message } from "antd";
+import { Button, Input, Modal, Space, message } from "antd";
 import { Customer } from "@/interface/types";
-import { deleteCustomer, updateCustomer } from "@/lib/slices/customerSlice";
+import {
+  fetchCustomers,
+  softDeleteCustomer,
+  updateCustomer,
+} from "@/lib/slices/customerSlice";
 import { TableProps } from "antd";
 import { Edit, Delete, Save } from "@mui/icons-material";
 import useFormatDate from "@/hooks/useFormatDate";
 import { formatDate } from "@/utils/formatters";
-
 
 const initialState = {
   name: "",
@@ -29,24 +32,57 @@ export const useEditFunctions = (customers: Customer[], dispatch: any) => {
     setEditing(true);
     setEditingKey(id);
     const record = customers.find((item) => id === item.id || initialState);
-    if(record === undefined) return setEditedData(initialState);
+    if (record === undefined) return setEditedData(initialState);
     setEditedData(record);
   };
 
   const handleSave = (id: number) => {
-    setEditing(false);
-    setEditingKey(0);
-    dispatch(updateCustomer({ id, data: editedData })).then((result: any) => {
-      if (result.payload.success) {
-        message.success('Customer updated successfully.');
-      } else {
-        message.error('Failed to update customer. Please try again.');
-      }
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Save",
+      content: "Are you sure you want to save the changes?",
+      onOk() {
+        setEditing(false);
+        setEditingKey(0);
+        dispatch(updateCustomer({ id, data: editedData })).then(
+          (result: any) => {
+            if (result.payload) {
+              message.success("Customer updated successfully.");
+            } else {
+              message.error("Failed to update customer. Please try again.");
+            }
+          }
+        );
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
     });
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteCustomer(id));
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Delete",
+      content: "Are you sure you want to delete this customer?",
+      onOk() {
+        dispatch(softDeleteCustomer(id)).then((result: any) => {
+          if (result.payload) {
+            dispatch(fetchCustomers());
+            message.success("Customer deleted successfully.");
+          } else {
+            message.error("Failed to delete customer. Please try again.");
+          }
+        });
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
+    });
   };
 
   return {
@@ -200,17 +236,29 @@ export const getTableColumns = (
       render: (_, record) => (
         <Space size="middle">
           {!editing ? (
-              <Button type="default" onClick={() => handleEdit(record.id)} className="border-none bg-transparent shadow-none">
-                <Edit className="text-[##33363F]"/>
-              </Button>
-            ) : (
-              <Button type="default" onClick={() => handleSave(record.id)} className="border-none bg-transparent shadow-none">
-                <Save className="text-[##33363F]"/>
-              </Button>
-            )}
-            <Button type="default" onClick={() => handleDelete(record.id)} className="border-none bg-transparent shadow-none">
-                <Delete className="text-[##33363F]"/>
+            <Button
+              type="default"
+              onClick={() => handleEdit(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Edit className="text-[##33363F]" />
             </Button>
+          ) : (
+            <Button
+              type="default"
+              onClick={() => handleSave(record.id)}
+              className="border-none bg-transparent shadow-none"
+            >
+              <Save className="text-[##33363F]" />
+            </Button>
+          )}
+          <Button
+            type="default"
+            onClick={() => handleDelete(record.id)}
+            className="border-none bg-transparent shadow-none"
+          >
+            <Delete className="text-[##33363F]" />
+          </Button>
         </Space>
       ),
     },

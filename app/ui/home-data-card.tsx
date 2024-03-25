@@ -24,7 +24,7 @@ const DataCard = ({
         </p>
       </div>
       <div className="card-body flex justify-between items-center">
-        <p className="card-value text-[40px] font-[500] text-[#5A81FA]">
+        <p className="card-value text-[32px] font-[500] text-[#5A81FA]">
           {value}
         </p>
         <Tag color={color}>{` ${simbol}${percentage}%`}</Tag>

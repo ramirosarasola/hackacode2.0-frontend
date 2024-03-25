@@ -1,16 +1,14 @@
 "use client";
-import { logout } from "@/lib/slices/authSlice";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import AuthFormTitle from "./auth-form-title";
-import { menuItems } from "../(auth)/routes";
-import { useRouter } from "next/navigation";
-import LogoutIconComponent from "./icons/logout-icon";
-import ProfileIconComponent from "../ui/icons/profile-icon";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { logout } from "@/lib/slices/authSlice";
+import { fetchEmployeeById } from "@/lib/slices/employeeSlice";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { fetchEmployeeById, fetchEmployees } from "@/lib/slices/employeeSlice";
-import { User } from "@/interface/types";
+import { menuItems } from "../(auth)/routes";
+import ProfileIconComponent from "../ui/icons/profile-icon";
+import AuthFormTitle from "./auth-form-title";
+import LogoutIconComponent from "./icons/logout-icon";
 
 export default function Sidebar() {
   const url = usePathname();
@@ -30,7 +28,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="admin-sidebar min-h-[100vh] min-w-[250px] max-w-[350px] w-[20vw] pt-[3vh] bg-white flex flex-col items-center justify-start gap-10 box-border">
+    <div className="admin-sidebar min-h-[100vh] min-w-[250px] max-w-[350px] w-[20vw] pt-[3vh] bg-white flex flex-col items-center justify-start gap-10 box-border fixed">
       <AuthFormTitle size={"sm"} />
       <div className="nav h-full w-full text-black">
         <ul className="flex flex-col gap-8 w-full">

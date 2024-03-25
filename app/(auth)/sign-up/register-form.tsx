@@ -84,6 +84,7 @@ const RegisterForm = () => {
                 required
                 type={""}
                 autoComplete={"name"}
+                errors={undefined}
               />
               <AuthInput
                 placeholder="Enter lastname"
@@ -92,6 +93,7 @@ const RegisterForm = () => {
                 required
                 type={""}
                 autoComplete={"lastname"}
+                errors={undefined}
               />
             </div>
             <AuthInput
@@ -101,6 +103,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"email"}
+              errors={undefined}
             />
             <input hidden name="username" autoComplete="username" />
             <AuthInput
@@ -110,6 +113,7 @@ const RegisterForm = () => {
               required
               type={"password"}
               autoComplete={"new-password"}
+              errors={undefined}
             />
             <AuthInput
               placeholder="Confirm password"
@@ -118,6 +122,7 @@ const RegisterForm = () => {
               required
               type={"password"}
               autoComplete={"new-password"}
+              errors={undefined}
             />
           </>
         ) : currentStep === 1 ? (
@@ -129,6 +134,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"dni"}
+              errors={undefined}
             />
             <AuthInput
               placeholder="Enter address"
@@ -137,6 +143,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"address"}
+              errors={undefined}
             />
             <AuthInput
               placeholder="Enter country"
@@ -145,6 +152,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"country"}
+              errors={undefined}
             />
             <AuthInput
               placeholder="Enter birthdate"
@@ -153,6 +161,7 @@ const RegisterForm = () => {
               required
               type={"date"}
               autoComplete={"birthdate"}
+              errors={undefined}
             />
           </>
         ) : (
@@ -164,6 +173,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"phone"}
+              errors={undefined}
             />
             <AuthInput
               placeholder="Enter salary"
@@ -172,6 +182,7 @@ const RegisterForm = () => {
               required
               type={"number"}
               autoComplete={"salary"}
+              errors={undefined}
             />
 
             <AuthInput
@@ -181,6 +192,7 @@ const RegisterForm = () => {
               required
               type={""}
               autoComplete={"position"}
+              errors={undefined}
             />
           </>
         )}

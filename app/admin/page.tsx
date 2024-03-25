@@ -49,7 +49,7 @@ export default function Admin() {
     (item: any) => item.payment_method === paymentMethodWithMostSales
   )?.total_sales;
 
-  const profitWithCurrency = `${highestProfit}$`;
+  const profitWithCurrency = `$${highestProfit}`;
   const eWalletProfit = profitsByPayment?.find(
     (item: any) => item.payment_method === "ewallet"
   )?.total_profit;
@@ -59,9 +59,9 @@ export default function Admin() {
   const debitProfit = profitsByPayment?.find(
     (item: any) => item.payment_method === "debit"
   )?.total_profit;
-  const eWalletProfitWithCurrency = `${parseFloat(eWalletProfit).toFixed(0)}$`;
-  const creditProfitWithCurrency = `${parseFloat(creditProfit).toFixed(0)}$`;
-  const debitProfitWithCurrency = `${parseFloat(debitProfit).toFixed(0)}$`;
+  const eWalletProfitWithCurrency = `$${parseFloat(eWalletProfit).toFixed(0)}`;
+  const creditProfitWithCurrency = `$${parseFloat(creditProfit).toFixed(0)}`;
+  const debitProfitWithCurrency = `$${parseFloat(debitProfit).toFixed(0)}`;
 
   return (
     <section className="dashboard-home flex flex-col items-center gap-6">

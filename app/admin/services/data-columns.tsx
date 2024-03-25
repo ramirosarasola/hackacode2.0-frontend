@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, Input, Space } from "antd";
+import { Button, Input, Modal, Space, message } from "antd";
 import { Service } from "@/interface/types";
-import { deleteService, updateService } from "@/lib/slices/serviceSlice";
+import { deleteService, fetchServices, softDeleteService, updateService } from "@/lib/slices/serviceSlice";
 import { TableProps } from "antd";
 import { Edit, Delete, Save } from "@mui/icons-material";
 
@@ -27,13 +27,52 @@ export const useEditFunctions = (services: Service[], dispatch: any) => {
   };
 
   const handleSave = (id: number) => {
-    setEditing(false);
-    setEditingKey(0);
-    dispatch(updateService({ id, data: editedData }));
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Save",
+      content: "Are you sure you want to save the changes?",
+      onOk() {
+        setEditing(false);
+        setEditingKey(0);
+        dispatch(updateService({ id, data: editedData })).then(
+          (result: any) => {
+            if (result.payload) {
+              message.success("Service updated successfully.");
+            } else {
+              message.error("Failed to update service. Please try again.");
+            }
+          }
+        );
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
+    });
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteService(id));
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Delete",
+      content: "Are you sure you want to delete this service?",
+      onOk() {
+        dispatch(softDeleteService(id)).then((result: any) => {
+          if (result.payload) {
+            dispatch(fetchServices());
+            message.success("Service deleted successfully.");
+          } else {
+            message.error("Failed to delete service. Please try again.");
+          }
+        });
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
+    });
   };
 
   return {

@@ -1,14 +1,14 @@
 import useFormatDate from "@/hooks/useFormatDate";
 import { Service } from "@/interface/types";
-import { useAppSelector, useAppDispatch } from "@/lib/hooks";
-import { fetchSales, softDeleteSale, updateSale, fetchSale } from "@/lib/slices/saleSlice";
-import { formatDate } from "@/utils/formatters";
-import { Delete, Edit, Save } from "@mui/icons-material";
-import { Button, Input, Select, Space, TableProps, message } from "antd";
-import { Option } from "antd/es/mentions";
-import { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchUsers } from "@/lib/slices/authSlice";
 import { fetchEmployeeById, fetchEmployees } from "@/lib/slices/employeeSlice";
+import { fetchSales, softDeleteSale, updateSale } from "@/lib/slices/saleSlice";
+import { formatDate } from "@/utils/formatters";
+import { Delete, Edit, Save } from "@mui/icons-material";
+import { Button, Input, Modal, Select, Space, TableProps, message } from "antd";
+import { Option } from "antd/es/mentions";
+import { useEffect, useState } from "react";
 
 export type UpdateSale = {
   id: 0;
@@ -16,7 +16,7 @@ export type UpdateSale = {
   customer_id: 0;
   employee_id: 0;
   payment_method: "";
-  is_active:1;
+  is_active: 1;
   services: [];
 };
 
@@ -35,52 +35,76 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
     setEditingKey(id);
     const record = sales.find((item) => id === item.sale_id);
     if (record) {
-       // Transformar los datos al formato requerido
-       const transformedData = {
-         customer_id: record.customer_id.toString(),
-         employee_id: record.employee_id.toString(),
-         is_active: record.is_active === 1, // Convertir 1 a true y cualquier otro valor a false
-         payment_method: record.payment_method,
-         services: record.services.map((service: any) => ({
-           id: service.service_id.toString(), // Convertir el id del servicio a cadena
-         })),
-       };
-       setEditedData(transformedData);
+      // Transformar los datos al formato requerido
+      const transformedData = {
+        customer_id: record.customer_id.toString(),
+        employee_id: record.employee_id.toString(),
+        is_active: record.is_active === 1, // Convertir 1 a true y cualquier otro valor a false
+        payment_method: record.payment_method,
+        services: record.services.map((service: any) => ({
+          id: service.service_id.toString(), // Convertir el id del servicio a cadena
+        })),
+      };
+      setEditedData(transformedData);
     }
-   };
-   
-
-   const handleSave = (id: number) => {
-    setEditing(false);
-    setEditingKey(0);
-    
-    // Formatear los servicios seleccionados como objetos con la estructura { id: value }
-    const formattedServices = editedData.services.map((id: any) => ({ id }));
-  
-    // Actualizar editedData con los servicios formateados
-    const updatedData = { ...editedData, services: formattedServices };
-  
-    dispatch(updateSale({ id, data: updatedData })).then((result: any) => {
-      if (result.payload) {
-        dispatch(fetchSales());
-        setEditedData(null);
-        message.success("Sale updated successfully."); // Mostrar alerta de éxito
-      } else {
-        message.error("Failed to update sale. Please try again."); // Mostrar alerta de error
-      }
-    });
-    console.log(editedData);
   };
-  
+
+  const handleSave = (id: number) => {
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Save",
+      content: "Are you sure you want to save the changes?",
+      onOk() {
+        setEditing(false);
+        setEditingKey(0);
+
+        // Formatear los servicios seleccionados como objetos con la estructura { id: value }
+        const formattedServices = editedData.services.map((id: any) => ({
+          id,
+        }));
+
+        // Actualizar editedData con los servicios formateados
+        const updatedData = { ...editedData, services: formattedServices };
+
+        dispatch(updateSale({ id, data: updatedData })).then((result: any) => {
+          if (result.payload) {
+            dispatch(fetchSales());
+            setEditedData(null);
+            message.success("Sale updated successfully."); // Mostrar alerta de éxito
+          } else {
+            message.error("Failed to update sale. Please try again."); // Mostrar alerta de error
+          }
+        });
+        console.log(editedData);
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
+    });
+  };
 
   const handleDelete = (id: number) => {
-    dispatch(softDeleteSale(id)).then((result: any) => {
-      if (result.payload) {
-        dispatch(fetchSales());
-        message.success("Sale deleted successfully."); // Mostrar alerta de éxito
-      } else {
-        message.error("Failed to delete sale. Please try again."); // Mostrar alerta de error
-      }
+    Modal.confirm({
+      okButtonProps: {
+        className: "bg-primary text-black border border-gray-200",
+      },
+      title: "Confirm Delete",
+      content: "Are you sure you want to delete this sale?",
+      onOk() {
+        dispatch(softDeleteSale(id)).then((result: any) => {
+          if (result.payload) {
+            dispatch(fetchSales());
+            message.success("Sale deleted successfully.");
+          } else {
+            message.error("Failed to delete sale. Please try again.");
+          }
+        });
+      },
+      onCancel() {
+        console.log("User cancelled the operation.");
+      },
     });
   };
 
@@ -99,7 +123,7 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
 };
 
 export const useGetTableColumns = (
-  editFunctions: any,
+  editFunctions: any
 ): TableProps<UpdateSale>["columns"] => {
   const {
     editing,
@@ -115,17 +139,15 @@ export const useGetTableColumns = (
   } = editFunctions;
 
   const { userEmployee } = useAppSelector((state) => state.employee);
-  const { user } = useAppSelector((state) => state.auth);
+  const { user }: any = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  console.log(userEmployee)
-  console.log(user)
 
   useEffect(() => {
-    dispatch(fetchUsers)
+    dispatch(fetchUsers);
     dispatch(fetchEmployees());
-    dispatch(fetchEmployeeById(user?.id))
-  }, [])
+    dispatch(fetchEmployeeById(user?.id));
+  }, [dispatch]);
 
   return [
     {
@@ -143,12 +165,25 @@ export const useGetTableColumns = (
         const employee_name = employees.find(
           (employee: any) => employee.id === record.employee_id
         )?.name;
+        const employee_lastname = employees.find(
+          (employee: any) => employee.id === record.employee_id
+        )?.lastname;
 
         return editable ? (
           <Select
-            value={editedData.employee_id}
+            labelInValue
+            value={
+              editedData.employee_id
+                ? {
+                    value: editedData.employee_id,
+                    label: employees.find(
+                      (e: any) => e.id === editedData.employee_id
+                    )?.name,
+                  }
+                : undefined
+            }
             onChange={(value) =>
-              setEditedData({ ...editedData, employee_id: value })
+              setEditedData({ ...editedData, employee_id: value.value })
             }
             style={{ width: 120 }}
           >
@@ -159,7 +194,7 @@ export const useGetTableColumns = (
             ))}
           </Select>
         ) : (
-          <>{employee_name}</>
+          <>{`${employee_name} ${employee_lastname}`}</>
         );
       },
     },
@@ -172,6 +207,9 @@ export const useGetTableColumns = (
         const customer_name = customers.find(
           (customer: any) => customer.id === record.customer_id
         )?.name;
+        const customer_lastname = customers.find(
+          (customer: any) => customer.id === record.customer_id
+        )?.lastname;
 
         return editable ? (
           <Select
@@ -188,7 +226,7 @@ export const useGetTableColumns = (
             ))}
           </Select>
         ) : (
-          <>{customer_name}</>
+          <>{`${customer_name} ${customer_lastname}`}</>
         );
       },
     },
@@ -246,12 +284,12 @@ export const useGetTableColumns = (
       title: "Services",
       dataIndex: "services",
       key: "services",
-      render: (_, record ) =>
-
-      {
+      render: (_, record) => {
         const editable = record.sale_id === editingKey;
-        const services = record.services.map((service: any) => service?.service_id);
-        
+        const services = record.services.map(
+          (service: any) => service?.service_id
+        );
+
         return editable ? (
           <Select
             mode="multiple"
@@ -270,14 +308,14 @@ export const useGetTableColumns = (
         ) : (
           record.services.map((service: Service) => service?.name).join(", ")
         );
-      }
+      },
     },
     {
       title: "Action",
       key: "action",
       align: "center",
-      render: (_, {sale_id}) => {
-        const canEditOrDelete =  user?.role === 'admin';
+      render: (_, { sale_id }) => {
+        const canEditOrDelete = user?.role === "admin";
         return (
           <Space size="middle">
             {canEditOrDelete && !editing ? (
@@ -297,41 +335,39 @@ export const useGetTableColumns = (
                   <Delete className="text-[##33363F]" />
                 </Button>
               </>
+            ) : editing ? (
+              <Button
+                type="default"
+                onClick={() => handleSave(sale_id)}
+                className="border-none bg-transparent shadow-none"
+              >
+                <Save className="text-[##33363F]" />
+              </Button>
             ) : (
-              editing ? (
+              <>
                 <Button
                   type="default"
-                  onClick={() => handleSave(sale_id)}
-                  className="border-none bg-transparent shadow-none"
+                  onClick={() => handleEdit(sale_id)}
+                  className="border-none bg-transparent shadow-none bg-transparent"
+                  disabled={true}
+                  style={{ color: "gray", backgroundColor: "transparent" }}
                 >
-                  <Save className="text-[##33363F]" />
+                  <Edit className="text-[##33363F]" />
                 </Button>
-              ) : (
-                <>
-                  <Button
-                    type="default"
-                    onClick={() => handleEdit(sale_id)}
-                    className="border-none bg-transparent shadow-none bg-transparent"
-                    disabled={true}
-                    style={{ color: 'gray', backgroundColor: 'transparent' }}
-                  >
-                    <Edit className="text-[##33363F]" />
-                  </Button>
-                  <Button
-                    type="default"
-                    onClick={() => handleDelete(sale_id)}
-                    className="border-none bg-transparent shadow-none bg-transparent"
-                    disabled={true}
-                    style={{color: 'gray', backgroundColor: 'transparent' }}
-                  >
-                    <Delete className="text-[##33363F]" />
-                  </Button>
-                </>
-              )
+                <Button
+                  type="default"
+                  onClick={() => handleDelete(sale_id)}
+                  className="border-none bg-transparent shadow-none bg-transparent"
+                  disabled={true}
+                  style={{ color: "gray", backgroundColor: "transparent" }}
+                >
+                  <Delete className="text-[##33363F]" />
+                </Button>
+              </>
             )}
           </Space>
         );
-     },
+      },
     },
   ];
 };

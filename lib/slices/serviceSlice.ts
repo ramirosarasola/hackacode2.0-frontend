@@ -37,6 +37,15 @@ export const createService = createAsyncThunk(
   }
 );
 
+export const softDeleteService = createAsyncThunk(
+  "services/softDeleteService",
+  async (id: number) => {
+    const response = await axios.put(`${apiUrl}:5000/api/v1/services/softdelete/${id}`);
+    return response.data;
+  }
+);
+
+
 // Service slice
 const serviceSlice = createSlice({
   name: "services",
@@ -86,7 +95,19 @@ const serviceSlice = createSlice({
       })
       .addCase(createService.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(softDeleteService.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(softDeleteService.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.services = state.services = state.services.filter(
+          (service) => service.id !== action.payload
+        );
+      })
+      .addCase(softDeleteService.rejected, (state) => {
+        state.loading = "failed";
+      })
   },
 });
 

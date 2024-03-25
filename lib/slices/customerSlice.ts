@@ -39,6 +39,14 @@ export const createCustomer = createAsyncThunk(
   }
 );
 
+export const softDeleteCustomer = createAsyncThunk(
+  "customers/softDeleteCustomer",
+  async (id: number) => {
+    const response = await axios.put(`${apiUrl}:5000/api/v1/customers/softdelete/${id}`);
+    return response.data;
+  }
+);
+
 // Customer slice
 const customerSlice = createSlice({
   name: "customers",
@@ -49,11 +57,6 @@ const customerSlice = createSlice({
     fulfilled: false,
   },
   reducers: {
-    deleteCustomer: (state, action) => {
-      state.customers = state.customers.filter(
-        (customer) => customer.id !== action.payload
-      );
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -89,10 +92,21 @@ const customerSlice = createSlice({
       })
       .addCase(createCustomer.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(softDeleteCustomer.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(softDeleteCustomer.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.customers = state.customers = state.customers.filter(
+          (customer) => customer.id !== action.payload
+        );
+      })
+      .addCase(softDeleteCustomer.rejected, (state) => {
+        state.loading = "failed";
+      })
   },
 });
 
-export const { deleteCustomer } = customerSlice.actions;
 export const { reducer } = customerSlice;
 export default customerSlice;

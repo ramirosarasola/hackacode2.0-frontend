@@ -1,22 +1,21 @@
 "use client";
-import { useParams } from "next/navigation";
-import { Tag } from "antd";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { fetchUsers } from "@/lib/slices/authSlice";
+import { fetchEmployee } from "@/lib/slices/employeeSlice";
 import { getSalesByEmployee } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
-import { Employee } from "@/interface/types";
+import { Tag } from "antd";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function EmployeePage() {
   const dispatch = useAppDispatch();
   const params = useParams();
   const id: any = params?.id;
-  const { users } = useAppSelector((state) => state.auth);
+  const { users }: any = useAppSelector((state) => state.auth);
   const { employee }: any = useAppSelector((state) => state.employee);
   const { saleByEmployee }: any = useAppSelector((state) => state.sale);
-  
+  const { userEmployee } = useAppSelector((state) => state.employee);
 
   useEffect(() => {
     dispatch(fetchEmployee(id));
@@ -24,12 +23,9 @@ export default function EmployeePage() {
     dispatch(getSalesByEmployee(id));
   }, [dispatch]);
 
-  const userEmployee =
-    users?.find((user) => user.id === employee?.user_id) || null;
-
-  if (!employee) {
+  if (!employee || !users) {
     <h1>Loading...</h1>;
-  } 
+  }
 
   return (
     <section className="bg-white p-6 flex flex-col justify-between items-center gap-16 text-[#000]">
@@ -92,10 +88,6 @@ export default function EmployeePage() {
                   {employee?.country}
                 </p>
                 <p>
-                  <span className="text-[#A8B1CF] "> Email Adress: </span>{" "}
-                  {userEmployee?.email}
-                </p>
-                <p>
                   <span className="text-[#A8B1CF] "> Phone: </span>{" "}
                   {employee?.phone}
                 </p>
@@ -112,12 +104,16 @@ export default function EmployeePage() {
           <ul className="profile-section w-[90%] m-auto h-full flex flex-col items-start  justify-center gap-4">
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#A8B1CF]">Amount of Sales:</span>{" "}
-              {saleByEmployee && saleByEmployee.count}
+              {saleByEmployee && saleByEmployee.count > 0
+                ? saleByEmployee.count
+                : 0}
             </li>
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#A8B1CF]">Total Profit:</span>
               {"$ "}
-              {saleByEmployee && saleByEmployee.total}
+              {saleByEmployee && saleByEmployee.total > 0
+                ? saleByEmployee.total
+                : 0}
             </li>
             <li className="w-full flex gap-2">
               <span className="w-[140px] text-[#A8B1CF]">Account Number:</span>{" "}
