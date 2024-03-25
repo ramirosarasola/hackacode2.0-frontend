@@ -1,11 +1,9 @@
 import AuthFormTitle from "@/app/ui/auth-form-title";
-import { AuthInput } from "@/app/ui/auth-input";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Input } from "antd";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 const SaleForm = ({
   createEntity,
@@ -92,7 +90,7 @@ const SaleForm = ({
     setServiceValues([]);
   };
 
-  const handleDeleteServiceSelect = (e: any, indexToRemove: number) => {
+  const handleDeleteServiceselect = (e: any, indexToRemove: number) => {
     e.preventDefault();
     console.log("Delete service");
     const newServicesAmount = servicesAmount.filter(
@@ -118,22 +116,8 @@ const SaleForm = ({
       ></ConfigProvider>
 
       <form className="flex flex-col items-center justify-center gap-8 w-full">
-        <select
-          className="auth-input"
-          name="customer_id"
-          onChange={handleChange}
-          value={formData.customer_id}
-        >
-          <option value="defult" className="text-gray-400" id="auth-gray">
-            Select a customer
-          </option>
-          {customers.map((customer: any) => (
-            <option key={customer.id} value={customer.id}>
-              {customer.name} {customer.lastname}
-            </option>
-          ))}
-        </select>
-        <input
+        <Input
+          id="auth-gray"
           className="auth-input text-gray-400"
           type="text"
           name="employee_id"
@@ -144,12 +128,27 @@ const SaleForm = ({
         />
         <select
           className="auth-input"
+          name="customer_id"
+          onChange={handleChange}
+          value={formData.customer_id as any}
+        >
+          <option value="defult" className="text-gray-400" id="auth-gray">
+            select a customer
+          </option>
+          {customers.map((customer: any) => (
+            <option key={customer.id} value={customer.id}>
+              {customer.name} {customer.lastname}
+            </option>
+          ))}
+        </select>
+        <select
+          className="auth-input"
           name="payment_method"
           onChange={handleChange}
-          value={formData.payment_method}
+          value={formData.payment_method as any}
         >
           <option value="defult" className="text-gray-400" id="auth-gray" hidden>
-            Select a payment method
+            select a payment method
           </option>
           {paymentMethods.map((paymentMethod: any, index) => (
             <option key={index} value={paymentMethod.value}>
@@ -171,7 +170,7 @@ const SaleForm = ({
                 </option>
               ))}
             </select>
-            <button onClick={(e) => handleDeleteServiceSelect(e, index)}>
+            <button onClick={(e) => handleDeleteServiceselect(e, index)}>
               <RemoveCircleOutlineIcon className="text-red-500" />
             </button>
           </div>

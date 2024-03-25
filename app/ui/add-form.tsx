@@ -56,8 +56,7 @@ const AddForm = ({
       if (Object.keys(errors).length === 0) {
         handleSubmit(onSubmit)();
       } else {
-        // Aquí puedes manejar el caso en que hay errores, por ejemplo, mostrando un mensaje al usuario
-        console.log("Hay errores en el formulario");
+        console.log(errors);
       }
       return;
     }
@@ -95,6 +94,8 @@ const AddForm = ({
                 required={field.required}
                 type={field.type}
                 autoComplete={field.autoComplete || field.name}
+                validation={field.validation}
+                errors={errors}
               />
             ))}
         {currentStep == 1 &&
@@ -109,6 +110,8 @@ const AddForm = ({
                 required={field.required}
                 type={field.type}
                 autoComplete={field.autoComplete || field.name}
+                validation={field.validation}
+                errors={errors}
               />
             ))}
         {currentStep == 2 &&
@@ -123,6 +126,8 @@ const AddForm = ({
                 required={field.required}
                 type={field.type}
                 autoComplete={field.autoComplete || field.name}
+                validation={field.validation}
+                errors={errors}
               />
             ))}
 

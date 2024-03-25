@@ -36,8 +36,8 @@ body {
   My styles
 */
 
-#auth-gray{
-  color:gray
+#auth-gray {
+  color: gray
 }
 
 .auth-input {
@@ -54,6 +54,14 @@ body {
 
 .auth-input:focus {
   border: 2px solid #5A81FA;
+}
+
+
+.error-message {
+  color: red;
+  display: block;
+  text-align: left;
+  margin-top: 5px;
 }
 
 .sale-select {

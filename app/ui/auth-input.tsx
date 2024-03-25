@@ -1,4 +1,3 @@
-"use client";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type InputProps<T extends FieldValues> = {
@@ -8,6 +7,8 @@ type InputProps<T extends FieldValues> = {
   type: string;
   autoComplete: string;
   placeholder: string;
+  validation?: any;
+  errors: any;
 };
 
 export const AuthInput = <T extends FieldValues>({
@@ -17,12 +18,19 @@ export const AuthInput = <T extends FieldValues>({
   required,
   type,
   autoComplete,
+  validation,
+  errors,
 }: InputProps<T>) => (
-  <input
-    autoComplete={autoComplete}
-    type={type}
-    placeholder={placeholder}
-    className="auth-input"
-    {...register(label, { required })}
-  />
+  <label className="w-full">
+    <input
+      autoComplete={autoComplete}
+      type={type}
+      placeholder={placeholder}
+      className="auth-input"
+      {...register(label, { required, ...validation })}
+    />
+    {errors[label] && (
+      <span className="error-message">{errors[label].message}</span>
+    )}
+  </label>
 );

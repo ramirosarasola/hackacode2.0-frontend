@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Input, Space } from "antd";
+import { Button, Input, Space, message } from "antd";
 import { Customer } from "@/interface/types";
 import { deleteCustomer, updateCustomer } from "@/lib/slices/customerSlice";
 import { TableProps } from "antd";
@@ -36,7 +36,13 @@ export const useEditFunctions = (customers: Customer[], dispatch: any) => {
   const handleSave = (id: number) => {
     setEditing(false);
     setEditingKey(0);
-    dispatch(updateCustomer({ id, data: editedData }));
+    dispatch(updateCustomer({ id, data: editedData })).then((result: any) => {
+      if (result.payload.success) {
+        message.success('Customer updated successfully.');
+      } else {
+        message.error('Failed to update customer. Please try again.');
+      }
+    });
   };
 
   const handleDelete = (id: number) => {
