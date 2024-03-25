@@ -77,8 +77,8 @@ export const useGetTableColumns = (
   } = editFunctions;
 
   
-  const { userEmployee } = useAppSelector((state) => state.employee);
-  const { user } = useAppSelector((state) => state.auth);
+  const { userEmployee }: any = useAppSelector((state) => state.employee);
+  const { user }: any = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   console.log(userEmployee)
