@@ -21,6 +21,25 @@ En el directorio del proyecto, puedes ejecutar los siguientes scripts:
 
 - **`npm run lint`**: Ejecuta ESLint para verificar el formato y calidad del código.
 
+## Configuracion
+
+Para cambiar la url a donde se ejecutan las peticiones:
+
+- **`utils/`**: Contiene archivos de utilidades y configuraciones.
+
+  - **`configApi.js`**: Este archivo define la URL base para realizar las peticiones a la API. Debes configurar la URL adecuada según el entorno de desarrollo o producción.
+
+    ```javascript
+    const configApi = {
+      // apiUrl: 'http://vps-3991846-x.dattaweb.com', // producción
+      apiUrl: 'http://localhost', // desarrollo
+    }
+
+    export default configApi;
+    ```
+
+---
+
 ## Dependencias Principales
 
 - **@emotion/react**: Librería de estilos en React.
