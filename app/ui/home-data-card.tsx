@@ -5,11 +5,15 @@ const DataCard = ({
   date,
   value,
   percentage,
+  color,
+  simbol,
 }: {
   title: string;
   date: string;
   value: any;
   percentage: number;
+  color: string;
+  simbol: string;
 }) => {
   return (
     <div className="card bg-white p-4 h-full text-[#000] flex flex-col justify-between">
@@ -23,7 +27,7 @@ const DataCard = ({
         <p className="card-value text-[40px] font-[500] text-[#5A81FA]">
           {value}
         </p>
-        <Tag color="success">{` +${percentage}%`}</Tag>
+        <Tag color={color}>{` ${simbol}${percentage}%`}</Tag>
       </div>
     </div>
   );

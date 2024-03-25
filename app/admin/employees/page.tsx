@@ -9,7 +9,7 @@ import { fetchEmployees } from "@/lib/slices/employeeSlice";
 import { Modal } from "antd";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { getTableColumns, useEditFunctions } from "./data-columns";
+import { useGetTableColumns, useEditFunctions } from "./data-columns";
 
 export default function Employees() {
   const dispatch = useAppDispatch();
@@ -169,7 +169,7 @@ export default function Employees() {
     <>
       <DataTable
         data={employees}
-        columns={getTableColumns(editFunctions) || []}
+        columns={useGetTableColumns(editFunctions) || []}
         add="Add Employee"
         addFunction={showModal}
       />

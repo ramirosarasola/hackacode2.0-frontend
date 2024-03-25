@@ -1,12 +1,14 @@
 import useFormatDate from "@/hooks/useFormatDate";
 import { Service } from "@/interface/types";
-import { useAppSelector } from "@/lib/hooks";
-import { fetchSales, softDeleteSale, updateSale } from "@/lib/slices/saleSlice";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { fetchSales, softDeleteSale, updateSale, fetchSale } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
 import { Delete, Edit, Save } from "@mui/icons-material";
 import { Button, Input, Select, Space, TableProps, message } from "antd";
 import { Option } from "antd/es/mentions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchUsers } from "@/lib/slices/authSlice";
+import { fetchEmployeeById, fetchEmployees } from "@/lib/slices/employeeSlice";
 
 export type UpdateSale = {
   id: 0;
@@ -96,8 +98,8 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
   };
 };
 
-export const getTableColumns = (
-  editFunctions: any
+export const useGetTableColumns = (
+  editFunctions: any,
 ): TableProps<UpdateSale>["columns"] => {
   const {
     editing,
@@ -111,6 +113,19 @@ export const getTableColumns = (
     customers,
     allServices,
   } = editFunctions;
+
+  const { userEmployee } = useAppSelector((state) => state.employee);
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  console.log(userEmployee)
+  console.log(user)
+
+  useEffect(() => {
+    dispatch(fetchUsers)
+    dispatch(fetchEmployees());
+    dispatch(fetchEmployeeById(user?.id))
+  }, [])
 
   return [
     {
@@ -139,7 +154,7 @@ export const getTableColumns = (
           >
             {employees.map((employee: any) => (
               <Select.Option key={employee.id} value={employee.id}>
-                {employee.name}
+                {employee.name} {employee.lastname}
               </Select.Option>
             ))}
           </Select>
@@ -236,7 +251,6 @@ export const getTableColumns = (
       {
         const editable = record.sale_id === editingKey;
         const services = record.services.map((service: any) => service?.service_id);
-        console.log(services);
         
         return editable ? (
           <Select
@@ -262,34 +276,62 @@ export const getTableColumns = (
       title: "Action",
       key: "action",
       align: "center",
-      render: (_, { sale_id }) => (
-        <Space size="middle">
-          {!editing ? (
-            <Button
-              type="default"
-              onClick={() => handleEdit(sale_id)}
-              className="border-none bg-transparent shadow-none"
-            >
-              <Edit className="text-yellow-400" />
-            </Button>
-          ) : (
-            <Button
-              type="default"
-              onClick={() => handleSave(sale_id)}
-              className="border-none bg-transparent shadow-none"
-            >
-              <Save className="text-blue-500" />
-            </Button>
-          )}
-          <Button
-            type="default"
-            onClick={() => handleDelete(sale_id)}
-            className="border-none bg-transparent shadow-none"
-          >
-            <Delete className="text-red-500" />
-          </Button>
-        </Space>
-      ),
+      render: (_, {sale_id}) => {
+        const canEditOrDelete =  user?.role === 'admin';
+        return (
+          <Space size="middle">
+            {canEditOrDelete && !editing ? (
+              <>
+                <Button
+                  type="default"
+                  onClick={() => handleEdit(sale_id)}
+                  className="border-none bg-transparent shadow-none"
+                >
+                  <Edit className="text-[##33363F]" />
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => handleDelete(sale_id)}
+                  className="border-none bg-transparent shadow-none"
+                >
+                  <Delete className="text-[##33363F]" />
+                </Button>
+              </>
+            ) : (
+              editing ? (
+                <Button
+                  type="default"
+                  onClick={() => handleSave(sale_id)}
+                  className="border-none bg-transparent shadow-none"
+                >
+                  <Save className="text-[##33363F]" />
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    type="default"
+                    onClick={() => handleEdit(sale_id)}
+                    className="border-none bg-transparent shadow-none bg-transparent"
+                    disabled={true}
+                    style={{ color: 'gray', backgroundColor: 'transparent' }}
+                  >
+                    <Edit className="text-[##33363F]" />
+                  </Button>
+                  <Button
+                    type="default"
+                    onClick={() => handleDelete(sale_id)}
+                    className="border-none bg-transparent shadow-none bg-transparent"
+                    disabled={true}
+                    style={{color: 'gray', backgroundColor: 'transparent' }}
+                  >
+                    <Delete className="text-[##33363F]" />
+                  </Button>
+                </>
+              )
+            )}
+          </Space>
+        );
+     },
     },
   ];
 };
