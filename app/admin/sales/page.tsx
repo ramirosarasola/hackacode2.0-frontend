@@ -7,7 +7,7 @@ import { createSale, fetchSales } from "@/lib/slices/saleSlice";
 import { Modal } from "antd";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { getTableColumns, useEditFunctions } from "./data-column";
+import { useGetTableColumns, useEditFunctions } from "./data-column";
 import SaleForm from "./sale-form";
 
 type ICreateSale = {
@@ -46,7 +46,7 @@ export default function Sales() {
     <>
       <DataTable
         data={sales}
-        columns={getTableColumns(editFunctions) || []}
+        columns={useGetTableColumns(editFunctions) || []}
         add="Add Sale"
         addFunction={showModal}
       />

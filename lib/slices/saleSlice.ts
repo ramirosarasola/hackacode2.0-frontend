@@ -65,6 +65,15 @@ export const updateSale = createAsyncThunk(
   }
 );
 
+//Fetch sale by id
+export const fetchSale = createAsyncThunk(
+  "sales/fetchSale",
+  async (id: string) => {
+    const response = await axios.get(`${apiUrl}:5000/api/v1/sales/${id}`);
+    return response.data;
+  }
+)
+
 //soft delete for sale;
 export const softDeleteSale = createAsyncThunk(
   "sales/softDeleteSale",
@@ -86,6 +95,7 @@ const saleSlice = createSlice({
     loading: "idle",
     error: null,
     fulfilled: false,
+    sale: null
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -162,7 +172,17 @@ const saleSlice = createSlice({
       })
       .addCase(softDeleteSale.rejected, (state) => {
         state.loading = "failed";
-      });
+      })
+      .addCase(fetchSale.pending, (state) => {
+        state.loading = "loading";
+      })
+      .addCase(fetchSale.fulfilled, (state, action) => {
+        state.loading = "idle";
+        state.sale = action.payload.sale;
+      })
+      .addCase(fetchSale.rejected, (state) => {
+        state.loading = "failed";
+      })
   },
 });
 

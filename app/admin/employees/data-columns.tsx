@@ -1,15 +1,18 @@
 import UserProfile from "@/app/ui/user-profile";
 import { Employee } from "@/interface/types";
 import {
+  fetchEmployeeById,
   fetchEmployees,
   softDeleteEmployee,
   updateEmployee,
 } from "@/lib/slices/employeeSlice";
 import { formatDate } from "@/utils/formatters";
 import { Button, Input, Space, TableProps, Tag } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit, Delete, Save } from "@mui/icons-material";
 import useFormatDate from "@/hooks/useFormatDate";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchUsers } from "@/lib/slices/authSlice";
 
 const initialState = {
   user_id: 0,
@@ -60,7 +63,7 @@ export const useEditFunctions = (employees: Employee[], dispatch: any) => {
   };
 };
 
-export const getTableColumns = (
+export const useGetTableColumns = (
   editFunctions: any
 ): TableProps<Employee>["columns"] => {
   const {
@@ -72,6 +75,20 @@ export const getTableColumns = (
     handleSave,
     handleDelete,
   } = editFunctions;
+
+  
+  const { userEmployee } = useAppSelector((state) => state.employee);
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  console.log(userEmployee)
+  console.log(user)
+
+  useEffect(() => {
+    dispatch(fetchUsers)
+    dispatch(fetchEmployees());
+    dispatch(fetchEmployeeById(user?.id))
+  }, [])
 
   return [
     {
@@ -200,34 +217,63 @@ export const getTableColumns = (
       title: "Action",
       key: "action",
       align: "center",
-      render: (_, record) => (
-        <Space size="middle">
-          {!editing ? (
-            <Button
-              type="default"
-              onClick={() => handleEdit(record.id)}
-              className="border-none bg-transparent shadow-none"
-            >
-              <Edit className="text-[##33363F]" />
-            </Button>
-          ) : (
-            <Button
-              type="default"
-              onClick={() => handleSave(record.id)}
-              className="border-none bg-transparent shadow-none"
-            >
-              <Save className="text-[##33363F]" />
-            </Button>
-          )}
-          <Button
-            type="default"
-            onClick={() => handleDelete(record.id)}
-            className="border-none bg-transparent shadow-none"
-          >
-            <Delete className="text-[##33363F]" />
-          </Button>
-        </Space>
-      ),
-    },
+      render: (_, record) => {
+         const canEditOrDelete = userEmployee?.user_id === record.user_id || user?.role === 'admin';
+         return (
+           <Space size="middle">
+             {canEditOrDelete && !editing ? (
+               <>
+                 <Button
+                   type="default"
+                   onClick={() => handleEdit(record.id)}
+                   className="border-none bg-transparent shadow-none"
+                 >
+                   <Edit className="text-[##33363F]" />
+                 </Button>
+                 <Button
+                   type="default"
+                   onClick={() => handleDelete(record.id)}
+                   className="border-none bg-transparent shadow-none"
+                 >
+                   <Delete className="text-[##33363F]" />
+                 </Button>
+               </>
+             ) : (
+               editing ? (
+                 <Button
+                   type="default"
+                   onClick={() => handleSave(record.id)}
+                   className="border-none bg-transparent shadow-none"
+                 >
+                   <Save className="text-[##33363F]" />
+                 </Button>
+               ) : (
+                 <>
+                   <Button
+                     type="default"
+                     onClick={() => handleEdit(record.id)}
+                     className="border-none bg-transparent shadow-none bg-transparent"
+                     disabled={true}
+                     style={{ color: 'gray', backgroundColor: 'transparent' }}
+                   >
+                     <Edit className="text-[##33363F]" />
+                   </Button>
+                   <Button
+                     type="default"
+                     onClick={() => handleDelete(record.id)}
+                     className="border-none bg-transparent shadow-none bg-transparent"
+                     disabled={true}
+                     style={{color: 'gray', backgroundColor: 'transparent' }}
+                   >
+                     <Delete className="text-[##33363F]" />
+                   </Button>
+                 </>
+               )
+             )}
+           </Space>
+         );
+      },
+     }
+     
   ];
 };
