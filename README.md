@@ -1,37 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hackacode 2.0 Frontend
 
-## Getting Started
+Este es el frontend de Hackacode 2.0, una aplicación desarrollada con Next.js.
 
-First, run the development server:
+## Descripción
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Este proyecto es el frontend de la aplicación Hackacode 2.0. Utiliza Next.js como framework de desarrollo de React.js para crear aplicaciones web modernas y eficientes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts Disponibles
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+En el directorio del proyecto, puedes ejecutar los siguientes scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **`npm run dev`**: Ejecuta la aplicación en modo de desarrollo.\
+  Abre [http://localhost:3000](http://localhost:3000) para verla en el navegador.
 
-## Learn More
+- **`npm run build`**: Construye la aplicación para producción en la carpeta `.next`.\
+  Esto optimiza y prepara la aplicación para obtener el mejor rendimiento.
 
-To learn more about Next.js, take a look at the following resources:
+- **`npm start`**: Inicia un servidor de producción con la aplicación optimizada.\
+  La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **`npm run lint`**: Ejecuta ESLint para verificar el formato y calidad del código.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Dependencias Principales
 
-## Deploy on Vercel
+- **@emotion/react**: Librería de estilos en React.
+- **@mui/icons-material**: Iconos de Material-UI.
+- **@mui/material**: Componentes de Material-UI.
+- **@reduxjs/toolkit**: Herramientas para manejar el estado global de la aplicación con Redux.
+- **@tremor/react**: Librería de componentes y utilidades de Tremor.
+- **antd**: Componentes de UI de Ant Design.
+- **axios**: Cliente HTTP basado en promesas para el navegador y Node.js.
+- **next**: Framework de React para construir aplicaciones web.
+- **react**: Biblioteca JavaScript para construir interfaces de usuario.
+- **react-dom**: Provee métodos específicos del DOM para React.
+- **react-hook-form**: Biblioteca para manejar formularios en React con facilidad.
+- **react-redux**: Conector oficial de React para Redux.
+- **redux-persist**: Persiste y rehidrata el estado de Redux.
+- **redux-thunk**: Middleware de Redux para manejar acciones asíncronas.
+- **zod**: Validación de esquemas en TypeScript.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Dependencias de Desarrollo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# hackacode2.0-frontend
+- **@types/node**: Tipos TypeScript para Node.js.
+- **@types/react**: Tipos TypeScript para React.
+- **@types/react-dom**: Tipos TypeScript para ReactDOM.
+- **autoprefixer**: Plugin de PostCSS para analizar los archivos CSS y agregar prefijos de proveedores.
+- **eslint**: Herramienta de linting para identificar y reportar patrones en el código JavaScript.
+- **eslint-config-next**: Configuración de ESLint específica para proyectos Next.js.
+- **postcss**: Herramienta de procesamiento de CSS con JavaScript.
+- **tailwindcss**: Framework de CSS utilizable para construir interfaces de usuario personalizadas.
