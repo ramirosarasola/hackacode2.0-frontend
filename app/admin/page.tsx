@@ -77,6 +77,8 @@ export default function Admin() {
               title={"Employee with most sales 2024"}
               date={`${employee.name}  ${employee.lastname}`}
               value={totalSales}
+              simbol="+"
+              color="success"
               percentage={20}
             />
           )}
@@ -86,13 +88,18 @@ export default function Admin() {
                 title={"Payment method with highest Profit"}
                 date={paymentMethodWithHighestProfit}
                 value={profitWithCurrency}
-                percentage={20}
+                percentage={25}
+                simbol="+"
+                color="success"
+
               />
               <DataCard
                 title={"Payment method with most Sales"}
                 date={paymentMethodWithMostSales}
                 value={mostSales}
-                percentage={20}
+                percentage={10}
+                simbol="-"
+                color="error"
               />
             </>
           )}
@@ -100,19 +107,25 @@ export default function Admin() {
             title={"E-Wallet Profit"}
             date={""}
             value={eWalletProfitWithCurrency}
-            percentage={20}
+            percentage={5}
+            simbol="+"
+            color="warning"
           />
           <DataCard
             title={"Credit Profit"}
             date={""}
             value={creditProfitWithCurrency}
             percentage={20}
+            simbol="+"
+            color="success"
           />
           <DataCard
             title={"Debit Profit"}
             date={""}
             value={debitProfitWithCurrency}
-            percentage={20}
+            percentage={10}
+            simbol="+"
+            color="warning"
           />
         </div>
       </div>
