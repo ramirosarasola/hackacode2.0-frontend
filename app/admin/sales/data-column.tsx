@@ -1,47 +1,83 @@
 import useFormatDate from "@/hooks/useFormatDate";
-import { Sale, Service } from "@/interface/types";
+import { Service } from "@/interface/types";
 import { useAppSelector } from "@/lib/hooks";
 import { fetchSales, softDeleteSale, updateSale } from "@/lib/slices/saleSlice";
 import { formatDate } from "@/utils/formatters";
 import { Delete, Edit, Save } from "@mui/icons-material";
-import { Button, Space, TableProps } from "antd";
+import { Button, Input, Select, Space, TableProps, message } from "antd";
+import { Option } from "antd/es/mentions";
 import { useState } from "react";
 
 export type UpdateSale = {
+  id: 0;
   sale_id: 0;
   customer_id: 0;
   employee_id: 0;
   payment_method: "";
+  is_active:1;
+  services: [];
 };
 
 export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
   const [editing, setEditing] = useState(false);
-  const [editedData, setEditedData] = useState(null as UpdateSale | null);
+  const [editedData, setEditedData] = useState(null as any | null);
   const [editingKey, setEditingKey] = useState(0);
   const date = new Date().toISOString();
   const formatDate = useFormatDate(date);
   const { employees } = useAppSelector((state) => state.employee);
   const { customers } = useAppSelector((state) => state.customer);
+  const allServices = useAppSelector((state) => state.service.services);
 
   const handleEdit = (id: number) => {
     setEditing(true);
     setEditingKey(id);
     const record = sales.find((item) => id === item.sale_id);
     if (record) {
-      setEditedData(record);
+       // Transformar los datos al formato requerido
+       const transformedData = {
+         customer_id: record.customer_id.toString(),
+         employee_id: record.employee_id.toString(),
+         is_active: record.is_active === 1, // Convertir 1 a true y cualquier otro valor a false
+         payment_method: record.payment_method,
+         services: record.services.map((service: any) => ({
+           id: service.service_id.toString(), // Convertir el id del servicio a cadena
+         })),
+       };
+       setEditedData(transformedData);
     }
-  };
+   };
+   
 
-  const handleSave = (id: number) => {
+   const handleSave = (id: number) => {
     setEditing(false);
     setEditingKey(0);
-    dispatch(updateSale({ id, data: editedData }));
+    
+    // Formatear los servicios seleccionados como objetos con la estructura { id: value }
+    const formattedServices = editedData.services.map((id: any) => ({ id }));
+  
+    // Actualizar editedData con los servicios formateados
+    const updatedData = { ...editedData, services: formattedServices };
+  
+    dispatch(updateSale({ id, data: updatedData })).then((result: any) => {
+      if (result.payload) {
+        dispatch(fetchSales());
+        setEditedData(null);
+        message.success("Sale updated successfully."); // Mostrar alerta de éxito
+      } else {
+        message.error("Failed to update sale. Please try again."); // Mostrar alerta de error
+      }
+    });
+    console.log(editedData);
   };
+  
 
   const handleDelete = (id: number) => {
     dispatch(softDeleteSale(id)).then((result: any) => {
-      if (result.payload.success) {
+      if (result.payload) {
         dispatch(fetchSales());
+        message.success("Sale deleted successfully."); // Mostrar alerta de éxito
+      } else {
+        message.error("Failed to delete sale. Please try again."); // Mostrar alerta de error
       }
     });
   };
@@ -55,6 +91,7 @@ export const useEditFunctions = (sales: UpdateSale[], dispatch: any) => {
     handleSave,
     handleDelete,
     employees,
+    allServices,
     customers,
   };
 };
@@ -72,6 +109,7 @@ export const getTableColumns = (
     handleDelete,
     employees,
     customers,
+    allServices,
   } = editFunctions;
 
   return [
@@ -85,29 +123,61 @@ export const getTableColumns = (
       title: "Employee",
       dataIndex: "employee_id",
       key: "employee_id",
-      // Need to render the employee name that matches the employee_id with id of the employees array.
-      render: (employee_id: number) => {
-        const employee = employees.find(
-          (employee: any) => employee.id === employee_id
+      render: (_, record) => {
+        const editable = record.sale_id === editingKey;
+        const employee_name = employees.find(
+          (employee: any) => employee.id === record.employee_id
+        )?.name;
+
+        return editable ? (
+          <Select
+            value={editedData.employee_id}
+            onChange={(value) =>
+              setEditedData({ ...editedData, employee_id: value })
+            }
+            style={{ width: 120 }}
+          >
+            {employees.map((employee: any) => (
+              <Select.Option key={employee.id} value={employee.id}>
+                {employee.name}
+              </Select.Option>
+            ))}
+          </Select>
+        ) : (
+          <>{employee_name}</>
         );
-        return employee
-          ? `${employee?.name} ${employee?.lastname}`
-          : "Employee not found";
       },
     },
     {
       title: "Customer",
       dataIndex: "customer_id",
       key: "customer_id",
-      render: (customer_id: number) => {
-        const customer = customers.find(
-          (customer: any) => customer.id === customer_id
+      render: (_, record) => {
+        const editable = record.sale_id === editingKey;
+        const customer_name = customers.find(
+          (customer: any) => customer.id === record.customer_id
+        )?.name;
+
+        return editable ? (
+          <Select
+            value={editedData.customer_id}
+            onChange={(value) =>
+              setEditedData({ ...editedData, customer_id: value })
+            }
+            style={{ width: 120 }}
+          >
+            {customers.map((customer: any) => (
+              <Select.Option key={customer.id} value={customer.id}>
+                {customer.name} {customer.lastname}
+              </Select.Option>
+            ))}
+          </Select>
+        ) : (
+          <>{customer_name}</>
         );
-        return customer
-          ? `${customer?.name} ${customer?.lastname}`
-          : "Customer not found";
       },
     },
+
     {
       title: "Profit",
       dataIndex: "profit",
@@ -115,24 +185,78 @@ export const getTableColumns = (
       render: (text: number) => `$${text}`,
     },
     {
-      title: "Fecha",
+      title: "Date",
       dataIndex: "createdAt",
-      key: "birthdate",
-      render: (text: string) => formatDate(text),
+      key: "createdAt",
+      render: (text, record: any) => {
+        const editable = record.sale_id === editingKey;
+        const formattedDate = formatDate(record.createdAt);
+        return editable ? (
+          <Input
+            value={formattedDate}
+            onChange={(e) =>
+              setEditedData({ ...editedData, createdAt: e.target.value })
+            }
+          />
+        ) : (
+          formattedDate
+        );
+      },
     },
     {
       title: "Payment Method",
       dataIndex: "payment_method",
       key: "payment_method",
-      render: (text: string) => text[0].toUpperCase() + text.slice(1),
+      render: (text, record) => {
+        const editable = record.sale_id === editingKey;
+        return editable ? (
+          <Select
+            value={editedData.payment_method}
+            onChange={(value) =>
+              setEditedData({ ...editedData, payment_method: value })
+            }
+            style={{ width: 120 }}
+          >
+            <Option value="cash">Cash</Option>
+            <Option value="credit">Credit</Option>
+            <Option value="ewallet">Ewallet</Option>
+            <Option value="transfer">Transference</Option>
+          </Select>
+        ) : (
+          text[0].toUpperCase() + text.slice(1)
+        );
+      },
     },
-    // list al sale.services array
     {
       title: "Services",
       dataIndex: "services",
       key: "services",
-      render: (services: Service[]) =>
-        services.map((service: Service) => service.name).join(", "),
+      render: (_, record ) =>
+
+      {
+        const editable = record.sale_id === editingKey;
+        const services = record.services.map((service: any) => service?.service_id);
+        console.log(services);
+        
+        return editable ? (
+          <Select
+            mode="multiple"
+            value={editedData.services}
+            onChange={(value) =>
+              setEditedData({ ...editedData, services: value })
+            }
+            style={{ width: 120 }}
+          >
+            {allServices.map((service: any) => (
+              <Select.Option key={service.id} value={service?.service_id}>
+                {service.name}
+              </Select.Option>
+            ))}
+          </Select>
+        ) : (
+          record.services.map((service: Service) => service?.name).join(", ")
+        );
+      }
     },
     {
       title: "Action",

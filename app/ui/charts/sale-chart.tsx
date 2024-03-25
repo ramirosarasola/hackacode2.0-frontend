@@ -20,7 +20,7 @@ export function SaleChart({ title }: { title: string }) {
         const month = new Date(sale.createdAt).toLocaleString("en-US", {
           month: "long",
         });
-        const totalPrice = sale.services.reduce(
+        const totalPrice = sale.services?.reduce(
           (sum: any, service: any) => sum + parseFloat(service.price),
           0
         );
